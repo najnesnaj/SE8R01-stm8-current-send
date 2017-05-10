@@ -23,25 +23,12 @@
 #define SET(x, y)   (x) |= (y)
 #define UNSET(x, y) (x) &= ~(y)
 #define READ(x, y)  ((x) & (y))
-#define BMP180_ADDR	0x77
-#define BH1750_ADDR	0x23
-#define MCP4725_ADDR	0x62
-#define SI7021_ADDR	0x40
-#define HMC5883L_ADDR	0x1e
-#define I2C_READ        1
-#define I2C_WRITE       0
 #define OSS		3
 #define PC3		3
 #define PC4		4
 #define CSN		3
 #define CE		4
-#define BH1750_HRES2_ONETIME	0x23
-#define BH1750_POWERON		0x01
-#define MCP4725_CMD_WRITEDAC	0x40
-#define SI7021_READ_HUMIDITY	0xe5
-#define HMC5883L_CRA		0x00
-#define HMC5883L_CRB		0x01
-#define HMC5883L_MODE		0x02
+
 typedef unsigned char UCHAR;
 void delayTenMicro (void) {
 	char a;
@@ -512,24 +499,6 @@ void SE8R01_Init()
 	write_spi_buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, ADR_WIDTH); // Use the same address on the RX device as the TX device write_spi_reg(WRITE_REG + RX_PW_P0, TX_PLOAD_WIDTH); // Select same RX payload width as TX Payload width
 
 
-	/*
-	   write_spi_reg(WRITE_REG|iRF_BANK0_EN_AA, 0b00111111);          //enable auto acc on pip 1
-	   write_spi_reg(WRITE_REG|iRF_BANK0_EN_RXADDR, 0b00111111);      //enable pip 1
-	   write_spi_reg(WRITE_REG|iRF_BANK0_SETUP_AW, 0x02);  
-	   write_spi_reg(WRITE_REG|iRF_BANK0_RF_CH, 40);
-
-	   write_spi_buf(WRITE_REG + TX_ADDR, ADDRESS0, ADR_WIDTH);    	
-	   write_spi_buf(WRITE_REG + RX_ADDR_P0, ADDRESS0, ADR_WIDTH); 
-	   write_spi_buf(WRITE_REG + RX_ADDR_P1, ADDRESS1, ADR_WIDTH); 
-	   write_spi_buf(WRITE_REG + RX_ADDR_P2, ADDRESS2, 1); 
-	   write_spi_buf(WRITE_REG + RX_ADDR_P3, ADDRESS3, 1); 
-	   write_spi_buf(WRITE_REG + RX_ADDR_P4, ADDRESS4, 1); 
-	   write_spi_buf(WRITE_REG + RX_ADDR_P5, ADDRESS5, 1); 
-	   write_spi_reg(WRITE_REG + RX_PW_P0, PLOAD_WIDTH); 
-	   write_spi_reg(WRITE_REG|iRF_BANK0_CONFIG, 0x3f); 
-	   write_spi_reg(WRITE_REG|iRF_BANK0_DYNPD, 0b00111111);          // enable dynamic payload length data
-	   write_spi_reg(WRITE_REG|iRF_BANK0_FEATURE, 0x07);        // enable dynamic paload lenght; enbale payload with ack enable w_tx_payload_noack
-	 */
 	PC_ODR |= (1 << CE);
 
 }
@@ -537,7 +506,7 @@ void SE8R01_Init()
 
 
 int main () {
-	short voltage = 1900;
+        int ampere;
 	UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
 	UCHAR tx_addr[]     = { 0xe1, 0xf0, 0xf0, 0xf0, 0xf0 };
 	UCHAR tx_payload[33];
@@ -566,11 +535,29 @@ int main () {
 
 
 	while (1) {
+//read analog value on port PD3  -- AIN4
+
+                ADC_CR1 |= ADC_ADON; // ADC ON
+		ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
+		ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
+		ADC_CR1 |= ADC_ADON; // start conversion 
+		while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
+		tx_payload[2] = (unsigned int)ADC_DRH;
+		tx_payload[3] = (unsigned int)ADC_DRL;
+
+//		ampere |= (unsigned int)ADC_DRL;
+		// UARTPrintF("value = \n\r");
+	//	ampere |= (unsigned int)ADC_DRH<<8;
+		ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
+                ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
+
+
+
 		//some testdata
 		tx_payload[0] = 0xac; //first two is unique ID for current sensor
 		tx_payload[1] = 0xcc;
-		tx_payload[2] = 0x01;
-		tx_payload[3] = 0x02;
+	//	tx_payload[2] = ampere>>8;
+	//	tx_payload[3] = ampere & 0x0f; 
 		write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
 		write_spi_reg(WRITE_REG+STATUS, 0xff);
 		// readstatus = read_spi_reg(STATUS);
