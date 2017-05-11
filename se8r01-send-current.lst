@@ -1,7 +1,7 @@
                                       1 ;--------------------------------------------------------
                                       2 ; File Created by SDCC : free open source ANSI-C Compiler
                                       3 ; Version 3.4.0 #8981 (Jul 11 2014) (Linux)
-                                      4 ; This file was generated Wed May 10 13:32:28 2017
+                                      4 ; This file was generated Thu May 11 18:37:46 2017
                                       5 ;--------------------------------------------------------
                                       6 	.module se8r01_send_current
                                       7 	.optsdcc -mstm8
@@ -178,7 +178,7 @@
                                     178 	.area HOME
                                     179 	.area HOME
       000080                        180 __sdcc_program_startup:
-      000080 CCr06rEA         [ 2]  181 	jp	_main
+      000080 CCr06rCE         [ 2]  181 	jp	_main
                                     182 ;	return from main will return to caller
                                     183 ;--------------------------------------------------------
                                     184 ; code
@@ -743,1096 +743,1067 @@
                                     743 ;	 function init_io
                                     744 ;	-----------------------------------------
       0002B5                        745 _init_io:
-                                    746 ;	se8r01-send-current.c: 268: PD_DDR &= ~(1 << 3); // input mode
-      0002B5 AE 50 11         [ 2]  747 	ldw	x, #0x5011
+                                    746 ;	se8r01-send-current.c: 275: PC_ODR &= ~(1 << CE);
+      0002B5 AE 50 0A         [ 2]  747 	ldw	x, #0x500a
       0002B8 F6               [ 1]  748 	ld	a, (x)
-      0002B9 A4 F7            [ 1]  749 	and	a, #0xf7
+      0002B9 A4 EF            [ 1]  749 	and	a, #0xef
       0002BB F7               [ 1]  750 	ld	(x), a
-                                    751 ;	se8r01-send-current.c: 269: PD_CR1 |= (1 << 3); // input with pull up 
-      0002BC AE 50 12         [ 2]  752 	ldw	x, #0x5012
+                                    751 ;	se8r01-send-current.c: 277: PC_ODR |= (1 << CSN);
+      0002BC AE 50 0A         [ 2]  752 	ldw	x, #0x500a
       0002BF F6               [ 1]  753 	ld	a, (x)
       0002C0 AA 08            [ 1]  754 	or	a, #0x08
       0002C2 F7               [ 1]  755 	ld	(x), a
-                                    756 ;	se8r01-send-current.c: 270: PD_CR2 |= (1 << 3); // interrupt enabled 
-      0002C3 AE 50 13         [ 2]  757 	ldw	x, #0x5013
-      0002C6 F6               [ 1]  758 	ld	a, (x)
-      0002C7 AA 08            [ 1]  759 	or	a, #0x08
-      0002C9 F7               [ 1]  760 	ld	(x), a
-                                    761 ;	se8r01-send-current.c: 271: PD_ODR &= ~(1 << 3);
-      0002CA AE 50 0F         [ 2]  762 	ldw	x, #0x500f
-      0002CD F6               [ 1]  763 	ld	a, (x)
-      0002CE A4 F7            [ 1]  764 	and	a, #0xf7
-      0002D0 F7               [ 1]  765 	ld	(x), a
-                                    766 ;	se8r01-send-current.c: 274: PC_ODR &= ~(1 << CE);
-      0002D1 AE 50 0A         [ 2]  767 	ldw	x, #0x500a
-      0002D4 F6               [ 1]  768 	ld	a, (x)
-      0002D5 A4 EF            [ 1]  769 	and	a, #0xef
-      0002D7 F7               [ 1]  770 	ld	(x), a
-                                    771 ;	se8r01-send-current.c: 276: PC_ODR |= (1 << CSN);
-      0002D8 AE 50 0A         [ 2]  772 	ldw	x, #0x500a
-      0002DB F6               [ 1]  773 	ld	a, (x)
-      0002DC AA 08            [ 1]  774 	or	a, #0x08
-      0002DE F7               [ 1]  775 	ld	(x), a
-      0002DF 81               [ 4]  776 	ret
-                                    777 ;	se8r01-send-current.c: 282: void rf_switch_bank(unsigned char bankindex)
-                                    778 ;	-----------------------------------------
-                                    779 ;	 function rf_switch_bank
-                                    780 ;	-----------------------------------------
-      0002E0                        781 _rf_switch_bank:
-      0002E0 88               [ 1]  782 	push	a
-                                    783 ;	se8r01-send-current.c: 285: temp1 = bankindex;
-      0002E1 7B 04            [ 1]  784 	ld	a, (0x04, sp)
-      0002E3 6B 01            [ 1]  785 	ld	(0x01, sp), a
-                                    786 ;	se8r01-send-current.c: 287: temp0 = write_spi(iRF_BANK0_STATUS);
-      0002E5 4B 07            [ 1]  787 	push	#0x07
-      0002E7 CDr00r08         [ 4]  788 	call	_write_spi
-      0002EA 5B 01            [ 2]  789 	addw	sp, #1
-                                    790 ;	se8r01-send-current.c: 289: if((temp0&0x80)!=temp1)
-      0002EC A4 80            [ 1]  791 	and	a, #0x80
-      0002EE 11 01            [ 1]  792 	cp	a, (0x01, sp)
-      0002F0 27 09            [ 1]  793 	jreq	00103$
-                                    794 ;	se8r01-send-current.c: 291: write_spi_reg(iRF_CMD_ACTIVATE,0x53);
-      0002F2 4B 53            [ 1]  795 	push	#0x53
-      0002F4 4B 50            [ 1]  796 	push	#0x50
-      0002F6 CDr00r2E         [ 4]  797 	call	_write_spi_reg
-      0002F9 5B 02            [ 2]  798 	addw	sp, #2
-      0002FB                        799 00103$:
-      0002FB 84               [ 1]  800 	pop	a
-      0002FC 81               [ 4]  801 	ret
-                                    802 ;	se8r01-send-current.c: 298: void SE8R01_Calibration()
-                                    803 ;	-----------------------------------------
-                                    804 ;	 function SE8R01_Calibration
-                                    805 ;	-----------------------------------------
-      0002FD                        806 _SE8R01_Calibration:
-      0002FD 52 0D            [ 2]  807 	sub	sp, #13
-                                    808 ;	se8r01-send-current.c: 301: rf_switch_bank(iBANK0);
-      0002FF 4B 00            [ 1]  809 	push	#0x00
-      000301 CDr02rE0         [ 4]  810 	call	_rf_switch_bank
-      000304 84               [ 1]  811 	pop	a
-                                    812 ;	se8r01-send-current.c: 302: temp[0]=0x03;
-      000305 96               [ 1]  813 	ldw	x, sp
-      000306 5C               [ 2]  814 	incw	x
-      000307 1F 06            [ 2]  815 	ldw	(0x06, sp), x
-      000309 1E 06            [ 2]  816 	ldw	x, (0x06, sp)
-      00030B A6 03            [ 1]  817 	ld	a, #0x03
-      00030D F7               [ 1]  818 	ld	(x), a
-                                    819 ;	se8r01-send-current.c: 303: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_CONFIG,temp, 1);
-      00030E 1E 06            [ 2]  820 	ldw	x, (0x06, sp)
-      000310 4B 01            [ 1]  821 	push	#0x01
-      000312 89               [ 2]  822 	pushw	x
-      000313 4B 20            [ 1]  823 	push	#0x20
-      000315 CDr00rA8         [ 4]  824 	call	_write_spi_buf
-      000318 5B 04            [ 2]  825 	addw	sp, #4
-                                    826 ;	se8r01-send-current.c: 305: temp[0]=0x32;
-      00031A 1E 06            [ 2]  827 	ldw	x, (0x06, sp)
-      00031C A6 32            [ 1]  828 	ld	a, #0x32
-      00031E F7               [ 1]  829 	ld	(x), a
-                                    830 ;	se8r01-send-current.c: 307: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_RF_CH, temp,1);
-      00031F 1E 06            [ 2]  831 	ldw	x, (0x06, sp)
-      000321 4B 01            [ 1]  832 	push	#0x01
-      000323 89               [ 2]  833 	pushw	x
-      000324 4B 25            [ 1]  834 	push	#0x25
-      000326 CDr00rA8         [ 4]  835 	call	_write_spi_buf
-      000329 5B 04            [ 2]  836 	addw	sp, #4
-                                    837 ;	se8r01-send-current.c: 311: if (SE8R01_DR_2M==1)
-      00032B CEu00u00         [ 2]  838 	ldw	x, _SE8R01_DR_2M+0
-      00032E A3 00 01         [ 2]  839 	cpw	x, #0x0001
-      000331 26 07            [ 1]  840 	jrne	00105$
-                                    841 ;	se8r01-send-current.c: 312: {temp[0]=0x48;}
-      000333 1E 06            [ 2]  842 	ldw	x, (0x06, sp)
-      000335 A6 48            [ 1]  843 	ld	a, #0x48
-      000337 F7               [ 1]  844 	ld	(x), a
-      000338 20 14            [ 2]  845 	jra	00106$
-      00033A                        846 00105$:
-                                    847 ;	se8r01-send-current.c: 313: else if (SE8R01_DR_1M==1)
-      00033A CEu00u02         [ 2]  848 	ldw	x, _SE8R01_DR_1M+0
-      00033D A3 00 01         [ 2]  849 	cpw	x, #0x0001
-      000340 26 07            [ 1]  850 	jrne	00102$
-                                    851 ;	se8r01-send-current.c: 314: {temp[0]=0x40;}
-      000342 1E 06            [ 2]  852 	ldw	x, (0x06, sp)
-      000344 A6 40            [ 1]  853 	ld	a, #0x40
-      000346 F7               [ 1]  854 	ld	(x), a
-      000347 20 05            [ 2]  855 	jra	00106$
-      000349                        856 00102$:
-                                    857 ;	se8r01-send-current.c: 316: {temp[0]=0x68;}   
-      000349 1E 06            [ 2]  858 	ldw	x, (0x06, sp)
-      00034B A6 68            [ 1]  859 	ld	a, #0x68
-      00034D F7               [ 1]  860 	ld	(x), a
-      00034E                        861 00106$:
-                                    862 ;	se8r01-send-current.c: 318: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_RF_SETUP,temp,1);
-      00034E 1E 06            [ 2]  863 	ldw	x, (0x06, sp)
-      000350 4B 01            [ 1]  864 	push	#0x01
-      000352 89               [ 2]  865 	pushw	x
-      000353 4B 26            [ 1]  866 	push	#0x26
-      000355 CDr00rA8         [ 4]  867 	call	_write_spi_buf
-      000358 5B 04            [ 2]  868 	addw	sp, #4
-                                    869 ;	se8r01-send-current.c: 319: temp[0]=0x77;
-      00035A 1E 06            [ 2]  870 	ldw	x, (0x06, sp)
-      00035C A6 77            [ 1]  871 	ld	a, #0x77
-      00035E F7               [ 1]  872 	ld	(x), a
-                                    873 ;	se8r01-send-current.c: 320: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_PRE_GURD, temp,1);
-      00035F 1E 06            [ 2]  874 	ldw	x, (0x06, sp)
-      000361 4B 01            [ 1]  875 	push	#0x01
-      000363 89               [ 2]  876 	pushw	x
-      000364 4B 3F            [ 1]  877 	push	#0x3f
-      000366 CDr00rA8         [ 4]  878 	call	_write_spi_buf
-      000369 5B 04            [ 2]  879 	addw	sp, #4
-                                    880 ;	se8r01-send-current.c: 322: rf_switch_bank(iBANK1);
-      00036B 4B 80            [ 1]  881 	push	#0x80
-      00036D CDr02rE0         [ 4]  882 	call	_rf_switch_bank
-      000370 84               [ 1]  883 	pop	a
-                                    884 ;	se8r01-send-current.c: 323: temp[0]=0x40;
-      000371 1E 06            [ 2]  885 	ldw	x, (0x06, sp)
-      000373 A6 40            [ 1]  886 	ld	a, #0x40
-      000375 F7               [ 1]  887 	ld	(x), a
-                                    888 ;	se8r01-send-current.c: 324: temp[1]=0x00;
-      000376 1E 06            [ 2]  889 	ldw	x, (0x06, sp)
-      000378 5C               [ 2]  890 	incw	x
-      000379 1F 0C            [ 2]  891 	ldw	(0x0c, sp), x
-      00037B 1E 0C            [ 2]  892 	ldw	x, (0x0c, sp)
-      00037D 7F               [ 1]  893 	clr	(x)
-                                    894 ;	se8r01-send-current.c: 325: temp[2]=0x10;
-      00037E 1E 06            [ 2]  895 	ldw	x, (0x06, sp)
-      000380 5C               [ 2]  896 	incw	x
-      000381 5C               [ 2]  897 	incw	x
-      000382 1F 0A            [ 2]  898 	ldw	(0x0a, sp), x
-      000384 1E 0A            [ 2]  899 	ldw	x, (0x0a, sp)
-      000386 A6 10            [ 1]  900 	ld	a, #0x10
-      000388 F7               [ 1]  901 	ld	(x), a
-                                    902 ;	se8r01-send-current.c: 327: {temp[3]=0xE6;}
-      000389 1E 06            [ 2]  903 	ldw	x, (0x06, sp)
-      00038B 1C 00 03         [ 2]  904 	addw	x, #0x0003
-      00038E 1F 08            [ 2]  905 	ldw	(0x08, sp), x
-                                    906 ;	se8r01-send-current.c: 326: if (SE8R01_DR_2M==1)
-      000390 CEu00u00         [ 2]  907 	ldw	x, _SE8R01_DR_2M+0
-      000393 A3 00 01         [ 2]  908 	cpw	x, #0x0001
-      000396 26 07            [ 1]  909 	jrne	00108$
-                                    910 ;	se8r01-send-current.c: 327: {temp[3]=0xE6;}
-      000398 1E 08            [ 2]  911 	ldw	x, (0x08, sp)
-      00039A A6 E6            [ 1]  912 	ld	a, #0xe6
-      00039C F7               [ 1]  913 	ld	(x), a
-      00039D 20 05            [ 2]  914 	jra	00109$
-      00039F                        915 00108$:
-                                    916 ;	se8r01-send-current.c: 329: {temp[3]=0xE4;}
-      00039F 1E 08            [ 2]  917 	ldw	x, (0x08, sp)
-      0003A1 A6 E4            [ 1]  918 	ld	a, #0xe4
-      0003A3 F7               [ 1]  919 	ld	(x), a
-      0003A4                        920 00109$:
-                                    921 ;	se8r01-send-current.c: 331: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_PLL_CTL0, temp, 4);
-      0003A4 1E 06            [ 2]  922 	ldw	x, (0x06, sp)
-      0003A6 4B 04            [ 1]  923 	push	#0x04
-      0003A8 89               [ 2]  924 	pushw	x
-      0003A9 4B 21            [ 1]  925 	push	#0x21
-      0003AB CDr00rA8         [ 4]  926 	call	_write_spi_buf
-      0003AE 5B 04            [ 2]  927 	addw	sp, #4
-                                    928 ;	se8r01-send-current.c: 333: temp[0]=0x20;
-      0003B0 1E 06            [ 2]  929 	ldw	x, (0x06, sp)
-      0003B2 A6 20            [ 1]  930 	ld	a, #0x20
-      0003B4 F7               [ 1]  931 	ld	(x), a
-                                    932 ;	se8r01-send-current.c: 334: temp[1]=0x08;
-      0003B5 1E 0C            [ 2]  933 	ldw	x, (0x0c, sp)
-      0003B7 A6 08            [ 1]  934 	ld	a, #0x08
-      0003B9 F7               [ 1]  935 	ld	(x), a
-                                    936 ;	se8r01-send-current.c: 335: temp[2]=0x50;
-      0003BA 1E 0A            [ 2]  937 	ldw	x, (0x0a, sp)
-      0003BC A6 50            [ 1]  938 	ld	a, #0x50
-      0003BE F7               [ 1]  939 	ld	(x), a
-                                    940 ;	se8r01-send-current.c: 336: temp[3]=0x40;
-      0003BF 1E 08            [ 2]  941 	ldw	x, (0x08, sp)
-      0003C1 A6 40            [ 1]  942 	ld	a, #0x40
-      0003C3 F7               [ 1]  943 	ld	(x), a
-                                    944 ;	se8r01-send-current.c: 337: temp[4]=0x50;
-      0003C4 1E 06            [ 2]  945 	ldw	x, (0x06, sp)
-      0003C6 A6 50            [ 1]  946 	ld	a, #0x50
-      0003C8 E7 04            [ 1]  947 	ld	(0x0004, x), a
-                                    948 ;	se8r01-send-current.c: 338: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_CAL_CTL, temp, 5);
-      0003CA 1E 06            [ 2]  949 	ldw	x, (0x06, sp)
-      0003CC 4B 05            [ 1]  950 	push	#0x05
-      0003CE 89               [ 2]  951 	pushw	x
-      0003CF 4B 23            [ 1]  952 	push	#0x23
-      0003D1 CDr00rA8         [ 4]  953 	call	_write_spi_buf
-      0003D4 5B 04            [ 2]  954 	addw	sp, #4
-                                    955 ;	se8r01-send-current.c: 340: temp[0]=0x00;
-      0003D6 1E 06            [ 2]  956 	ldw	x, (0x06, sp)
-      0003D8 7F               [ 1]  957 	clr	(x)
-                                    958 ;	se8r01-send-current.c: 341: temp[1]=0x00;
-      0003D9 1E 0C            [ 2]  959 	ldw	x, (0x0c, sp)
-      0003DB 7F               [ 1]  960 	clr	(x)
-                                    961 ;	se8r01-send-current.c: 342: if (SE8R01_DR_2M==1)
-      0003DC CEu00u00         [ 2]  962 	ldw	x, _SE8R01_DR_2M+0
-      0003DF A3 00 01         [ 2]  963 	cpw	x, #0x0001
-      0003E2 26 07            [ 1]  964 	jrne	00111$
-                                    965 ;	se8r01-send-current.c: 343: { temp[2]=0x1E;}
-      0003E4 1E 0A            [ 2]  966 	ldw	x, (0x0a, sp)
-      0003E6 A6 1E            [ 1]  967 	ld	a, #0x1e
-      0003E8 F7               [ 1]  968 	ld	(x), a
-      0003E9 20 05            [ 2]  969 	jra	00112$
-      0003EB                        970 00111$:
-                                    971 ;	se8r01-send-current.c: 345: { temp[2]=0x1F;}
-      0003EB 1E 0A            [ 2]  972 	ldw	x, (0x0a, sp)
-      0003ED A6 1F            [ 1]  973 	ld	a, #0x1f
-      0003EF F7               [ 1]  974 	ld	(x), a
-      0003F0                        975 00112$:
-                                    976 ;	se8r01-send-current.c: 347: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_IF_FREQ, temp, 3);
-      0003F0 1E 06            [ 2]  977 	ldw	x, (0x06, sp)
-      0003F2 4B 03            [ 1]  978 	push	#0x03
-      0003F4 89               [ 2]  979 	pushw	x
-      0003F5 4B 2A            [ 1]  980 	push	#0x2a
-      0003F7 CDr00rA8         [ 4]  981 	call	_write_spi_buf
-      0003FA 5B 04            [ 2]  982 	addw	sp, #4
-                                    983 ;	se8r01-send-current.c: 349: if (SE8R01_DR_2M==1)
-      0003FC CEu00u00         [ 2]  984 	ldw	x, _SE8R01_DR_2M+0
-      0003FF A3 00 01         [ 2]  985 	cpw	x, #0x0001
-      000402 26 07            [ 1]  986 	jrne	00114$
-                                    987 ;	se8r01-send-current.c: 350: { temp[0]=0x29;}
-      000404 1E 06            [ 2]  988 	ldw	x, (0x06, sp)
-      000406 A6 29            [ 1]  989 	ld	a, #0x29
-      000408 F7               [ 1]  990 	ld	(x), a
-      000409 20 05            [ 2]  991 	jra	00115$
-      00040B                        992 00114$:
-                                    993 ;	se8r01-send-current.c: 352: { temp[0]=0x14;}
-      00040B 1E 06            [ 2]  994 	ldw	x, (0x06, sp)
-      00040D A6 14            [ 1]  995 	ld	a, #0x14
-      00040F F7               [ 1]  996 	ld	(x), a
-      000410                        997 00115$:
-                                    998 ;	se8r01-send-current.c: 354: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_FDEV, temp, 1);
-      000410 1E 06            [ 2]  999 	ldw	x, (0x06, sp)
-      000412 4B 01            [ 1] 1000 	push	#0x01
-      000414 89               [ 2] 1001 	pushw	x
-      000415 4B 2C            [ 1] 1002 	push	#0x2c
-      000417 CDr00rA8         [ 4] 1003 	call	_write_spi_buf
-      00041A 5B 04            [ 2] 1004 	addw	sp, #4
-                                   1005 ;	se8r01-send-current.c: 356: temp[0]=0x00;
-      00041C 1E 06            [ 2] 1006 	ldw	x, (0x06, sp)
-      00041E 7F               [ 1] 1007 	clr	(x)
-                                   1008 ;	se8r01-send-current.c: 357: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_DAC_CAL_LOW,temp,1);
-      00041F 1E 06            [ 2] 1009 	ldw	x, (0x06, sp)
-      000421 4B 01            [ 1] 1010 	push	#0x01
-      000423 89               [ 2] 1011 	pushw	x
-      000424 4B 37            [ 1] 1012 	push	#0x37
-      000426 CDr00rA8         [ 4] 1013 	call	_write_spi_buf
-      000429 5B 04            [ 2] 1014 	addw	sp, #4
-                                   1015 ;	se8r01-send-current.c: 359: temp[0]=0x7F;
-      00042B 1E 06            [ 2] 1016 	ldw	x, (0x06, sp)
-      00042D A6 7F            [ 1] 1017 	ld	a, #0x7f
-      00042F F7               [ 1] 1018 	ld	(x), a
-                                   1019 ;	se8r01-send-current.c: 360: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_DAC_CAL_HI,temp,1);
-      000430 1E 06            [ 2] 1020 	ldw	x, (0x06, sp)
-      000432 4B 01            [ 1] 1021 	push	#0x01
-      000434 89               [ 2] 1022 	pushw	x
-      000435 4B 38            [ 1] 1023 	push	#0x38
-      000437 CDr00rA8         [ 4] 1024 	call	_write_spi_buf
-      00043A 5B 04            [ 2] 1025 	addw	sp, #4
-                                   1026 ;	se8r01-send-current.c: 362: temp[0]=0x02;
-      00043C 1E 06            [ 2] 1027 	ldw	x, (0x06, sp)
-      00043E A6 02            [ 1] 1028 	ld	a, #0x02
-      000440 F7               [ 1] 1029 	ld	(x), a
-                                   1030 ;	se8r01-send-current.c: 363: temp[1]=0xC1;
-      000441 1E 0C            [ 2] 1031 	ldw	x, (0x0c, sp)
-      000443 A6 C1            [ 1] 1032 	ld	a, #0xc1
-      000445 F7               [ 1] 1033 	ld	(x), a
-                                   1034 ;	se8r01-send-current.c: 364: temp[2]=0xEB;            
-      000446 1E 0A            [ 2] 1035 	ldw	x, (0x0a, sp)
-      000448 A6 EB            [ 1] 1036 	ld	a, #0xeb
-      00044A F7               [ 1] 1037 	ld	(x), a
-                                   1038 ;	se8r01-send-current.c: 365: temp[3]=0x1C;
-      00044B 1E 08            [ 2] 1039 	ldw	x, (0x08, sp)
-      00044D A6 1C            [ 1] 1040 	ld	a, #0x1c
-      00044F F7               [ 1] 1041 	ld	(x), a
-                                   1042 ;	se8r01-send-current.c: 366: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_AGC_GAIN, temp,4);
-      000450 1E 06            [ 2] 1043 	ldw	x, (0x06, sp)
-      000452 4B 04            [ 1] 1044 	push	#0x04
-      000454 89               [ 2] 1045 	pushw	x
-      000455 4B 3D            [ 1] 1046 	push	#0x3d
-      000457 CDr00rA8         [ 4] 1047 	call	_write_spi_buf
-      00045A 5B 04            [ 2] 1048 	addw	sp, #4
-                                   1049 ;	se8r01-send-current.c: 368: temp[0]=0x97;
-      00045C 1E 06            [ 2] 1050 	ldw	x, (0x06, sp)
-      00045E A6 97            [ 1] 1051 	ld	a, #0x97
-      000460 F7               [ 1] 1052 	ld	(x), a
-                                   1053 ;	se8r01-send-current.c: 369: temp[1]=0x64;
-      000461 1E 0C            [ 2] 1054 	ldw	x, (0x0c, sp)
-      000463 A6 64            [ 1] 1055 	ld	a, #0x64
-      000465 F7               [ 1] 1056 	ld	(x), a
-                                   1057 ;	se8r01-send-current.c: 370: temp[2]=0x00;
-      000466 1E 0A            [ 2] 1058 	ldw	x, (0x0a, sp)
-      000468 7F               [ 1] 1059 	clr	(x)
-                                   1060 ;	se8r01-send-current.c: 371: temp[3]=0x81;
-      000469 1E 08            [ 2] 1061 	ldw	x, (0x08, sp)
-      00046B A6 81            [ 1] 1062 	ld	a, #0x81
-      00046D F7               [ 1] 1063 	ld	(x), a
-                                   1064 ;	se8r01-send-current.c: 372: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_RF_IVGEN, temp, 4);
-      00046E 1E 06            [ 2] 1065 	ldw	x, (0x06, sp)
-      000470 4B 04            [ 1] 1066 	push	#0x04
-      000472 89               [ 2] 1067 	pushw	x
-      000473 4B 3E            [ 1] 1068 	push	#0x3e
-      000475 CDr00rA8         [ 4] 1069 	call	_write_spi_buf
-      000478 5B 04            [ 2] 1070 	addw	sp, #4
-                                   1071 ;	se8r01-send-current.c: 373: rf_switch_bank(iBANK0);
-      00047A 4B 00            [ 1] 1072 	push	#0x00
-      00047C CDr02rE0         [ 4] 1073 	call	_rf_switch_bank
-      00047F 84               [ 1] 1074 	pop	a
-                                   1075 ;	se8r01-send-current.c: 378: delayTenMicro();
-      000480 CDr00r00         [ 4] 1076 	call	_delayTenMicro
-                                   1077 ;	se8r01-send-current.c: 379: PC_ODR |= (1 << CE);
-      000483 AE 50 0A         [ 2] 1078 	ldw	x, #0x500a
-      000486 F6               [ 1] 1079 	ld	a, (x)
-      000487 AA 10            [ 1] 1080 	or	a, #0x10
-      000489 F7               [ 1] 1081 	ld	(x), a
-                                   1082 ;	se8r01-send-current.c: 380: delayTenMicro();
-      00048A CDr00r00         [ 4] 1083 	call	_delayTenMicro
-                                   1084 ;	se8r01-send-current.c: 381: delayTenMicro();
-      00048D CDr00r00         [ 4] 1085 	call	_delayTenMicro
-                                   1086 ;	se8r01-send-current.c: 382: delayTenMicro();
-      000490 CDr00r00         [ 4] 1087 	call	_delayTenMicro
-                                   1088 ;	se8r01-send-current.c: 383: PC_ODR &= ~(1 << CE);
-      000493 AE 50 0A         [ 2] 1089 	ldw	x, #0x500a
-      000496 F6               [ 1] 1090 	ld	a, (x)
-      000497 A4 EF            [ 1] 1091 	and	a, #0xef
-      000499 F7               [ 1] 1092 	ld	(x), a
-                                   1093 ;	se8r01-send-current.c: 384: delay(50);                            // delay 50ms waitting for calibaration.
-      00049A 4B 32            [ 1] 1094 	push	#0x32
-      00049C 4B 00            [ 1] 1095 	push	#0x00
-      00049E CDr01r8E         [ 4] 1096 	call	_delay
-      0004A1 5B 02            [ 2] 1097 	addw	sp, #2
-                                   1098 ;	se8r01-send-current.c: 389: delayTenMicro();
-      0004A3 CDr00r00         [ 4] 1099 	call	_delayTenMicro
-                                   1100 ;	se8r01-send-current.c: 390: PC_ODR |= (1 << CE);
-      0004A6 AE 50 0A         [ 2] 1101 	ldw	x, #0x500a
-      0004A9 F6               [ 1] 1102 	ld	a, (x)
-      0004AA AA 10            [ 1] 1103 	or	a, #0x10
-      0004AC F7               [ 1] 1104 	ld	(x), a
-                                   1105 ;	se8r01-send-current.c: 391: delayTenMicro();
-      0004AD CDr00r00         [ 4] 1106 	call	_delayTenMicro
-                                   1107 ;	se8r01-send-current.c: 392: delayTenMicro();
-      0004B0 CDr00r00         [ 4] 1108 	call	_delayTenMicro
-                                   1109 ;	se8r01-send-current.c: 393: delayTenMicro();
-      0004B3 CDr00r00         [ 4] 1110 	call	_delayTenMicro
-                                   1111 ;	se8r01-send-current.c: 394: PC_ODR &= ~(1 << CE);
-      0004B6 AE 50 0A         [ 2] 1112 	ldw	x, #0x500a
-      0004B9 F6               [ 1] 1113 	ld	a, (x)
-      0004BA A4 EF            [ 1] 1114 	and	a, #0xef
-      0004BC F7               [ 1] 1115 	ld	(x), a
-                                   1116 ;	se8r01-send-current.c: 395: delay(50);                            // delay 50ms waitting for calibaration.
-      0004BD 4B 32            [ 1] 1117 	push	#0x32
-      0004BF 4B 00            [ 1] 1118 	push	#0x00
-      0004C1 CDr01r8E         [ 4] 1119 	call	_delay
-      0004C4 5B 02            [ 2] 1120 	addw	sp, #2
-      0004C6 5B 0D            [ 2] 1121 	addw	sp, #13
-      0004C8 81               [ 4] 1122 	ret
-                                   1123 ;	se8r01-send-current.c: 399: void SE8R01_Analog_Init()           //SE8R01 初始化
-                                   1124 ;	-----------------------------------------
-                                   1125 ;	 function SE8R01_Analog_Init
-                                   1126 ;	-----------------------------------------
-      0004C9                       1127 _SE8R01_Analog_Init:
-      0004C9 52 15            [ 2] 1128 	sub	sp, #21
-                                   1129 ;	se8r01-send-current.c: 404: gtemp[0]=0x28;
-      0004CB AEr00r00         [ 2] 1130 	ldw	x, #_gtemp+0
-      0004CE 1F 0E            [ 2] 1131 	ldw	(0x0e, sp), x
-      0004D0 1E 0E            [ 2] 1132 	ldw	x, (0x0e, sp)
-      0004D2 A6 28            [ 1] 1133 	ld	a, #0x28
-      0004D4 F7               [ 1] 1134 	ld	(x), a
-                                   1135 ;	se8r01-send-current.c: 405: gtemp[1]=0x32;
-      0004D5 1E 0E            [ 2] 1136 	ldw	x, (0x0e, sp)
-      0004D7 5C               [ 2] 1137 	incw	x
-      0004D8 1F 0C            [ 2] 1138 	ldw	(0x0c, sp), x
-      0004DA 1E 0C            [ 2] 1139 	ldw	x, (0x0c, sp)
-      0004DC A6 32            [ 1] 1140 	ld	a, #0x32
-      0004DE F7               [ 1] 1141 	ld	(x), a
-                                   1142 ;	se8r01-send-current.c: 406: gtemp[2]=0x80;
-      0004DF 1E 0E            [ 2] 1143 	ldw	x, (0x0e, sp)
-      0004E1 5C               [ 2] 1144 	incw	x
-      0004E2 5C               [ 2] 1145 	incw	x
-      0004E3 1F 0A            [ 2] 1146 	ldw	(0x0a, sp), x
-      0004E5 1E 0A            [ 2] 1147 	ldw	x, (0x0a, sp)
-      0004E7 A6 80            [ 1] 1148 	ld	a, #0x80
-      0004E9 F7               [ 1] 1149 	ld	(x), a
-                                   1150 ;	se8r01-send-current.c: 407: gtemp[3]=0x90;
-      0004EA 1E 0E            [ 2] 1151 	ldw	x, (0x0e, sp)
-      0004EC 1C 00 03         [ 2] 1152 	addw	x, #0x0003
-      0004EF 1F 08            [ 2] 1153 	ldw	(0x08, sp), x
-      0004F1 1E 08            [ 2] 1154 	ldw	x, (0x08, sp)
-      0004F3 A6 90            [ 1] 1155 	ld	a, #0x90
-      0004F5 F7               [ 1] 1156 	ld	(x), a
-                                   1157 ;	se8r01-send-current.c: 408: gtemp[4]=0x00;
-      0004F6 1E 0E            [ 2] 1158 	ldw	x, (0x0e, sp)
-      0004F8 1C 00 04         [ 2] 1159 	addw	x, #0x0004
-      0004FB 7F               [ 1] 1160 	clr	(x)
-                                   1161 ;	se8r01-send-current.c: 409: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_SETUP_VALUE, gtemp, 5);
-      0004FC 1E 0E            [ 2] 1162 	ldw	x, (0x0e, sp)
-      0004FE 4B 05            [ 1] 1163 	push	#0x05
-      000500 89               [ 2] 1164 	pushw	x
-      000501 4B 3E            [ 1] 1165 	push	#0x3e
-      000503 CDr00rA8         [ 4] 1166 	call	_write_spi_buf
-      000506 5B 04            [ 2] 1167 	addw	sp, #4
-                                   1168 ;	se8r01-send-current.c: 410: delay(2);
-      000508 4B 02            [ 1] 1169 	push	#0x02
-      00050A 4B 00            [ 1] 1170 	push	#0x00
-      00050C CDr01r8E         [ 4] 1171 	call	_delay
-      00050F 5B 02            [ 2] 1172 	addw	sp, #2
-                                   1173 ;	se8r01-send-current.c: 413: rf_switch_bank(iBANK1);
-      000511 4B 80            [ 1] 1174 	push	#0x80
-      000513 CDr02rE0         [ 4] 1175 	call	_rf_switch_bank
-      000516 84               [ 1] 1176 	pop	a
-                                   1177 ;	se8r01-send-current.c: 415: temp[0]=0x40;
-      000517 96               [ 1] 1178 	ldw	x, sp
-      000518 5C               [ 2] 1179 	incw	x
-      000519 1F 14            [ 2] 1180 	ldw	(0x14, sp), x
-      00051B 1E 14            [ 2] 1181 	ldw	x, (0x14, sp)
-      00051D A6 40            [ 1] 1182 	ld	a, #0x40
-      00051F F7               [ 1] 1183 	ld	(x), a
-                                   1184 ;	se8r01-send-current.c: 416: temp[1]=0x01;               
-      000520 1E 14            [ 2] 1185 	ldw	x, (0x14, sp)
-      000522 5C               [ 2] 1186 	incw	x
-      000523 1F 12            [ 2] 1187 	ldw	(0x12, sp), x
-      000525 1E 12            [ 2] 1188 	ldw	x, (0x12, sp)
-      000527 A6 01            [ 1] 1189 	ld	a, #0x01
-      000529 F7               [ 1] 1190 	ld	(x), a
-                                   1191 ;	se8r01-send-current.c: 417: temp[2]=0x30;               
-      00052A 1E 14            [ 2] 1192 	ldw	x, (0x14, sp)
-      00052C 5C               [ 2] 1193 	incw	x
-      00052D 5C               [ 2] 1194 	incw	x
-      00052E 1F 10            [ 2] 1195 	ldw	(0x10, sp), x
-      000530 1E 10            [ 2] 1196 	ldw	x, (0x10, sp)
-      000532 A6 30            [ 1] 1197 	ld	a, #0x30
-      000534 F7               [ 1] 1198 	ld	(x), a
-                                   1199 ;	se8r01-send-current.c: 419: { temp[3]=0xE2; }              
-      000535 1E 14            [ 2] 1200 	ldw	x, (0x14, sp)
-      000537 1C 00 03         [ 2] 1201 	addw	x, #0x0003
-      00053A 1F 06            [ 2] 1202 	ldw	(0x06, sp), x
-                                   1203 ;	se8r01-send-current.c: 418: if (SE8R01_DR_2M==1)
-      00053C CEu00u00         [ 2] 1204 	ldw	x, _SE8R01_DR_2M+0
-      00053F A3 00 01         [ 2] 1205 	cpw	x, #0x0001
-      000542 26 07            [ 1] 1206 	jrne	00102$
-                                   1207 ;	se8r01-send-current.c: 419: { temp[3]=0xE2; }              
-      000544 1E 06            [ 2] 1208 	ldw	x, (0x06, sp)
-      000546 A6 E2            [ 1] 1209 	ld	a, #0xe2
-      000548 F7               [ 1] 1210 	ld	(x), a
-      000549 20 05            [ 2] 1211 	jra	00103$
-      00054B                       1212 00102$:
-                                   1213 ;	se8r01-send-current.c: 421: { temp[3]=0xE0;}
-      00054B 1E 06            [ 2] 1214 	ldw	x, (0x06, sp)
-      00054D A6 E0            [ 1] 1215 	ld	a, #0xe0
-      00054F F7               [ 1] 1216 	ld	(x), a
-      000550                       1217 00103$:
-                                   1218 ;	se8r01-send-current.c: 423: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_PLL_CTL0, temp,4);
-      000550 1E 14            [ 2] 1219 	ldw	x, (0x14, sp)
-      000552 4B 04            [ 1] 1220 	push	#0x04
-      000554 89               [ 2] 1221 	pushw	x
-      000555 4B 21            [ 1] 1222 	push	#0x21
-      000557 CDr00rA8         [ 4] 1223 	call	_write_spi_buf
-      00055A 5B 04            [ 2] 1224 	addw	sp, #4
-                                   1225 ;	se8r01-send-current.c: 425: temp[0]=0x29;
-      00055C 1E 14            [ 2] 1226 	ldw	x, (0x14, sp)
-      00055E A6 29            [ 1] 1227 	ld	a, #0x29
-      000560 F7               [ 1] 1228 	ld	(x), a
-                                   1229 ;	se8r01-send-current.c: 426: temp[1]=0x89;
-      000561 1E 12            [ 2] 1230 	ldw	x, (0x12, sp)
-      000563 A6 89            [ 1] 1231 	ld	a, #0x89
-      000565 F7               [ 1] 1232 	ld	(x), a
-                                   1233 ;	se8r01-send-current.c: 427: temp[2]=0x55;                     
-      000566 1E 10            [ 2] 1234 	ldw	x, (0x10, sp)
-      000568 A6 55            [ 1] 1235 	ld	a, #0x55
-      00056A F7               [ 1] 1236 	ld	(x), a
-                                   1237 ;	se8r01-send-current.c: 428: temp[3]=0x40;
-      00056B 1E 06            [ 2] 1238 	ldw	x, (0x06, sp)
-      00056D A6 40            [ 1] 1239 	ld	a, #0x40
-      00056F F7               [ 1] 1240 	ld	(x), a
-                                   1241 ;	se8r01-send-current.c: 429: temp[4]=0x50;
-      000570 1E 14            [ 2] 1242 	ldw	x, (0x14, sp)
-      000572 A6 50            [ 1] 1243 	ld	a, #0x50
-      000574 E7 04            [ 1] 1244 	ld	(0x0004, x), a
-                                   1245 ;	se8r01-send-current.c: 430: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_CAL_CTL, temp,5);
-      000576 1E 14            [ 2] 1246 	ldw	x, (0x14, sp)
-      000578 4B 05            [ 1] 1247 	push	#0x05
-      00057A 89               [ 2] 1248 	pushw	x
-      00057B 4B 23            [ 1] 1249 	push	#0x23
-      00057D CDr00rA8         [ 4] 1250 	call	_write_spi_buf
-      000580 5B 04            [ 2] 1251 	addw	sp, #4
-                                   1252 ;	se8r01-send-current.c: 432: if (SE8R01_DR_2M==1)
-      000582 CEu00u00         [ 2] 1253 	ldw	x, _SE8R01_DR_2M+0
-      000585 A3 00 01         [ 2] 1254 	cpw	x, #0x0001
-      000588 26 07            [ 1] 1255 	jrne	00105$
-                                   1256 ;	se8r01-send-current.c: 433: { temp[0]=0x29;}
-      00058A 1E 14            [ 2] 1257 	ldw	x, (0x14, sp)
-      00058C A6 29            [ 1] 1258 	ld	a, #0x29
-      00058E F7               [ 1] 1259 	ld	(x), a
-      00058F 20 05            [ 2] 1260 	jra	00106$
-      000591                       1261 00105$:
-                                   1262 ;	se8r01-send-current.c: 435: { temp[0]=0x14;}
-      000591 1E 14            [ 2] 1263 	ldw	x, (0x14, sp)
-      000593 A6 14            [ 1] 1264 	ld	a, #0x14
-      000595 F7               [ 1] 1265 	ld	(x), a
-      000596                       1266 00106$:
-                                   1267 ;	se8r01-send-current.c: 437: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_FDEV, temp,1);
-      000596 1E 14            [ 2] 1268 	ldw	x, (0x14, sp)
-      000598 4B 01            [ 1] 1269 	push	#0x01
-      00059A 89               [ 2] 1270 	pushw	x
-      00059B 4B 2C            [ 1] 1271 	push	#0x2c
-      00059D CDr00rA8         [ 4] 1272 	call	_write_spi_buf
-      0005A0 5B 04            [ 2] 1273 	addw	sp, #4
-                                   1274 ;	se8r01-send-current.c: 439: temp[0]=0x55;
-      0005A2 1E 14            [ 2] 1275 	ldw	x, (0x14, sp)
-      0005A4 A6 55            [ 1] 1276 	ld	a, #0x55
-      0005A6 F7               [ 1] 1277 	ld	(x), a
-                                   1278 ;	se8r01-send-current.c: 440: temp[1]=0xC2;
-      0005A7 1E 12            [ 2] 1279 	ldw	x, (0x12, sp)
-      0005A9 A6 C2            [ 1] 1280 	ld	a, #0xc2
-      0005AB F7               [ 1] 1281 	ld	(x), a
-                                   1282 ;	se8r01-send-current.c: 441: temp[2]=0x09;
-      0005AC 1E 10            [ 2] 1283 	ldw	x, (0x10, sp)
-      0005AE A6 09            [ 1] 1284 	ld	a, #0x09
-      0005B0 F7               [ 1] 1285 	ld	(x), a
-                                   1286 ;	se8r01-send-current.c: 442: temp[3]=0xAC;  
-      0005B1 1E 06            [ 2] 1287 	ldw	x, (0x06, sp)
-      0005B3 A6 AC            [ 1] 1288 	ld	a, #0xac
-      0005B5 F7               [ 1] 1289 	ld	(x), a
-                                   1290 ;	se8r01-send-current.c: 443: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_RX_CTRL,temp,4);
-      0005B6 1E 14            [ 2] 1291 	ldw	x, (0x14, sp)
-      0005B8 4B 04            [ 1] 1292 	push	#0x04
-      0005BA 89               [ 2] 1293 	pushw	x
-      0005BB 4B 31            [ 1] 1294 	push	#0x31
-      0005BD CDr00rA8         [ 4] 1295 	call	_write_spi_buf
-      0005C0 5B 04            [ 2] 1296 	addw	sp, #4
-                                   1297 ;	se8r01-send-current.c: 445: temp[0]=0x00;
-      0005C2 1E 14            [ 2] 1298 	ldw	x, (0x14, sp)
-      0005C4 7F               [ 1] 1299 	clr	(x)
-                                   1300 ;	se8r01-send-current.c: 446: temp[1]=0x14;
-      0005C5 1E 12            [ 2] 1301 	ldw	x, (0x12, sp)
-      0005C7 A6 14            [ 1] 1302 	ld	a, #0x14
-      0005C9 F7               [ 1] 1303 	ld	(x), a
-                                   1304 ;	se8r01-send-current.c: 447: temp[2]=0x08;   
-      0005CA 1E 10            [ 2] 1305 	ldw	x, (0x10, sp)
-      0005CC A6 08            [ 1] 1306 	ld	a, #0x08
-      0005CE F7               [ 1] 1307 	ld	(x), a
-                                   1308 ;	se8r01-send-current.c: 448: temp[3]=0x29;
-      0005CF 1E 06            [ 2] 1309 	ldw	x, (0x06, sp)
-      0005D1 A6 29            [ 1] 1310 	ld	a, #0x29
-      0005D3 F7               [ 1] 1311 	ld	(x), a
-                                   1312 ;	se8r01-send-current.c: 449: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_FAGC_CTRL_1, temp,4);
-      0005D4 1E 14            [ 2] 1313 	ldw	x, (0x14, sp)
-      0005D6 4B 04            [ 1] 1314 	push	#0x04
-      0005D8 89               [ 2] 1315 	pushw	x
-      0005D9 4B 33            [ 1] 1316 	push	#0x33
-      0005DB CDr00rA8         [ 4] 1317 	call	_write_spi_buf
-      0005DE 5B 04            [ 2] 1318 	addw	sp, #4
-                                   1319 ;	se8r01-send-current.c: 451: temp[0]=0x02;
-      0005E0 1E 14            [ 2] 1320 	ldw	x, (0x14, sp)
-      0005E2 A6 02            [ 1] 1321 	ld	a, #0x02
-      0005E4 F7               [ 1] 1322 	ld	(x), a
-                                   1323 ;	se8r01-send-current.c: 452: temp[1]=0xC1;
-      0005E5 1E 12            [ 2] 1324 	ldw	x, (0x12, sp)
-      0005E7 A6 C1            [ 1] 1325 	ld	a, #0xc1
-      0005E9 F7               [ 1] 1326 	ld	(x), a
-                                   1327 ;	se8r01-send-current.c: 453: temp[2]=0xCB;  
-      0005EA 1E 10            [ 2] 1328 	ldw	x, (0x10, sp)
-      0005EC A6 CB            [ 1] 1329 	ld	a, #0xcb
-      0005EE F7               [ 1] 1330 	ld	(x), a
-                                   1331 ;	se8r01-send-current.c: 454: temp[3]=0x1C;
-      0005EF 1E 06            [ 2] 1332 	ldw	x, (0x06, sp)
-      0005F1 A6 1C            [ 1] 1333 	ld	a, #0x1c
-      0005F3 F7               [ 1] 1334 	ld	(x), a
-                                   1335 ;	se8r01-send-current.c: 455: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_AGC_GAIN, temp,4);
-      0005F4 1E 14            [ 2] 1336 	ldw	x, (0x14, sp)
-      0005F6 4B 04            [ 1] 1337 	push	#0x04
-      0005F8 89               [ 2] 1338 	pushw	x
-      0005F9 4B 3D            [ 1] 1339 	push	#0x3d
-      0005FB CDr00rA8         [ 4] 1340 	call	_write_spi_buf
-      0005FE 5B 04            [ 2] 1341 	addw	sp, #4
-                                   1342 ;	se8r01-send-current.c: 457: temp[0]=0x97;
-      000600 1E 14            [ 2] 1343 	ldw	x, (0x14, sp)
-      000602 A6 97            [ 1] 1344 	ld	a, #0x97
-      000604 F7               [ 1] 1345 	ld	(x), a
-                                   1346 ;	se8r01-send-current.c: 458: temp[1]=0x64;
-      000605 1E 12            [ 2] 1347 	ldw	x, (0x12, sp)
-      000607 A6 64            [ 1] 1348 	ld	a, #0x64
-      000609 F7               [ 1] 1349 	ld	(x), a
-                                   1350 ;	se8r01-send-current.c: 459: temp[2]=0x00;
-      00060A 1E 10            [ 2] 1351 	ldw	x, (0x10, sp)
-      00060C 7F               [ 1] 1352 	clr	(x)
-                                   1353 ;	se8r01-send-current.c: 460: temp[3]=0x01;
-      00060D 1E 06            [ 2] 1354 	ldw	x, (0x06, sp)
-      00060F A6 01            [ 1] 1355 	ld	a, #0x01
-      000611 F7               [ 1] 1356 	ld	(x), a
-                                   1357 ;	se8r01-send-current.c: 461: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_RF_IVGEN, temp,4);
-      000612 1E 14            [ 2] 1358 	ldw	x, (0x14, sp)
-      000614 4B 04            [ 1] 1359 	push	#0x04
-      000616 89               [ 2] 1360 	pushw	x
-      000617 4B 3E            [ 1] 1361 	push	#0x3e
-      000619 CDr00rA8         [ 4] 1362 	call	_write_spi_buf
-      00061C 5B 04            [ 2] 1363 	addw	sp, #4
-                                   1364 ;	se8r01-send-current.c: 463: gtemp[0]=0x2A;
-      00061E 1E 0E            [ 2] 1365 	ldw	x, (0x0e, sp)
-      000620 A6 2A            [ 1] 1366 	ld	a, #0x2a
-      000622 F7               [ 1] 1367 	ld	(x), a
-                                   1368 ;	se8r01-send-current.c: 464: gtemp[1]=0x04;
-      000623 1E 0C            [ 2] 1369 	ldw	x, (0x0c, sp)
-      000625 A6 04            [ 1] 1370 	ld	a, #0x04
-      000627 F7               [ 1] 1371 	ld	(x), a
-                                   1372 ;	se8r01-send-current.c: 465: gtemp[2]=0x00;
-      000628 1E 0A            [ 2] 1373 	ldw	x, (0x0a, sp)
-      00062A 7F               [ 1] 1374 	clr	(x)
-                                   1375 ;	se8r01-send-current.c: 466: gtemp[3]=0x7D;
-      00062B 1E 08            [ 2] 1376 	ldw	x, (0x08, sp)
-      00062D A6 7D            [ 1] 1377 	ld	a, #0x7d
-      00062F F7               [ 1] 1378 	ld	(x), a
-                                   1379 ;	se8r01-send-current.c: 467: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_TEST_PKDET, gtemp, 4);
-      000630 1E 0E            [ 2] 1380 	ldw	x, (0x0e, sp)
-      000632 4B 04            [ 1] 1381 	push	#0x04
-      000634 89               [ 2] 1382 	pushw	x
-      000635 4B 3F            [ 1] 1383 	push	#0x3f
-      000637 CDr00rA8         [ 4] 1384 	call	_write_spi_buf
-      00063A 5B 04            [ 2] 1385 	addw	sp, #4
-                                   1386 ;	se8r01-send-current.c: 469: rf_switch_bank(iBANK0);
-      00063C 4B 00            [ 1] 1387 	push	#0x00
-      00063E CDr02rE0         [ 4] 1388 	call	_rf_switch_bank
-      000641 84               [ 1] 1389 	pop	a
-      000642 5B 15            [ 2] 1390 	addw	sp, #21
-      000644 81               [ 4] 1391 	ret
-                                   1392 ;	se8r01-send-current.c: 472: void SE8R01_Init()  
-                                   1393 ;	-----------------------------------------
-                                   1394 ;	 function SE8R01_Init
-                                   1395 ;	-----------------------------------------
-      000645                       1396 _SE8R01_Init:
-      000645 52 05            [ 2] 1397 	sub	sp, #5
-                                   1398 ;	se8r01-send-current.c: 475: SE8R01_Calibration();   
-      000647 CDr02rFD         [ 4] 1399 	call	_SE8R01_Calibration
-                                   1400 ;	se8r01-send-current.c: 476: SE8R01_Analog_Init();   
-      00064A CDr04rC9         [ 4] 1401 	call	_SE8R01_Analog_Init
-                                   1402 ;	se8r01-send-current.c: 480: if (SE8R01_DR_2M==1)
-      00064D CEu00u00         [ 2] 1403 	ldw	x, _SE8R01_DR_2M+0
-      000650 A3 00 01         [ 2] 1404 	cpw	x, #0x0001
-      000653 26 07            [ 1] 1405 	jrne	00105$
-                                   1406 ;	se8r01-send-current.c: 481: {  temp[0]=0b01001111; }     //2MHz,+5dbm
-      000655 96               [ 1] 1407 	ldw	x, sp
-      000656 5C               [ 2] 1408 	incw	x
-      000657 A6 4F            [ 1] 1409 	ld	a, #0x4f
-      000659 F7               [ 1] 1410 	ld	(x), a
-      00065A 20 14            [ 2] 1411 	jra	00106$
-      00065C                       1412 00105$:
-                                   1413 ;	se8r01-send-current.c: 482: else if  (SE8R01_DR_1M==1)
-      00065C CEu00u02         [ 2] 1414 	ldw	x, _SE8R01_DR_1M+0
-      00065F A3 00 01         [ 2] 1415 	cpw	x, #0x0001
-      000662 26 07            [ 1] 1416 	jrne	00102$
-                                   1417 ;	se8r01-send-current.c: 483: {  temp[0]=0b01000111;  }     //1MHz,+5dbm
-      000664 96               [ 1] 1418 	ldw	x, sp
-      000665 5C               [ 2] 1419 	incw	x
-      000666 A6 47            [ 1] 1420 	ld	a, #0x47
-      000668 F7               [ 1] 1421 	ld	(x), a
-      000669 20 05            [ 2] 1422 	jra	00106$
-      00066B                       1423 00102$:
-                                   1424 ;	se8r01-send-current.c: 485: {temp[0]=0b01101111;  }     //500K,+5dbm
-      00066B 96               [ 1] 1425 	ldw	x, sp
-      00066C 5C               [ 2] 1426 	incw	x
-      00066D A6 6F            [ 1] 1427 	ld	a, #0x6f
-      00066F F7               [ 1] 1428 	ld	(x), a
-      000670                       1429 00106$:
-                                   1430 ;	se8r01-send-current.c: 487: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_RF_SETUP,temp,1);
-      000670 96               [ 1] 1431 	ldw	x, sp
-      000671 5C               [ 2] 1432 	incw	x
-      000672 4B 01            [ 1] 1433 	push	#0x01
-      000674 89               [ 2] 1434 	pushw	x
-      000675 4B 26            [ 1] 1435 	push	#0x26
-      000677 CDr00rA8         [ 4] 1436 	call	_write_spi_buf
-      00067A 5B 04            [ 2] 1437 	addw	sp, #4
-                                   1438 ;	se8r01-send-current.c: 489: write_spi_reg(WRITE_REG|iRF_BANK0_EN_AA, 0x01);          //enable auto acc on pip 1
-      00067C 4B 01            [ 1] 1439 	push	#0x01
-      00067E 4B 21            [ 1] 1440 	push	#0x21
-      000680 CDr00r2E         [ 4] 1441 	call	_write_spi_reg
-      000683 5B 02            [ 2] 1442 	addw	sp, #2
-                                   1443 ;	se8r01-send-current.c: 490: write_spi_reg(WRITE_REG|iRF_BANK0_EN_RXADDR, 0x01);      //enable pip 1
-      000685 4B 01            [ 1] 1444 	push	#0x01
-      000687 4B 22            [ 1] 1445 	push	#0x22
-      000689 CDr00r2E         [ 4] 1446 	call	_write_spi_reg
-      00068C 5B 02            [ 2] 1447 	addw	sp, #2
-                                   1448 ;	se8r01-send-current.c: 491: write_spi_reg(WRITE_REG|iRF_BANK0_SETUP_AW, 0x02);        //4 byte adress
-      00068E 4B 02            [ 1] 1449 	push	#0x02
-      000690 4B 23            [ 1] 1450 	push	#0x23
-      000692 CDr00r2E         [ 4] 1451 	call	_write_spi_reg
-      000695 5B 02            [ 2] 1452 	addw	sp, #2
-                                   1453 ;	se8r01-send-current.c: 492: write_spi_reg(WRITE_REG|iRF_BANK0_SETUP_RETR, 0x08);        //lowest 4 bits 0-15 rt transmisston higest 4 bits 256-4096us Auto Retransmit Delay
-      000697 4B 08            [ 1] 1454 	push	#0x08
-      000699 4B 24            [ 1] 1455 	push	#0x24
-      00069B CDr00r2E         [ 4] 1456 	call	_write_spi_reg
-      00069E 5B 02            [ 2] 1457 	addw	sp, #2
-                                   1458 ;	se8r01-send-current.c: 493: write_spi_reg(WRITE_REG|iRF_BANK0_RF_CH, 40);
-      0006A0 4B 28            [ 1] 1459 	push	#0x28
-      0006A2 4B 25            [ 1] 1460 	push	#0x25
-      0006A4 CDr00r2E         [ 4] 1461 	call	_write_spi_reg
-      0006A7 5B 02            [ 2] 1462 	addw	sp, #2
-                                   1463 ;	se8r01-send-current.c: 494: write_spi_reg(WRITE_REG|iRF_BANK0_DYNPD, 0x01);          //pipe0 pipe1 enable dynamic payload length data
-      0006A9 4B 01            [ 1] 1464 	push	#0x01
-      0006AB 4B 3C            [ 1] 1465 	push	#0x3c
-      0006AD CDr00r2E         [ 4] 1466 	call	_write_spi_reg
-      0006B0 5B 02            [ 2] 1467 	addw	sp, #2
-                                   1468 ;	se8r01-send-current.c: 495: write_spi_reg(WRITE_REG|iRF_BANK0_FEATURE, 0x07);        // enable dynamic paload lenght; enbale payload with ack enable w_tx_payload_noack
-      0006B2 4B 07            [ 1] 1469 	push	#0x07
-      0006B4 4B 3D            [ 1] 1470 	push	#0x3d
-      0006B6 CDr00r2E         [ 4] 1471 	call	_write_spi_reg
-      0006B9 5B 02            [ 2] 1472 	addw	sp, #2
-                                   1473 ;	se8r01-send-current.c: 496: write_spi_reg(WRITE_REG + CONFIG, 0x3E);
-      0006BB 4B 3E            [ 1] 1474 	push	#0x3e
-      0006BD 4B 20            [ 1] 1475 	push	#0x20
-      0006BF CDr00r2E         [ 4] 1476 	call	_write_spi_reg
-      0006C2 5B 02            [ 2] 1477 	addw	sp, #2
-                                   1478 ;	se8r01-send-current.c: 497: write_spi_buf(WRITE_REG + TX_ADDR, TX_ADDRESS, ADR_WIDTH);  //from tx
-      0006C4 AEr00r0E         [ 2] 1479 	ldw	x, #_TX_ADDRESS+0
-      0006C7 90 93            [ 1] 1480 	ldw	y, x
-      0006C9 89               [ 2] 1481 	pushw	x
-      0006CA 4B 04            [ 1] 1482 	push	#0x04
-      0006CC 90 89            [ 2] 1483 	pushw	y
-      0006CE 4B 30            [ 1] 1484 	push	#0x30
-      0006D0 CDr00rA8         [ 4] 1485 	call	_write_spi_buf
-      0006D3 5B 04            [ 2] 1486 	addw	sp, #4
-      0006D5 85               [ 2] 1487 	popw	x
-                                   1488 ;	se8r01-send-current.c: 499: write_spi_buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, ADR_WIDTH); // Use the same address on the RX device as the TX device write_spi_reg(WRITE_REG + RX_PW_P0, TX_PLOAD_WIDTH); // Select same RX payload width as TX Payload width
-      0006D6 4B 04            [ 1] 1489 	push	#0x04
-      0006D8 89               [ 2] 1490 	pushw	x
-      0006D9 4B 2A            [ 1] 1491 	push	#0x2a
-      0006DB CDr00rA8         [ 4] 1492 	call	_write_spi_buf
-      0006DE 5B 04            [ 2] 1493 	addw	sp, #4
-                                   1494 ;	se8r01-send-current.c: 502: PC_ODR |= (1 << CE);
-      0006E0 AE 50 0A         [ 2] 1495 	ldw	x, #0x500a
-      0006E3 F6               [ 1] 1496 	ld	a, (x)
-      0006E4 AA 10            [ 1] 1497 	or	a, #0x10
-      0006E6 F7               [ 1] 1498 	ld	(x), a
-      0006E7 5B 05            [ 2] 1499 	addw	sp, #5
-      0006E9 81               [ 4] 1500 	ret
-                                   1501 ;	se8r01-send-current.c: 508: int main () {
-                                   1502 ;	-----------------------------------------
-                                   1503 ;	 function main
-                                   1504 ;	-----------------------------------------
-      0006EA                       1505 _main:
-      0006EA 52 3B            [ 2] 1506 	sub	sp, #59
-                                   1507 ;	se8r01-send-current.c: 510: UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
-      0006EC 90 96            [ 1] 1508 	ldw	y, sp
-      0006EE 72 A9 00 2F      [ 2] 1509 	addw	y, #47
-      0006F2 A6 D2            [ 1] 1510 	ld	a, #0xd2
-      0006F4 90 F7            [ 1] 1511 	ld	(y), a
-      0006F6 93               [ 1] 1512 	ldw	x, y
-      0006F7 5C               [ 2] 1513 	incw	x
-      0006F8 A6 F0            [ 1] 1514 	ld	a, #0xf0
-      0006FA F7               [ 1] 1515 	ld	(x), a
-      0006FB 93               [ 1] 1516 	ldw	x, y
-      0006FC 5C               [ 2] 1517 	incw	x
-      0006FD 5C               [ 2] 1518 	incw	x
-      0006FE A6 F0            [ 1] 1519 	ld	a, #0xf0
-      000700 F7               [ 1] 1520 	ld	(x), a
-      000701 93               [ 1] 1521 	ldw	x, y
-      000702 A6 F0            [ 1] 1522 	ld	a, #0xf0
-      000704 E7 03            [ 1] 1523 	ld	(0x0003, x), a
-      000706 93               [ 1] 1524 	ldw	x, y
-      000707 A6 F0            [ 1] 1525 	ld	a, #0xf0
-      000709 E7 04            [ 1] 1526 	ld	(0x0004, x), a
-                                   1527 ;	se8r01-send-current.c: 511: UCHAR tx_addr[]     = { 0xe1, 0xf0, 0xf0, 0xf0, 0xf0 };
-      00070B 90 96            [ 1] 1528 	ldw	y, sp
-      00070D 72 A9 00 2A      [ 2] 1529 	addw	y, #42
-      000711 A6 E1            [ 1] 1530 	ld	a, #0xe1
-      000713 90 F7            [ 1] 1531 	ld	(y), a
-      000715 93               [ 1] 1532 	ldw	x, y
-      000716 5C               [ 2] 1533 	incw	x
-      000717 A6 F0            [ 1] 1534 	ld	a, #0xf0
-      000719 F7               [ 1] 1535 	ld	(x), a
-      00071A 93               [ 1] 1536 	ldw	x, y
-      00071B 5C               [ 2] 1537 	incw	x
-      00071C 5C               [ 2] 1538 	incw	x
-      00071D A6 F0            [ 1] 1539 	ld	a, #0xf0
-      00071F F7               [ 1] 1540 	ld	(x), a
-      000720 93               [ 1] 1541 	ldw	x, y
-      000721 A6 F0            [ 1] 1542 	ld	a, #0xf0
-      000723 E7 03            [ 1] 1543 	ld	(0x0003, x), a
-      000725 93               [ 1] 1544 	ldw	x, y
-      000726 1C 00 04         [ 2] 1545 	addw	x, #0x0004
-      000729 A6 F0            [ 1] 1546 	ld	a, #0xf0
-      00072B F7               [ 1] 1547 	ld	(x), a
-                                   1548 ;	se8r01-send-current.c: 515: InitializeSystemClock();
-      00072C CDr01r44         [ 4] 1549 	call	_InitializeSystemClock
-                                   1550 ;	se8r01-send-current.c: 516: InitializeUART();
-      00072F CDr02r3C         [ 4] 1551 	call	_InitializeUART
-                                   1552 ;	se8r01-send-current.c: 518: InitializeSPI ();
-      000732 CDr01r1C         [ 4] 1553 	call	_InitializeSPI
-                                   1554 ;	se8r01-send-current.c: 521: memset (tx_payload, 0, sizeof(tx_payload));
-      000735 96               [ 1] 1555 	ldw	x, sp
-      000736 1C 00 03         [ 2] 1556 	addw	x, #3
-      000739 1F 38            [ 2] 1557 	ldw	(0x38, sp), x
-      00073B 16 38            [ 2] 1558 	ldw	y, (0x38, sp)
-      00073D 4B 21            [ 1] 1559 	push	#0x21
-      00073F 4B 00            [ 1] 1560 	push	#0x00
-      000741 5F               [ 1] 1561 	clrw	x
-      000742 89               [ 2] 1562 	pushw	x
-      000743 90 89            [ 2] 1563 	pushw	y
-      000745 CDr00r00         [ 4] 1564 	call	_memset
-      000748 5B 06            [ 2] 1565 	addw	sp, #6
-                                   1566 ;	se8r01-send-current.c: 524: init_io();                        // Initialize IO port
-      00074A CDr02rB5         [ 4] 1567 	call	_init_io
-                                   1568 ;	se8r01-send-current.c: 525: write_spi_reg(FLUSH_TX,0); // transmit -- send data 
-      00074D 4B 00            [ 1] 1569 	push	#0x00
-      00074F 4B E1            [ 1] 1570 	push	#0xe1
-      000751 CDr00r2E         [ 4] 1571 	call	_write_spi_reg
-      000754 5B 02            [ 2] 1572 	addw	sp, #2
-                                   1573 ;	se8r01-send-current.c: 526: readstatus = read_spi_reg(CONFIG);
-      000756 4B 00            [ 1] 1574 	push	#0x00
-      000758 CDr00r6A         [ 4] 1575 	call	_read_spi_reg
-      00075B 5B 01            [ 2] 1576 	addw	sp, #1
-                                   1577 ;	se8r01-send-current.c: 527: UARTPrintF("config = \n\r");
-      00075D AEr08r2F         [ 2] 1578 	ldw	x, #___str_0+0
-      000760 88               [ 1] 1579 	push	a
-      000761 89               [ 2] 1580 	pushw	x
-      000762 CDr01rD9         [ 4] 1581 	call	_UARTPrintF
-      000765 5B 02            [ 2] 1582 	addw	sp, #2
-      000767 84               [ 1] 1583 	pop	a
-                                   1584 ;	se8r01-send-current.c: 528: print_UCHAR_hex(readstatus);
-      000768 88               [ 1] 1585 	push	a
-      000769 CDr01rF0         [ 4] 1586 	call	_print_UCHAR_hex
-      00076C 84               [ 1] 1587 	pop	a
-                                   1588 ;	se8r01-send-current.c: 529: readstatus = read_spi_reg(STATUS);
-      00076D 4B 07            [ 1] 1589 	push	#0x07
-      00076F CDr00r6A         [ 4] 1590 	call	_read_spi_reg
-      000772 5B 01            [ 2] 1591 	addw	sp, #1
-                                   1592 ;	se8r01-send-current.c: 530: UARTPrintF("status = \n\r");
-      000774 AEr08r3B         [ 2] 1593 	ldw	x, #___str_1+0
-      000777 88               [ 1] 1594 	push	a
-      000778 89               [ 2] 1595 	pushw	x
-      000779 CDr01rD9         [ 4] 1596 	call	_UARTPrintF
-      00077C 5B 02            [ 2] 1597 	addw	sp, #2
-      00077E 84               [ 1] 1598 	pop	a
-                                   1599 ;	se8r01-send-current.c: 531: print_UCHAR_hex(readstatus);
-      00077F 88               [ 1] 1600 	push	a
-      000780 CDr01rF0         [ 4] 1601 	call	_print_UCHAR_hex
-      000783 84               [ 1] 1602 	pop	a
-                                   1603 ;	se8r01-send-current.c: 533: SE8R01_Init();
-      000784 CDr06r45         [ 4] 1604 	call	_SE8R01_Init
-                                   1605 ;	se8r01-send-current.c: 537: while (1) {
-      000787                       1606 00108$:
-                                   1607 ;	se8r01-send-current.c: 540: ADC_CR1 |= ADC_ADON; // ADC ON
-      000787 72 10 54 01      [ 1] 1608 	bset	0x5401, #0
-                                   1609 ;	se8r01-send-current.c: 541: ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
-      00078B AE 54 00         [ 2] 1610 	ldw	x, #0x5400
-      00078E F6               [ 1] 1611 	ld	a, (x)
-      00078F AA 04            [ 1] 1612 	or	a, #0x04
-      000791 F7               [ 1] 1613 	ld	(x), a
-                                   1614 ;	se8r01-send-current.c: 542: ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
-      000792 AE 54 02         [ 2] 1615 	ldw	x, #0x5402
-      000795 F6               [ 1] 1616 	ld	a, (x)
-      000796 AA 08            [ 1] 1617 	or	a, #0x08
-      000798 F7               [ 1] 1618 	ld	(x), a
-                                   1619 ;	se8r01-send-current.c: 543: ADC_CR1 |= ADC_ADON; // start conversion 
-      000799 72 10 54 01      [ 1] 1620 	bset	0x5401, #0
-                                   1621 ;	se8r01-send-current.c: 544: while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
-      00079D                       1622 00101$:
-      00079D AE 54 00         [ 2] 1623 	ldw	x, #0x5400
-      0007A0 F6               [ 1] 1624 	ld	a, (x)
-      0007A1 48               [ 1] 1625 	sll	a
-      0007A2 24 F9            [ 1] 1626 	jrnc	00101$
-                                   1627 ;	se8r01-send-current.c: 545: tx_payload[2] = (unsigned int)ADC_DRH;
-      0007A4 16 38            [ 2] 1628 	ldw	y, (0x38, sp)
-      0007A6 72 A9 00 02      [ 2] 1629 	addw	y, #0x0002
-      0007AA AE 54 04         [ 2] 1630 	ldw	x, #0x5404
-      0007AD F6               [ 1] 1631 	ld	a, (x)
-      0007AE 0F 36            [ 1] 1632 	clr	(0x36, sp)
-      0007B0 90 F7            [ 1] 1633 	ld	(y), a
-                                   1634 ;	se8r01-send-current.c: 546: tx_payload[3] = (unsigned int)ADC_DRL;
-      0007B2 16 38            [ 2] 1635 	ldw	y, (0x38, sp)
-      0007B4 72 A9 00 03      [ 2] 1636 	addw	y, #0x0003
-      0007B8 AE 54 05         [ 2] 1637 	ldw	x, #0x5405
-      0007BB F6               [ 1] 1638 	ld	a, (x)
-      0007BC 0F 34            [ 1] 1639 	clr	(0x34, sp)
-      0007BE 90 F7            [ 1] 1640 	ld	(y), a
-                                   1641 ;	se8r01-send-current.c: 551: ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
-      0007C0 AE 54 01         [ 2] 1642 	ldw	x, #0x5401
-      0007C3 F6               [ 1] 1643 	ld	a, (x)
-      0007C4 A4 FE            [ 1] 1644 	and	a, #0xfe
-      0007C6 F7               [ 1] 1645 	ld	(x), a
-                                   1646 ;	se8r01-send-current.c: 552: ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
-      0007C7 7B 02            [ 1] 1647 	ld	a, (0x02, sp)
-      0007C9 6B 3B            [ 1] 1648 	ld	(0x3b, sp), a
-      0007CB 7B 01            [ 1] 1649 	ld	a, (0x01, sp)
-      0007CD A4 03            [ 1] 1650 	and	a, #0x03
-      0007CF 6B 01            [ 1] 1651 	ld	(0x01, sp), a
-      0007D1 7B 3B            [ 1] 1652 	ld	a, (0x3b, sp)
-      0007D3 6B 02            [ 1] 1653 	ld	(0x02, sp), a
-                                   1654 ;	se8r01-send-current.c: 557: tx_payload[0] = 0xac; //first two is unique ID for current sensor
-      0007D5 1E 38            [ 2] 1655 	ldw	x, (0x38, sp)
-      0007D7 A6 AC            [ 1] 1656 	ld	a, #0xac
-      0007D9 F7               [ 1] 1657 	ld	(x), a
-                                   1658 ;	se8r01-send-current.c: 558: tx_payload[1] = 0xcc;
-      0007DA 1E 38            [ 2] 1659 	ldw	x, (0x38, sp)
-      0007DC 5C               [ 2] 1660 	incw	x
-      0007DD A6 CC            [ 1] 1661 	ld	a, #0xcc
-      0007DF F7               [ 1] 1662 	ld	(x), a
-                                   1663 ;	se8r01-send-current.c: 561: write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
-      0007E0 1E 38            [ 2] 1664 	ldw	x, (0x38, sp)
-      0007E2 4B 04            [ 1] 1665 	push	#0x04
-      0007E4 89               [ 2] 1666 	pushw	x
-      0007E5 4B A0            [ 1] 1667 	push	#0xa0
-      0007E7 CDr00rA8         [ 4] 1668 	call	_write_spi_buf
-      0007EA 5B 04            [ 2] 1669 	addw	sp, #4
-                                   1670 ;	se8r01-send-current.c: 562: write_spi_reg(WRITE_REG+STATUS, 0xff);
-      0007EC 4B FF            [ 1] 1671 	push	#0xff
-      0007EE 4B 27            [ 1] 1672 	push	#0x27
-      0007F0 CDr00r2E         [ 4] 1673 	call	_write_spi_reg
-      0007F3 5B 02            [ 2] 1674 	addw	sp, #2
-                                   1675 ;	se8r01-send-current.c: 569: for (x1 = 0; x1 < 50; ++x1)
-      0007F5 5F               [ 1] 1676 	clrw	x
-      0007F6 1F 28            [ 2] 1677 	ldw	(0x28, sp), x
-      0007F8                       1678 00117$:
-      0007F8 1E 28            [ 2] 1679 	ldw	x, (0x28, sp)
-      0007FA A3 00 32         [ 2] 1680 	cpw	x, #0x0032
-      0007FD 2F 03            [ 1] 1681 	jrslt	00158$
-      0007FF CCr07r87         [ 2] 1682 	jp	00108$
-      000802                       1683 00158$:
-                                   1684 ;	se8r01-send-current.c: 570: for (y1 = 0; y1 < 50; ++y1)
-      000802 5F               [ 1] 1685 	clrw	x
-      000803 1F 26            [ 2] 1686 	ldw	(0x26, sp), x
-      000805                       1687 00114$:
-      000805 1E 26            [ 2] 1688 	ldw	x, (0x26, sp)
-      000807 A3 00 32         [ 2] 1689 	cpw	x, #0x0032
-      00080A 2E 19            [ 1] 1690 	jrsge	00118$
-                                   1691 ;	se8r01-send-current.c: 571: for (z1 = 0; z1 < 50; ++z1)
-      00080C 5F               [ 1] 1692 	clrw	x
-      00080D 1F 24            [ 2] 1693 	ldw	(0x24, sp), x
-      00080F                       1694 00111$:
-      00080F 1E 24            [ 2] 1695 	ldw	x, (0x24, sp)
-      000811 A3 00 32         [ 2] 1696 	cpw	x, #0x0032
-      000814 2E 08            [ 1] 1697 	jrsge	00115$
-                                   1698 ;	se8r01-send-current.c: 572: __asm__("nop");
-      000816 9D               [ 1] 1699 	nop
-                                   1700 ;	se8r01-send-current.c: 571: for (z1 = 0; z1 < 50; ++z1)
-      000817 1E 24            [ 2] 1701 	ldw	x, (0x24, sp)
-      000819 5C               [ 2] 1702 	incw	x
-      00081A 1F 24            [ 2] 1703 	ldw	(0x24, sp), x
-      00081C 20 F1            [ 2] 1704 	jra	00111$
-      00081E                       1705 00115$:
-                                   1706 ;	se8r01-send-current.c: 570: for (y1 = 0; y1 < 50; ++y1)
-      00081E 1E 26            [ 2] 1707 	ldw	x, (0x26, sp)
-      000820 5C               [ 2] 1708 	incw	x
-      000821 1F 26            [ 2] 1709 	ldw	(0x26, sp), x
-      000823 20 E0            [ 2] 1710 	jra	00114$
-      000825                       1711 00118$:
-                                   1712 ;	se8r01-send-current.c: 569: for (x1 = 0; x1 < 50; ++x1)
-      000825 1E 28            [ 2] 1713 	ldw	x, (0x28, sp)
-      000827 5C               [ 2] 1714 	incw	x
-      000828 1F 28            [ 2] 1715 	ldw	(0x28, sp), x
-      00082A 20 CC            [ 2] 1716 	jra	00117$
-      00082C 5B 3B            [ 2] 1717 	addw	sp, #59
-      00082E 81               [ 4] 1718 	ret
-                                   1719 	.area CODE
-      00082F                       1720 ___str_0:
-      00082F 63 6F 6E 66 69 67 20  1721 	.ascii "config = "
+      0002C3 81               [ 4]  756 	ret
+                                    757 ;	se8r01-send-current.c: 283: void rf_switch_bank(unsigned char bankindex)
+                                    758 ;	-----------------------------------------
+                                    759 ;	 function rf_switch_bank
+                                    760 ;	-----------------------------------------
+      0002C4                        761 _rf_switch_bank:
+      0002C4 88               [ 1]  762 	push	a
+                                    763 ;	se8r01-send-current.c: 286: temp1 = bankindex;
+      0002C5 7B 04            [ 1]  764 	ld	a, (0x04, sp)
+      0002C7 6B 01            [ 1]  765 	ld	(0x01, sp), a
+                                    766 ;	se8r01-send-current.c: 288: temp0 = write_spi(iRF_BANK0_STATUS);
+      0002C9 4B 07            [ 1]  767 	push	#0x07
+      0002CB CDr00r08         [ 4]  768 	call	_write_spi
+      0002CE 5B 01            [ 2]  769 	addw	sp, #1
+                                    770 ;	se8r01-send-current.c: 290: if((temp0&0x80)!=temp1)
+      0002D0 A4 80            [ 1]  771 	and	a, #0x80
+      0002D2 11 01            [ 1]  772 	cp	a, (0x01, sp)
+      0002D4 27 09            [ 1]  773 	jreq	00103$
+                                    774 ;	se8r01-send-current.c: 292: write_spi_reg(iRF_CMD_ACTIVATE,0x53);
+      0002D6 4B 53            [ 1]  775 	push	#0x53
+      0002D8 4B 50            [ 1]  776 	push	#0x50
+      0002DA CDr00r2E         [ 4]  777 	call	_write_spi_reg
+      0002DD 5B 02            [ 2]  778 	addw	sp, #2
+      0002DF                        779 00103$:
+      0002DF 84               [ 1]  780 	pop	a
+      0002E0 81               [ 4]  781 	ret
+                                    782 ;	se8r01-send-current.c: 299: void SE8R01_Calibration()
+                                    783 ;	-----------------------------------------
+                                    784 ;	 function SE8R01_Calibration
+                                    785 ;	-----------------------------------------
+      0002E1                        786 _SE8R01_Calibration:
+      0002E1 52 0D            [ 2]  787 	sub	sp, #13
+                                    788 ;	se8r01-send-current.c: 302: rf_switch_bank(iBANK0);
+      0002E3 4B 00            [ 1]  789 	push	#0x00
+      0002E5 CDr02rC4         [ 4]  790 	call	_rf_switch_bank
+      0002E8 84               [ 1]  791 	pop	a
+                                    792 ;	se8r01-send-current.c: 303: temp[0]=0x03;
+      0002E9 96               [ 1]  793 	ldw	x, sp
+      0002EA 5C               [ 2]  794 	incw	x
+      0002EB 1F 06            [ 2]  795 	ldw	(0x06, sp), x
+      0002ED 1E 06            [ 2]  796 	ldw	x, (0x06, sp)
+      0002EF A6 03            [ 1]  797 	ld	a, #0x03
+      0002F1 F7               [ 1]  798 	ld	(x), a
+                                    799 ;	se8r01-send-current.c: 304: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_CONFIG,temp, 1);
+      0002F2 1E 06            [ 2]  800 	ldw	x, (0x06, sp)
+      0002F4 4B 01            [ 1]  801 	push	#0x01
+      0002F6 89               [ 2]  802 	pushw	x
+      0002F7 4B 20            [ 1]  803 	push	#0x20
+      0002F9 CDr00rA8         [ 4]  804 	call	_write_spi_buf
+      0002FC 5B 04            [ 2]  805 	addw	sp, #4
+                                    806 ;	se8r01-send-current.c: 306: temp[0]=0x32;
+      0002FE 1E 06            [ 2]  807 	ldw	x, (0x06, sp)
+      000300 A6 32            [ 1]  808 	ld	a, #0x32
+      000302 F7               [ 1]  809 	ld	(x), a
+                                    810 ;	se8r01-send-current.c: 308: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_RF_CH, temp,1);
+      000303 1E 06            [ 2]  811 	ldw	x, (0x06, sp)
+      000305 4B 01            [ 1]  812 	push	#0x01
+      000307 89               [ 2]  813 	pushw	x
+      000308 4B 25            [ 1]  814 	push	#0x25
+      00030A CDr00rA8         [ 4]  815 	call	_write_spi_buf
+      00030D 5B 04            [ 2]  816 	addw	sp, #4
+                                    817 ;	se8r01-send-current.c: 312: if (SE8R01_DR_2M==1)
+      00030F CEu00u00         [ 2]  818 	ldw	x, _SE8R01_DR_2M+0
+      000312 A3 00 01         [ 2]  819 	cpw	x, #0x0001
+      000315 26 07            [ 1]  820 	jrne	00105$
+                                    821 ;	se8r01-send-current.c: 313: {temp[0]=0x48;}
+      000317 1E 06            [ 2]  822 	ldw	x, (0x06, sp)
+      000319 A6 48            [ 1]  823 	ld	a, #0x48
+      00031B F7               [ 1]  824 	ld	(x), a
+      00031C 20 14            [ 2]  825 	jra	00106$
+      00031E                        826 00105$:
+                                    827 ;	se8r01-send-current.c: 314: else if (SE8R01_DR_1M==1)
+      00031E CEu00u02         [ 2]  828 	ldw	x, _SE8R01_DR_1M+0
+      000321 A3 00 01         [ 2]  829 	cpw	x, #0x0001
+      000324 26 07            [ 1]  830 	jrne	00102$
+                                    831 ;	se8r01-send-current.c: 315: {temp[0]=0x40;}
+      000326 1E 06            [ 2]  832 	ldw	x, (0x06, sp)
+      000328 A6 40            [ 1]  833 	ld	a, #0x40
+      00032A F7               [ 1]  834 	ld	(x), a
+      00032B 20 05            [ 2]  835 	jra	00106$
+      00032D                        836 00102$:
+                                    837 ;	se8r01-send-current.c: 317: {temp[0]=0x68;}   
+      00032D 1E 06            [ 2]  838 	ldw	x, (0x06, sp)
+      00032F A6 68            [ 1]  839 	ld	a, #0x68
+      000331 F7               [ 1]  840 	ld	(x), a
+      000332                        841 00106$:
+                                    842 ;	se8r01-send-current.c: 319: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_RF_SETUP,temp,1);
+      000332 1E 06            [ 2]  843 	ldw	x, (0x06, sp)
+      000334 4B 01            [ 1]  844 	push	#0x01
+      000336 89               [ 2]  845 	pushw	x
+      000337 4B 26            [ 1]  846 	push	#0x26
+      000339 CDr00rA8         [ 4]  847 	call	_write_spi_buf
+      00033C 5B 04            [ 2]  848 	addw	sp, #4
+                                    849 ;	se8r01-send-current.c: 320: temp[0]=0x77;
+      00033E 1E 06            [ 2]  850 	ldw	x, (0x06, sp)
+      000340 A6 77            [ 1]  851 	ld	a, #0x77
+      000342 F7               [ 1]  852 	ld	(x), a
+                                    853 ;	se8r01-send-current.c: 321: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_PRE_GURD, temp,1);
+      000343 1E 06            [ 2]  854 	ldw	x, (0x06, sp)
+      000345 4B 01            [ 1]  855 	push	#0x01
+      000347 89               [ 2]  856 	pushw	x
+      000348 4B 3F            [ 1]  857 	push	#0x3f
+      00034A CDr00rA8         [ 4]  858 	call	_write_spi_buf
+      00034D 5B 04            [ 2]  859 	addw	sp, #4
+                                    860 ;	se8r01-send-current.c: 323: rf_switch_bank(iBANK1);
+      00034F 4B 80            [ 1]  861 	push	#0x80
+      000351 CDr02rC4         [ 4]  862 	call	_rf_switch_bank
+      000354 84               [ 1]  863 	pop	a
+                                    864 ;	se8r01-send-current.c: 324: temp[0]=0x40;
+      000355 1E 06            [ 2]  865 	ldw	x, (0x06, sp)
+      000357 A6 40            [ 1]  866 	ld	a, #0x40
+      000359 F7               [ 1]  867 	ld	(x), a
+                                    868 ;	se8r01-send-current.c: 325: temp[1]=0x00;
+      00035A 1E 06            [ 2]  869 	ldw	x, (0x06, sp)
+      00035C 5C               [ 2]  870 	incw	x
+      00035D 1F 0C            [ 2]  871 	ldw	(0x0c, sp), x
+      00035F 1E 0C            [ 2]  872 	ldw	x, (0x0c, sp)
+      000361 7F               [ 1]  873 	clr	(x)
+                                    874 ;	se8r01-send-current.c: 326: temp[2]=0x10;
+      000362 1E 06            [ 2]  875 	ldw	x, (0x06, sp)
+      000364 5C               [ 2]  876 	incw	x
+      000365 5C               [ 2]  877 	incw	x
+      000366 1F 0A            [ 2]  878 	ldw	(0x0a, sp), x
+      000368 1E 0A            [ 2]  879 	ldw	x, (0x0a, sp)
+      00036A A6 10            [ 1]  880 	ld	a, #0x10
+      00036C F7               [ 1]  881 	ld	(x), a
+                                    882 ;	se8r01-send-current.c: 328: {temp[3]=0xE6;}
+      00036D 1E 06            [ 2]  883 	ldw	x, (0x06, sp)
+      00036F 1C 00 03         [ 2]  884 	addw	x, #0x0003
+      000372 1F 08            [ 2]  885 	ldw	(0x08, sp), x
+                                    886 ;	se8r01-send-current.c: 327: if (SE8R01_DR_2M==1)
+      000374 CEu00u00         [ 2]  887 	ldw	x, _SE8R01_DR_2M+0
+      000377 A3 00 01         [ 2]  888 	cpw	x, #0x0001
+      00037A 26 07            [ 1]  889 	jrne	00108$
+                                    890 ;	se8r01-send-current.c: 328: {temp[3]=0xE6;}
+      00037C 1E 08            [ 2]  891 	ldw	x, (0x08, sp)
+      00037E A6 E6            [ 1]  892 	ld	a, #0xe6
+      000380 F7               [ 1]  893 	ld	(x), a
+      000381 20 05            [ 2]  894 	jra	00109$
+      000383                        895 00108$:
+                                    896 ;	se8r01-send-current.c: 330: {temp[3]=0xE4;}
+      000383 1E 08            [ 2]  897 	ldw	x, (0x08, sp)
+      000385 A6 E4            [ 1]  898 	ld	a, #0xe4
+      000387 F7               [ 1]  899 	ld	(x), a
+      000388                        900 00109$:
+                                    901 ;	se8r01-send-current.c: 332: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_PLL_CTL0, temp, 4);
+      000388 1E 06            [ 2]  902 	ldw	x, (0x06, sp)
+      00038A 4B 04            [ 1]  903 	push	#0x04
+      00038C 89               [ 2]  904 	pushw	x
+      00038D 4B 21            [ 1]  905 	push	#0x21
+      00038F CDr00rA8         [ 4]  906 	call	_write_spi_buf
+      000392 5B 04            [ 2]  907 	addw	sp, #4
+                                    908 ;	se8r01-send-current.c: 334: temp[0]=0x20;
+      000394 1E 06            [ 2]  909 	ldw	x, (0x06, sp)
+      000396 A6 20            [ 1]  910 	ld	a, #0x20
+      000398 F7               [ 1]  911 	ld	(x), a
+                                    912 ;	se8r01-send-current.c: 335: temp[1]=0x08;
+      000399 1E 0C            [ 2]  913 	ldw	x, (0x0c, sp)
+      00039B A6 08            [ 1]  914 	ld	a, #0x08
+      00039D F7               [ 1]  915 	ld	(x), a
+                                    916 ;	se8r01-send-current.c: 336: temp[2]=0x50;
+      00039E 1E 0A            [ 2]  917 	ldw	x, (0x0a, sp)
+      0003A0 A6 50            [ 1]  918 	ld	a, #0x50
+      0003A2 F7               [ 1]  919 	ld	(x), a
+                                    920 ;	se8r01-send-current.c: 337: temp[3]=0x40;
+      0003A3 1E 08            [ 2]  921 	ldw	x, (0x08, sp)
+      0003A5 A6 40            [ 1]  922 	ld	a, #0x40
+      0003A7 F7               [ 1]  923 	ld	(x), a
+                                    924 ;	se8r01-send-current.c: 338: temp[4]=0x50;
+      0003A8 1E 06            [ 2]  925 	ldw	x, (0x06, sp)
+      0003AA A6 50            [ 1]  926 	ld	a, #0x50
+      0003AC E7 04            [ 1]  927 	ld	(0x0004, x), a
+                                    928 ;	se8r01-send-current.c: 339: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_CAL_CTL, temp, 5);
+      0003AE 1E 06            [ 2]  929 	ldw	x, (0x06, sp)
+      0003B0 4B 05            [ 1]  930 	push	#0x05
+      0003B2 89               [ 2]  931 	pushw	x
+      0003B3 4B 23            [ 1]  932 	push	#0x23
+      0003B5 CDr00rA8         [ 4]  933 	call	_write_spi_buf
+      0003B8 5B 04            [ 2]  934 	addw	sp, #4
+                                    935 ;	se8r01-send-current.c: 341: temp[0]=0x00;
+      0003BA 1E 06            [ 2]  936 	ldw	x, (0x06, sp)
+      0003BC 7F               [ 1]  937 	clr	(x)
+                                    938 ;	se8r01-send-current.c: 342: temp[1]=0x00;
+      0003BD 1E 0C            [ 2]  939 	ldw	x, (0x0c, sp)
+      0003BF 7F               [ 1]  940 	clr	(x)
+                                    941 ;	se8r01-send-current.c: 343: if (SE8R01_DR_2M==1)
+      0003C0 CEu00u00         [ 2]  942 	ldw	x, _SE8R01_DR_2M+0
+      0003C3 A3 00 01         [ 2]  943 	cpw	x, #0x0001
+      0003C6 26 07            [ 1]  944 	jrne	00111$
+                                    945 ;	se8r01-send-current.c: 344: { temp[2]=0x1E;}
+      0003C8 1E 0A            [ 2]  946 	ldw	x, (0x0a, sp)
+      0003CA A6 1E            [ 1]  947 	ld	a, #0x1e
+      0003CC F7               [ 1]  948 	ld	(x), a
+      0003CD 20 05            [ 2]  949 	jra	00112$
+      0003CF                        950 00111$:
+                                    951 ;	se8r01-send-current.c: 346: { temp[2]=0x1F;}
+      0003CF 1E 0A            [ 2]  952 	ldw	x, (0x0a, sp)
+      0003D1 A6 1F            [ 1]  953 	ld	a, #0x1f
+      0003D3 F7               [ 1]  954 	ld	(x), a
+      0003D4                        955 00112$:
+                                    956 ;	se8r01-send-current.c: 348: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_IF_FREQ, temp, 3);
+      0003D4 1E 06            [ 2]  957 	ldw	x, (0x06, sp)
+      0003D6 4B 03            [ 1]  958 	push	#0x03
+      0003D8 89               [ 2]  959 	pushw	x
+      0003D9 4B 2A            [ 1]  960 	push	#0x2a
+      0003DB CDr00rA8         [ 4]  961 	call	_write_spi_buf
+      0003DE 5B 04            [ 2]  962 	addw	sp, #4
+                                    963 ;	se8r01-send-current.c: 350: if (SE8R01_DR_2M==1)
+      0003E0 CEu00u00         [ 2]  964 	ldw	x, _SE8R01_DR_2M+0
+      0003E3 A3 00 01         [ 2]  965 	cpw	x, #0x0001
+      0003E6 26 07            [ 1]  966 	jrne	00114$
+                                    967 ;	se8r01-send-current.c: 351: { temp[0]=0x29;}
+      0003E8 1E 06            [ 2]  968 	ldw	x, (0x06, sp)
+      0003EA A6 29            [ 1]  969 	ld	a, #0x29
+      0003EC F7               [ 1]  970 	ld	(x), a
+      0003ED 20 05            [ 2]  971 	jra	00115$
+      0003EF                        972 00114$:
+                                    973 ;	se8r01-send-current.c: 353: { temp[0]=0x14;}
+      0003EF 1E 06            [ 2]  974 	ldw	x, (0x06, sp)
+      0003F1 A6 14            [ 1]  975 	ld	a, #0x14
+      0003F3 F7               [ 1]  976 	ld	(x), a
+      0003F4                        977 00115$:
+                                    978 ;	se8r01-send-current.c: 355: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_FDEV, temp, 1);
+      0003F4 1E 06            [ 2]  979 	ldw	x, (0x06, sp)
+      0003F6 4B 01            [ 1]  980 	push	#0x01
+      0003F8 89               [ 2]  981 	pushw	x
+      0003F9 4B 2C            [ 1]  982 	push	#0x2c
+      0003FB CDr00rA8         [ 4]  983 	call	_write_spi_buf
+      0003FE 5B 04            [ 2]  984 	addw	sp, #4
+                                    985 ;	se8r01-send-current.c: 357: temp[0]=0x00;
+      000400 1E 06            [ 2]  986 	ldw	x, (0x06, sp)
+      000402 7F               [ 1]  987 	clr	(x)
+                                    988 ;	se8r01-send-current.c: 358: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_DAC_CAL_LOW,temp,1);
+      000403 1E 06            [ 2]  989 	ldw	x, (0x06, sp)
+      000405 4B 01            [ 1]  990 	push	#0x01
+      000407 89               [ 2]  991 	pushw	x
+      000408 4B 37            [ 1]  992 	push	#0x37
+      00040A CDr00rA8         [ 4]  993 	call	_write_spi_buf
+      00040D 5B 04            [ 2]  994 	addw	sp, #4
+                                    995 ;	se8r01-send-current.c: 360: temp[0]=0x7F;
+      00040F 1E 06            [ 2]  996 	ldw	x, (0x06, sp)
+      000411 A6 7F            [ 1]  997 	ld	a, #0x7f
+      000413 F7               [ 1]  998 	ld	(x), a
+                                    999 ;	se8r01-send-current.c: 361: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_DAC_CAL_HI,temp,1);
+      000414 1E 06            [ 2] 1000 	ldw	x, (0x06, sp)
+      000416 4B 01            [ 1] 1001 	push	#0x01
+      000418 89               [ 2] 1002 	pushw	x
+      000419 4B 38            [ 1] 1003 	push	#0x38
+      00041B CDr00rA8         [ 4] 1004 	call	_write_spi_buf
+      00041E 5B 04            [ 2] 1005 	addw	sp, #4
+                                   1006 ;	se8r01-send-current.c: 363: temp[0]=0x02;
+      000420 1E 06            [ 2] 1007 	ldw	x, (0x06, sp)
+      000422 A6 02            [ 1] 1008 	ld	a, #0x02
+      000424 F7               [ 1] 1009 	ld	(x), a
+                                   1010 ;	se8r01-send-current.c: 364: temp[1]=0xC1;
+      000425 1E 0C            [ 2] 1011 	ldw	x, (0x0c, sp)
+      000427 A6 C1            [ 1] 1012 	ld	a, #0xc1
+      000429 F7               [ 1] 1013 	ld	(x), a
+                                   1014 ;	se8r01-send-current.c: 365: temp[2]=0xEB;            
+      00042A 1E 0A            [ 2] 1015 	ldw	x, (0x0a, sp)
+      00042C A6 EB            [ 1] 1016 	ld	a, #0xeb
+      00042E F7               [ 1] 1017 	ld	(x), a
+                                   1018 ;	se8r01-send-current.c: 366: temp[3]=0x1C;
+      00042F 1E 08            [ 2] 1019 	ldw	x, (0x08, sp)
+      000431 A6 1C            [ 1] 1020 	ld	a, #0x1c
+      000433 F7               [ 1] 1021 	ld	(x), a
+                                   1022 ;	se8r01-send-current.c: 367: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_AGC_GAIN, temp,4);
+      000434 1E 06            [ 2] 1023 	ldw	x, (0x06, sp)
+      000436 4B 04            [ 1] 1024 	push	#0x04
+      000438 89               [ 2] 1025 	pushw	x
+      000439 4B 3D            [ 1] 1026 	push	#0x3d
+      00043B CDr00rA8         [ 4] 1027 	call	_write_spi_buf
+      00043E 5B 04            [ 2] 1028 	addw	sp, #4
+                                   1029 ;	se8r01-send-current.c: 369: temp[0]=0x97;
+      000440 1E 06            [ 2] 1030 	ldw	x, (0x06, sp)
+      000442 A6 97            [ 1] 1031 	ld	a, #0x97
+      000444 F7               [ 1] 1032 	ld	(x), a
+                                   1033 ;	se8r01-send-current.c: 370: temp[1]=0x64;
+      000445 1E 0C            [ 2] 1034 	ldw	x, (0x0c, sp)
+      000447 A6 64            [ 1] 1035 	ld	a, #0x64
+      000449 F7               [ 1] 1036 	ld	(x), a
+                                   1037 ;	se8r01-send-current.c: 371: temp[2]=0x00;
+      00044A 1E 0A            [ 2] 1038 	ldw	x, (0x0a, sp)
+      00044C 7F               [ 1] 1039 	clr	(x)
+                                   1040 ;	se8r01-send-current.c: 372: temp[3]=0x81;
+      00044D 1E 08            [ 2] 1041 	ldw	x, (0x08, sp)
+      00044F A6 81            [ 1] 1042 	ld	a, #0x81
+      000451 F7               [ 1] 1043 	ld	(x), a
+                                   1044 ;	se8r01-send-current.c: 373: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_RF_IVGEN, temp, 4);
+      000452 1E 06            [ 2] 1045 	ldw	x, (0x06, sp)
+      000454 4B 04            [ 1] 1046 	push	#0x04
+      000456 89               [ 2] 1047 	pushw	x
+      000457 4B 3E            [ 1] 1048 	push	#0x3e
+      000459 CDr00rA8         [ 4] 1049 	call	_write_spi_buf
+      00045C 5B 04            [ 2] 1050 	addw	sp, #4
+                                   1051 ;	se8r01-send-current.c: 374: rf_switch_bank(iBANK0);
+      00045E 4B 00            [ 1] 1052 	push	#0x00
+      000460 CDr02rC4         [ 4] 1053 	call	_rf_switch_bank
+      000463 84               [ 1] 1054 	pop	a
+                                   1055 ;	se8r01-send-current.c: 379: delayTenMicro();
+      000464 CDr00r00         [ 4] 1056 	call	_delayTenMicro
+                                   1057 ;	se8r01-send-current.c: 380: PC_ODR |= (1 << CE);
+      000467 AE 50 0A         [ 2] 1058 	ldw	x, #0x500a
+      00046A F6               [ 1] 1059 	ld	a, (x)
+      00046B AA 10            [ 1] 1060 	or	a, #0x10
+      00046D F7               [ 1] 1061 	ld	(x), a
+                                   1062 ;	se8r01-send-current.c: 381: delayTenMicro();
+      00046E CDr00r00         [ 4] 1063 	call	_delayTenMicro
+                                   1064 ;	se8r01-send-current.c: 382: delayTenMicro();
+      000471 CDr00r00         [ 4] 1065 	call	_delayTenMicro
+                                   1066 ;	se8r01-send-current.c: 383: delayTenMicro();
+      000474 CDr00r00         [ 4] 1067 	call	_delayTenMicro
+                                   1068 ;	se8r01-send-current.c: 384: PC_ODR &= ~(1 << CE);
+      000477 AE 50 0A         [ 2] 1069 	ldw	x, #0x500a
+      00047A F6               [ 1] 1070 	ld	a, (x)
+      00047B A4 EF            [ 1] 1071 	and	a, #0xef
+      00047D F7               [ 1] 1072 	ld	(x), a
+                                   1073 ;	se8r01-send-current.c: 385: delay(50);                            // delay 50ms waitting for calibaration.
+      00047E 4B 32            [ 1] 1074 	push	#0x32
+      000480 4B 00            [ 1] 1075 	push	#0x00
+      000482 CDr01r8E         [ 4] 1076 	call	_delay
+      000485 5B 02            [ 2] 1077 	addw	sp, #2
+                                   1078 ;	se8r01-send-current.c: 390: delayTenMicro();
+      000487 CDr00r00         [ 4] 1079 	call	_delayTenMicro
+                                   1080 ;	se8r01-send-current.c: 391: PC_ODR |= (1 << CE);
+      00048A AE 50 0A         [ 2] 1081 	ldw	x, #0x500a
+      00048D F6               [ 1] 1082 	ld	a, (x)
+      00048E AA 10            [ 1] 1083 	or	a, #0x10
+      000490 F7               [ 1] 1084 	ld	(x), a
+                                   1085 ;	se8r01-send-current.c: 392: delayTenMicro();
+      000491 CDr00r00         [ 4] 1086 	call	_delayTenMicro
+                                   1087 ;	se8r01-send-current.c: 393: delayTenMicro();
+      000494 CDr00r00         [ 4] 1088 	call	_delayTenMicro
+                                   1089 ;	se8r01-send-current.c: 394: delayTenMicro();
+      000497 CDr00r00         [ 4] 1090 	call	_delayTenMicro
+                                   1091 ;	se8r01-send-current.c: 395: PC_ODR &= ~(1 << CE);
+      00049A AE 50 0A         [ 2] 1092 	ldw	x, #0x500a
+      00049D F6               [ 1] 1093 	ld	a, (x)
+      00049E A4 EF            [ 1] 1094 	and	a, #0xef
+      0004A0 F7               [ 1] 1095 	ld	(x), a
+                                   1096 ;	se8r01-send-current.c: 396: delay(50);                            // delay 50ms waitting for calibaration.
+      0004A1 4B 32            [ 1] 1097 	push	#0x32
+      0004A3 4B 00            [ 1] 1098 	push	#0x00
+      0004A5 CDr01r8E         [ 4] 1099 	call	_delay
+      0004A8 5B 02            [ 2] 1100 	addw	sp, #2
+      0004AA 5B 0D            [ 2] 1101 	addw	sp, #13
+      0004AC 81               [ 4] 1102 	ret
+                                   1103 ;	se8r01-send-current.c: 400: void SE8R01_Analog_Init()           //SE8R01 初始化
+                                   1104 ;	-----------------------------------------
+                                   1105 ;	 function SE8R01_Analog_Init
+                                   1106 ;	-----------------------------------------
+      0004AD                       1107 _SE8R01_Analog_Init:
+      0004AD 52 15            [ 2] 1108 	sub	sp, #21
+                                   1109 ;	se8r01-send-current.c: 405: gtemp[0]=0x28;
+      0004AF AEr00r00         [ 2] 1110 	ldw	x, #_gtemp+0
+      0004B2 1F 0E            [ 2] 1111 	ldw	(0x0e, sp), x
+      0004B4 1E 0E            [ 2] 1112 	ldw	x, (0x0e, sp)
+      0004B6 A6 28            [ 1] 1113 	ld	a, #0x28
+      0004B8 F7               [ 1] 1114 	ld	(x), a
+                                   1115 ;	se8r01-send-current.c: 406: gtemp[1]=0x32;
+      0004B9 1E 0E            [ 2] 1116 	ldw	x, (0x0e, sp)
+      0004BB 5C               [ 2] 1117 	incw	x
+      0004BC 1F 0C            [ 2] 1118 	ldw	(0x0c, sp), x
+      0004BE 1E 0C            [ 2] 1119 	ldw	x, (0x0c, sp)
+      0004C0 A6 32            [ 1] 1120 	ld	a, #0x32
+      0004C2 F7               [ 1] 1121 	ld	(x), a
+                                   1122 ;	se8r01-send-current.c: 407: gtemp[2]=0x80;
+      0004C3 1E 0E            [ 2] 1123 	ldw	x, (0x0e, sp)
+      0004C5 5C               [ 2] 1124 	incw	x
+      0004C6 5C               [ 2] 1125 	incw	x
+      0004C7 1F 0A            [ 2] 1126 	ldw	(0x0a, sp), x
+      0004C9 1E 0A            [ 2] 1127 	ldw	x, (0x0a, sp)
+      0004CB A6 80            [ 1] 1128 	ld	a, #0x80
+      0004CD F7               [ 1] 1129 	ld	(x), a
+                                   1130 ;	se8r01-send-current.c: 408: gtemp[3]=0x90;
+      0004CE 1E 0E            [ 2] 1131 	ldw	x, (0x0e, sp)
+      0004D0 1C 00 03         [ 2] 1132 	addw	x, #0x0003
+      0004D3 1F 08            [ 2] 1133 	ldw	(0x08, sp), x
+      0004D5 1E 08            [ 2] 1134 	ldw	x, (0x08, sp)
+      0004D7 A6 90            [ 1] 1135 	ld	a, #0x90
+      0004D9 F7               [ 1] 1136 	ld	(x), a
+                                   1137 ;	se8r01-send-current.c: 409: gtemp[4]=0x00;
+      0004DA 1E 0E            [ 2] 1138 	ldw	x, (0x0e, sp)
+      0004DC 1C 00 04         [ 2] 1139 	addw	x, #0x0004
+      0004DF 7F               [ 1] 1140 	clr	(x)
+                                   1141 ;	se8r01-send-current.c: 410: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_SETUP_VALUE, gtemp, 5);
+      0004E0 1E 0E            [ 2] 1142 	ldw	x, (0x0e, sp)
+      0004E2 4B 05            [ 1] 1143 	push	#0x05
+      0004E4 89               [ 2] 1144 	pushw	x
+      0004E5 4B 3E            [ 1] 1145 	push	#0x3e
+      0004E7 CDr00rA8         [ 4] 1146 	call	_write_spi_buf
+      0004EA 5B 04            [ 2] 1147 	addw	sp, #4
+                                   1148 ;	se8r01-send-current.c: 411: delay(2);
+      0004EC 4B 02            [ 1] 1149 	push	#0x02
+      0004EE 4B 00            [ 1] 1150 	push	#0x00
+      0004F0 CDr01r8E         [ 4] 1151 	call	_delay
+      0004F3 5B 02            [ 2] 1152 	addw	sp, #2
+                                   1153 ;	se8r01-send-current.c: 414: rf_switch_bank(iBANK1);
+      0004F5 4B 80            [ 1] 1154 	push	#0x80
+      0004F7 CDr02rC4         [ 4] 1155 	call	_rf_switch_bank
+      0004FA 84               [ 1] 1156 	pop	a
+                                   1157 ;	se8r01-send-current.c: 416: temp[0]=0x40;
+      0004FB 96               [ 1] 1158 	ldw	x, sp
+      0004FC 5C               [ 2] 1159 	incw	x
+      0004FD 1F 14            [ 2] 1160 	ldw	(0x14, sp), x
+      0004FF 1E 14            [ 2] 1161 	ldw	x, (0x14, sp)
+      000501 A6 40            [ 1] 1162 	ld	a, #0x40
+      000503 F7               [ 1] 1163 	ld	(x), a
+                                   1164 ;	se8r01-send-current.c: 417: temp[1]=0x01;               
+      000504 1E 14            [ 2] 1165 	ldw	x, (0x14, sp)
+      000506 5C               [ 2] 1166 	incw	x
+      000507 1F 12            [ 2] 1167 	ldw	(0x12, sp), x
+      000509 1E 12            [ 2] 1168 	ldw	x, (0x12, sp)
+      00050B A6 01            [ 1] 1169 	ld	a, #0x01
+      00050D F7               [ 1] 1170 	ld	(x), a
+                                   1171 ;	se8r01-send-current.c: 418: temp[2]=0x30;               
+      00050E 1E 14            [ 2] 1172 	ldw	x, (0x14, sp)
+      000510 5C               [ 2] 1173 	incw	x
+      000511 5C               [ 2] 1174 	incw	x
+      000512 1F 10            [ 2] 1175 	ldw	(0x10, sp), x
+      000514 1E 10            [ 2] 1176 	ldw	x, (0x10, sp)
+      000516 A6 30            [ 1] 1177 	ld	a, #0x30
+      000518 F7               [ 1] 1178 	ld	(x), a
+                                   1179 ;	se8r01-send-current.c: 420: { temp[3]=0xE2; }              
+      000519 1E 14            [ 2] 1180 	ldw	x, (0x14, sp)
+      00051B 1C 00 03         [ 2] 1181 	addw	x, #0x0003
+      00051E 1F 06            [ 2] 1182 	ldw	(0x06, sp), x
+                                   1183 ;	se8r01-send-current.c: 419: if (SE8R01_DR_2M==1)
+      000520 CEu00u00         [ 2] 1184 	ldw	x, _SE8R01_DR_2M+0
+      000523 A3 00 01         [ 2] 1185 	cpw	x, #0x0001
+      000526 26 07            [ 1] 1186 	jrne	00102$
+                                   1187 ;	se8r01-send-current.c: 420: { temp[3]=0xE2; }              
+      000528 1E 06            [ 2] 1188 	ldw	x, (0x06, sp)
+      00052A A6 E2            [ 1] 1189 	ld	a, #0xe2
+      00052C F7               [ 1] 1190 	ld	(x), a
+      00052D 20 05            [ 2] 1191 	jra	00103$
+      00052F                       1192 00102$:
+                                   1193 ;	se8r01-send-current.c: 422: { temp[3]=0xE0;}
+      00052F 1E 06            [ 2] 1194 	ldw	x, (0x06, sp)
+      000531 A6 E0            [ 1] 1195 	ld	a, #0xe0
+      000533 F7               [ 1] 1196 	ld	(x), a
+      000534                       1197 00103$:
+                                   1198 ;	se8r01-send-current.c: 424: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_PLL_CTL0, temp,4);
+      000534 1E 14            [ 2] 1199 	ldw	x, (0x14, sp)
+      000536 4B 04            [ 1] 1200 	push	#0x04
+      000538 89               [ 2] 1201 	pushw	x
+      000539 4B 21            [ 1] 1202 	push	#0x21
+      00053B CDr00rA8         [ 4] 1203 	call	_write_spi_buf
+      00053E 5B 04            [ 2] 1204 	addw	sp, #4
+                                   1205 ;	se8r01-send-current.c: 426: temp[0]=0x29;
+      000540 1E 14            [ 2] 1206 	ldw	x, (0x14, sp)
+      000542 A6 29            [ 1] 1207 	ld	a, #0x29
+      000544 F7               [ 1] 1208 	ld	(x), a
+                                   1209 ;	se8r01-send-current.c: 427: temp[1]=0x89;
+      000545 1E 12            [ 2] 1210 	ldw	x, (0x12, sp)
+      000547 A6 89            [ 1] 1211 	ld	a, #0x89
+      000549 F7               [ 1] 1212 	ld	(x), a
+                                   1213 ;	se8r01-send-current.c: 428: temp[2]=0x55;                     
+      00054A 1E 10            [ 2] 1214 	ldw	x, (0x10, sp)
+      00054C A6 55            [ 1] 1215 	ld	a, #0x55
+      00054E F7               [ 1] 1216 	ld	(x), a
+                                   1217 ;	se8r01-send-current.c: 429: temp[3]=0x40;
+      00054F 1E 06            [ 2] 1218 	ldw	x, (0x06, sp)
+      000551 A6 40            [ 1] 1219 	ld	a, #0x40
+      000553 F7               [ 1] 1220 	ld	(x), a
+                                   1221 ;	se8r01-send-current.c: 430: temp[4]=0x50;
+      000554 1E 14            [ 2] 1222 	ldw	x, (0x14, sp)
+      000556 A6 50            [ 1] 1223 	ld	a, #0x50
+      000558 E7 04            [ 1] 1224 	ld	(0x0004, x), a
+                                   1225 ;	se8r01-send-current.c: 431: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_CAL_CTL, temp,5);
+      00055A 1E 14            [ 2] 1226 	ldw	x, (0x14, sp)
+      00055C 4B 05            [ 1] 1227 	push	#0x05
+      00055E 89               [ 2] 1228 	pushw	x
+      00055F 4B 23            [ 1] 1229 	push	#0x23
+      000561 CDr00rA8         [ 4] 1230 	call	_write_spi_buf
+      000564 5B 04            [ 2] 1231 	addw	sp, #4
+                                   1232 ;	se8r01-send-current.c: 433: if (SE8R01_DR_2M==1)
+      000566 CEu00u00         [ 2] 1233 	ldw	x, _SE8R01_DR_2M+0
+      000569 A3 00 01         [ 2] 1234 	cpw	x, #0x0001
+      00056C 26 07            [ 1] 1235 	jrne	00105$
+                                   1236 ;	se8r01-send-current.c: 434: { temp[0]=0x29;}
+      00056E 1E 14            [ 2] 1237 	ldw	x, (0x14, sp)
+      000570 A6 29            [ 1] 1238 	ld	a, #0x29
+      000572 F7               [ 1] 1239 	ld	(x), a
+      000573 20 05            [ 2] 1240 	jra	00106$
+      000575                       1241 00105$:
+                                   1242 ;	se8r01-send-current.c: 436: { temp[0]=0x14;}
+      000575 1E 14            [ 2] 1243 	ldw	x, (0x14, sp)
+      000577 A6 14            [ 1] 1244 	ld	a, #0x14
+      000579 F7               [ 1] 1245 	ld	(x), a
+      00057A                       1246 00106$:
+                                   1247 ;	se8r01-send-current.c: 438: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_FDEV, temp,1);
+      00057A 1E 14            [ 2] 1248 	ldw	x, (0x14, sp)
+      00057C 4B 01            [ 1] 1249 	push	#0x01
+      00057E 89               [ 2] 1250 	pushw	x
+      00057F 4B 2C            [ 1] 1251 	push	#0x2c
+      000581 CDr00rA8         [ 4] 1252 	call	_write_spi_buf
+      000584 5B 04            [ 2] 1253 	addw	sp, #4
+                                   1254 ;	se8r01-send-current.c: 440: temp[0]=0x55;
+      000586 1E 14            [ 2] 1255 	ldw	x, (0x14, sp)
+      000588 A6 55            [ 1] 1256 	ld	a, #0x55
+      00058A F7               [ 1] 1257 	ld	(x), a
+                                   1258 ;	se8r01-send-current.c: 441: temp[1]=0xC2;
+      00058B 1E 12            [ 2] 1259 	ldw	x, (0x12, sp)
+      00058D A6 C2            [ 1] 1260 	ld	a, #0xc2
+      00058F F7               [ 1] 1261 	ld	(x), a
+                                   1262 ;	se8r01-send-current.c: 442: temp[2]=0x09;
+      000590 1E 10            [ 2] 1263 	ldw	x, (0x10, sp)
+      000592 A6 09            [ 1] 1264 	ld	a, #0x09
+      000594 F7               [ 1] 1265 	ld	(x), a
+                                   1266 ;	se8r01-send-current.c: 443: temp[3]=0xAC;  
+      000595 1E 06            [ 2] 1267 	ldw	x, (0x06, sp)
+      000597 A6 AC            [ 1] 1268 	ld	a, #0xac
+      000599 F7               [ 1] 1269 	ld	(x), a
+                                   1270 ;	se8r01-send-current.c: 444: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_RX_CTRL,temp,4);
+      00059A 1E 14            [ 2] 1271 	ldw	x, (0x14, sp)
+      00059C 4B 04            [ 1] 1272 	push	#0x04
+      00059E 89               [ 2] 1273 	pushw	x
+      00059F 4B 31            [ 1] 1274 	push	#0x31
+      0005A1 CDr00rA8         [ 4] 1275 	call	_write_spi_buf
+      0005A4 5B 04            [ 2] 1276 	addw	sp, #4
+                                   1277 ;	se8r01-send-current.c: 446: temp[0]=0x00;
+      0005A6 1E 14            [ 2] 1278 	ldw	x, (0x14, sp)
+      0005A8 7F               [ 1] 1279 	clr	(x)
+                                   1280 ;	se8r01-send-current.c: 447: temp[1]=0x14;
+      0005A9 1E 12            [ 2] 1281 	ldw	x, (0x12, sp)
+      0005AB A6 14            [ 1] 1282 	ld	a, #0x14
+      0005AD F7               [ 1] 1283 	ld	(x), a
+                                   1284 ;	se8r01-send-current.c: 448: temp[2]=0x08;   
+      0005AE 1E 10            [ 2] 1285 	ldw	x, (0x10, sp)
+      0005B0 A6 08            [ 1] 1286 	ld	a, #0x08
+      0005B2 F7               [ 1] 1287 	ld	(x), a
+                                   1288 ;	se8r01-send-current.c: 449: temp[3]=0x29;
+      0005B3 1E 06            [ 2] 1289 	ldw	x, (0x06, sp)
+      0005B5 A6 29            [ 1] 1290 	ld	a, #0x29
+      0005B7 F7               [ 1] 1291 	ld	(x), a
+                                   1292 ;	se8r01-send-current.c: 450: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_FAGC_CTRL_1, temp,4);
+      0005B8 1E 14            [ 2] 1293 	ldw	x, (0x14, sp)
+      0005BA 4B 04            [ 1] 1294 	push	#0x04
+      0005BC 89               [ 2] 1295 	pushw	x
+      0005BD 4B 33            [ 1] 1296 	push	#0x33
+      0005BF CDr00rA8         [ 4] 1297 	call	_write_spi_buf
+      0005C2 5B 04            [ 2] 1298 	addw	sp, #4
+                                   1299 ;	se8r01-send-current.c: 452: temp[0]=0x02;
+      0005C4 1E 14            [ 2] 1300 	ldw	x, (0x14, sp)
+      0005C6 A6 02            [ 1] 1301 	ld	a, #0x02
+      0005C8 F7               [ 1] 1302 	ld	(x), a
+                                   1303 ;	se8r01-send-current.c: 453: temp[1]=0xC1;
+      0005C9 1E 12            [ 2] 1304 	ldw	x, (0x12, sp)
+      0005CB A6 C1            [ 1] 1305 	ld	a, #0xc1
+      0005CD F7               [ 1] 1306 	ld	(x), a
+                                   1307 ;	se8r01-send-current.c: 454: temp[2]=0xCB;  
+      0005CE 1E 10            [ 2] 1308 	ldw	x, (0x10, sp)
+      0005D0 A6 CB            [ 1] 1309 	ld	a, #0xcb
+      0005D2 F7               [ 1] 1310 	ld	(x), a
+                                   1311 ;	se8r01-send-current.c: 455: temp[3]=0x1C;
+      0005D3 1E 06            [ 2] 1312 	ldw	x, (0x06, sp)
+      0005D5 A6 1C            [ 1] 1313 	ld	a, #0x1c
+      0005D7 F7               [ 1] 1314 	ld	(x), a
+                                   1315 ;	se8r01-send-current.c: 456: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_AGC_GAIN, temp,4);
+      0005D8 1E 14            [ 2] 1316 	ldw	x, (0x14, sp)
+      0005DA 4B 04            [ 1] 1317 	push	#0x04
+      0005DC 89               [ 2] 1318 	pushw	x
+      0005DD 4B 3D            [ 1] 1319 	push	#0x3d
+      0005DF CDr00rA8         [ 4] 1320 	call	_write_spi_buf
+      0005E2 5B 04            [ 2] 1321 	addw	sp, #4
+                                   1322 ;	se8r01-send-current.c: 458: temp[0]=0x97;
+      0005E4 1E 14            [ 2] 1323 	ldw	x, (0x14, sp)
+      0005E6 A6 97            [ 1] 1324 	ld	a, #0x97
+      0005E8 F7               [ 1] 1325 	ld	(x), a
+                                   1326 ;	se8r01-send-current.c: 459: temp[1]=0x64;
+      0005E9 1E 12            [ 2] 1327 	ldw	x, (0x12, sp)
+      0005EB A6 64            [ 1] 1328 	ld	a, #0x64
+      0005ED F7               [ 1] 1329 	ld	(x), a
+                                   1330 ;	se8r01-send-current.c: 460: temp[2]=0x00;
+      0005EE 1E 10            [ 2] 1331 	ldw	x, (0x10, sp)
+      0005F0 7F               [ 1] 1332 	clr	(x)
+                                   1333 ;	se8r01-send-current.c: 461: temp[3]=0x01;
+      0005F1 1E 06            [ 2] 1334 	ldw	x, (0x06, sp)
+      0005F3 A6 01            [ 1] 1335 	ld	a, #0x01
+      0005F5 F7               [ 1] 1336 	ld	(x), a
+                                   1337 ;	se8r01-send-current.c: 462: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_RF_IVGEN, temp,4);
+      0005F6 1E 14            [ 2] 1338 	ldw	x, (0x14, sp)
+      0005F8 4B 04            [ 1] 1339 	push	#0x04
+      0005FA 89               [ 2] 1340 	pushw	x
+      0005FB 4B 3E            [ 1] 1341 	push	#0x3e
+      0005FD CDr00rA8         [ 4] 1342 	call	_write_spi_buf
+      000600 5B 04            [ 2] 1343 	addw	sp, #4
+                                   1344 ;	se8r01-send-current.c: 464: gtemp[0]=0x2A;
+      000602 1E 0E            [ 2] 1345 	ldw	x, (0x0e, sp)
+      000604 A6 2A            [ 1] 1346 	ld	a, #0x2a
+      000606 F7               [ 1] 1347 	ld	(x), a
+                                   1348 ;	se8r01-send-current.c: 465: gtemp[1]=0x04;
+      000607 1E 0C            [ 2] 1349 	ldw	x, (0x0c, sp)
+      000609 A6 04            [ 1] 1350 	ld	a, #0x04
+      00060B F7               [ 1] 1351 	ld	(x), a
+                                   1352 ;	se8r01-send-current.c: 466: gtemp[2]=0x00;
+      00060C 1E 0A            [ 2] 1353 	ldw	x, (0x0a, sp)
+      00060E 7F               [ 1] 1354 	clr	(x)
+                                   1355 ;	se8r01-send-current.c: 467: gtemp[3]=0x7D;
+      00060F 1E 08            [ 2] 1356 	ldw	x, (0x08, sp)
+      000611 A6 7D            [ 1] 1357 	ld	a, #0x7d
+      000613 F7               [ 1] 1358 	ld	(x), a
+                                   1359 ;	se8r01-send-current.c: 468: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK1_TEST_PKDET, gtemp, 4);
+      000614 1E 0E            [ 2] 1360 	ldw	x, (0x0e, sp)
+      000616 4B 04            [ 1] 1361 	push	#0x04
+      000618 89               [ 2] 1362 	pushw	x
+      000619 4B 3F            [ 1] 1363 	push	#0x3f
+      00061B CDr00rA8         [ 4] 1364 	call	_write_spi_buf
+      00061E 5B 04            [ 2] 1365 	addw	sp, #4
+                                   1366 ;	se8r01-send-current.c: 470: rf_switch_bank(iBANK0);
+      000620 4B 00            [ 1] 1367 	push	#0x00
+      000622 CDr02rC4         [ 4] 1368 	call	_rf_switch_bank
+      000625 84               [ 1] 1369 	pop	a
+      000626 5B 15            [ 2] 1370 	addw	sp, #21
+      000628 81               [ 4] 1371 	ret
+                                   1372 ;	se8r01-send-current.c: 473: void SE8R01_Init()  
+                                   1373 ;	-----------------------------------------
+                                   1374 ;	 function SE8R01_Init
+                                   1375 ;	-----------------------------------------
+      000629                       1376 _SE8R01_Init:
+      000629 52 05            [ 2] 1377 	sub	sp, #5
+                                   1378 ;	se8r01-send-current.c: 476: SE8R01_Calibration();   
+      00062B CDr02rE1         [ 4] 1379 	call	_SE8R01_Calibration
+                                   1380 ;	se8r01-send-current.c: 477: SE8R01_Analog_Init();   
+      00062E CDr04rAD         [ 4] 1381 	call	_SE8R01_Analog_Init
+                                   1382 ;	se8r01-send-current.c: 481: if (SE8R01_DR_2M==1)
+      000631 CEu00u00         [ 2] 1383 	ldw	x, _SE8R01_DR_2M+0
+      000634 A3 00 01         [ 2] 1384 	cpw	x, #0x0001
+      000637 26 07            [ 1] 1385 	jrne	00105$
+                                   1386 ;	se8r01-send-current.c: 482: {  temp[0]=0b01001111; }     //2MHz,+5dbm
+      000639 96               [ 1] 1387 	ldw	x, sp
+      00063A 5C               [ 2] 1388 	incw	x
+      00063B A6 4F            [ 1] 1389 	ld	a, #0x4f
+      00063D F7               [ 1] 1390 	ld	(x), a
+      00063E 20 14            [ 2] 1391 	jra	00106$
+      000640                       1392 00105$:
+                                   1393 ;	se8r01-send-current.c: 483: else if  (SE8R01_DR_1M==1)
+      000640 CEu00u02         [ 2] 1394 	ldw	x, _SE8R01_DR_1M+0
+      000643 A3 00 01         [ 2] 1395 	cpw	x, #0x0001
+      000646 26 07            [ 1] 1396 	jrne	00102$
+                                   1397 ;	se8r01-send-current.c: 484: {  temp[0]=0b01000111;  }     //1MHz,+5dbm
+      000648 96               [ 1] 1398 	ldw	x, sp
+      000649 5C               [ 2] 1399 	incw	x
+      00064A A6 47            [ 1] 1400 	ld	a, #0x47
+      00064C F7               [ 1] 1401 	ld	(x), a
+      00064D 20 05            [ 2] 1402 	jra	00106$
+      00064F                       1403 00102$:
+                                   1404 ;	se8r01-send-current.c: 486: {temp[0]=0b01101111;  }     //500K,+5dbm
+      00064F 96               [ 1] 1405 	ldw	x, sp
+      000650 5C               [ 2] 1406 	incw	x
+      000651 A6 6F            [ 1] 1407 	ld	a, #0x6f
+      000653 F7               [ 1] 1408 	ld	(x), a
+      000654                       1409 00106$:
+                                   1410 ;	se8r01-send-current.c: 488: write_spi_buf(iRF_CMD_WRITE_REG|iRF_BANK0_RF_SETUP,temp,1);
+      000654 96               [ 1] 1411 	ldw	x, sp
+      000655 5C               [ 2] 1412 	incw	x
+      000656 4B 01            [ 1] 1413 	push	#0x01
+      000658 89               [ 2] 1414 	pushw	x
+      000659 4B 26            [ 1] 1415 	push	#0x26
+      00065B CDr00rA8         [ 4] 1416 	call	_write_spi_buf
+      00065E 5B 04            [ 2] 1417 	addw	sp, #4
+                                   1418 ;	se8r01-send-current.c: 490: write_spi_reg(WRITE_REG|iRF_BANK0_EN_AA, 0x01);          //enable auto acc on pip 1
+      000660 4B 01            [ 1] 1419 	push	#0x01
+      000662 4B 21            [ 1] 1420 	push	#0x21
+      000664 CDr00r2E         [ 4] 1421 	call	_write_spi_reg
+      000667 5B 02            [ 2] 1422 	addw	sp, #2
+                                   1423 ;	se8r01-send-current.c: 491: write_spi_reg(WRITE_REG|iRF_BANK0_EN_RXADDR, 0x01);      //enable pip 1
+      000669 4B 01            [ 1] 1424 	push	#0x01
+      00066B 4B 22            [ 1] 1425 	push	#0x22
+      00066D CDr00r2E         [ 4] 1426 	call	_write_spi_reg
+      000670 5B 02            [ 2] 1427 	addw	sp, #2
+                                   1428 ;	se8r01-send-current.c: 492: write_spi_reg(WRITE_REG|iRF_BANK0_SETUP_AW, 0x02);        //4 byte adress
+      000672 4B 02            [ 1] 1429 	push	#0x02
+      000674 4B 23            [ 1] 1430 	push	#0x23
+      000676 CDr00r2E         [ 4] 1431 	call	_write_spi_reg
+      000679 5B 02            [ 2] 1432 	addw	sp, #2
+                                   1433 ;	se8r01-send-current.c: 493: write_spi_reg(WRITE_REG|iRF_BANK0_SETUP_RETR, 0x08);        //lowest 4 bits 0-15 rt transmisston higest 4 bits 256-4096us Auto Retransmit Delay
+      00067B 4B 08            [ 1] 1434 	push	#0x08
+      00067D 4B 24            [ 1] 1435 	push	#0x24
+      00067F CDr00r2E         [ 4] 1436 	call	_write_spi_reg
+      000682 5B 02            [ 2] 1437 	addw	sp, #2
+                                   1438 ;	se8r01-send-current.c: 494: write_spi_reg(WRITE_REG|iRF_BANK0_RF_CH, 40);
+      000684 4B 28            [ 1] 1439 	push	#0x28
+      000686 4B 25            [ 1] 1440 	push	#0x25
+      000688 CDr00r2E         [ 4] 1441 	call	_write_spi_reg
+      00068B 5B 02            [ 2] 1442 	addw	sp, #2
+                                   1443 ;	se8r01-send-current.c: 495: write_spi_reg(WRITE_REG|iRF_BANK0_DYNPD, 0x01);          //pipe0 pipe1 enable dynamic payload length data
+      00068D 4B 01            [ 1] 1444 	push	#0x01
+      00068F 4B 3C            [ 1] 1445 	push	#0x3c
+      000691 CDr00r2E         [ 4] 1446 	call	_write_spi_reg
+      000694 5B 02            [ 2] 1447 	addw	sp, #2
+                                   1448 ;	se8r01-send-current.c: 496: write_spi_reg(WRITE_REG|iRF_BANK0_FEATURE, 0x07);        // enable dynamic paload lenght; enbale payload with ack enable w_tx_payload_noack
+      000696 4B 07            [ 1] 1449 	push	#0x07
+      000698 4B 3D            [ 1] 1450 	push	#0x3d
+      00069A CDr00r2E         [ 4] 1451 	call	_write_spi_reg
+      00069D 5B 02            [ 2] 1452 	addw	sp, #2
+                                   1453 ;	se8r01-send-current.c: 497: write_spi_reg(WRITE_REG + CONFIG, 0x3E);
+      00069F 4B 3E            [ 1] 1454 	push	#0x3e
+      0006A1 4B 20            [ 1] 1455 	push	#0x20
+      0006A3 CDr00r2E         [ 4] 1456 	call	_write_spi_reg
+      0006A6 5B 02            [ 2] 1457 	addw	sp, #2
+                                   1458 ;	se8r01-send-current.c: 498: write_spi_buf(WRITE_REG + TX_ADDR, TX_ADDRESS, ADR_WIDTH);  //from tx
+      0006A8 AEr00r0E         [ 2] 1459 	ldw	x, #_TX_ADDRESS+0
+      0006AB 90 93            [ 1] 1460 	ldw	y, x
+      0006AD 89               [ 2] 1461 	pushw	x
+      0006AE 4B 04            [ 1] 1462 	push	#0x04
+      0006B0 90 89            [ 2] 1463 	pushw	y
+      0006B2 4B 30            [ 1] 1464 	push	#0x30
+      0006B4 CDr00rA8         [ 4] 1465 	call	_write_spi_buf
+      0006B7 5B 04            [ 2] 1466 	addw	sp, #4
+      0006B9 85               [ 2] 1467 	popw	x
+                                   1468 ;	se8r01-send-current.c: 500: write_spi_buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, ADR_WIDTH); // Use the same address on the RX device as the TX device write_spi_reg(WRITE_REG + RX_PW_P0, TX_PLOAD_WIDTH); // Select same RX payload width as TX Payload width
+      0006BA 4B 04            [ 1] 1469 	push	#0x04
+      0006BC 89               [ 2] 1470 	pushw	x
+      0006BD 4B 2A            [ 1] 1471 	push	#0x2a
+      0006BF CDr00rA8         [ 4] 1472 	call	_write_spi_buf
+      0006C2 5B 04            [ 2] 1473 	addw	sp, #4
+                                   1474 ;	se8r01-send-current.c: 503: PC_ODR |= (1 << CE);
+      0006C4 AE 50 0A         [ 2] 1475 	ldw	x, #0x500a
+      0006C7 F6               [ 1] 1476 	ld	a, (x)
+      0006C8 AA 10            [ 1] 1477 	or	a, #0x10
+      0006CA F7               [ 1] 1478 	ld	(x), a
+      0006CB 5B 05            [ 2] 1479 	addw	sp, #5
+      0006CD 81               [ 4] 1480 	ret
+                                   1481 ;	se8r01-send-current.c: 509: int main () {
+                                   1482 ;	-----------------------------------------
+                                   1483 ;	 function main
+                                   1484 ;	-----------------------------------------
+      0006CE                       1485 _main:
+      0006CE 52 37            [ 2] 1486 	sub	sp, #55
+                                   1487 ;	se8r01-send-current.c: 511: UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
+      0006D0 90 96            [ 1] 1488 	ldw	y, sp
+      0006D2 72 A9 00 2D      [ 2] 1489 	addw	y, #45
+      0006D6 A6 D2            [ 1] 1490 	ld	a, #0xd2
+      0006D8 90 F7            [ 1] 1491 	ld	(y), a
+      0006DA 93               [ 1] 1492 	ldw	x, y
+      0006DB 5C               [ 2] 1493 	incw	x
+      0006DC A6 F0            [ 1] 1494 	ld	a, #0xf0
+      0006DE F7               [ 1] 1495 	ld	(x), a
+      0006DF 93               [ 1] 1496 	ldw	x, y
+      0006E0 5C               [ 2] 1497 	incw	x
+      0006E1 5C               [ 2] 1498 	incw	x
+      0006E2 A6 F0            [ 1] 1499 	ld	a, #0xf0
+      0006E4 F7               [ 1] 1500 	ld	(x), a
+      0006E5 93               [ 1] 1501 	ldw	x, y
+      0006E6 A6 F0            [ 1] 1502 	ld	a, #0xf0
+      0006E8 E7 03            [ 1] 1503 	ld	(0x0003, x), a
+      0006EA 93               [ 1] 1504 	ldw	x, y
+      0006EB A6 F0            [ 1] 1505 	ld	a, #0xf0
+      0006ED E7 04            [ 1] 1506 	ld	(0x0004, x), a
+                                   1507 ;	se8r01-send-current.c: 512: UCHAR tx_addr[]     = { 0xe1, 0xf0, 0xf0, 0xf0, 0xf0 };
+      0006EF 90 96            [ 1] 1508 	ldw	y, sp
+      0006F1 72 A9 00 28      [ 2] 1509 	addw	y, #40
+      0006F5 A6 E1            [ 1] 1510 	ld	a, #0xe1
+      0006F7 90 F7            [ 1] 1511 	ld	(y), a
+      0006F9 93               [ 1] 1512 	ldw	x, y
+      0006FA 5C               [ 2] 1513 	incw	x
+      0006FB A6 F0            [ 1] 1514 	ld	a, #0xf0
+      0006FD F7               [ 1] 1515 	ld	(x), a
+      0006FE 93               [ 1] 1516 	ldw	x, y
+      0006FF 5C               [ 2] 1517 	incw	x
+      000700 5C               [ 2] 1518 	incw	x
+      000701 A6 F0            [ 1] 1519 	ld	a, #0xf0
+      000703 F7               [ 1] 1520 	ld	(x), a
+      000704 93               [ 1] 1521 	ldw	x, y
+      000705 A6 F0            [ 1] 1522 	ld	a, #0xf0
+      000707 E7 03            [ 1] 1523 	ld	(0x0003, x), a
+      000709 93               [ 1] 1524 	ldw	x, y
+      00070A 1C 00 04         [ 2] 1525 	addw	x, #0x0004
+      00070D A6 F0            [ 1] 1526 	ld	a, #0xf0
+      00070F F7               [ 1] 1527 	ld	(x), a
+                                   1528 ;	se8r01-send-current.c: 516: InitializeSystemClock();
+      000710 CDr01r44         [ 4] 1529 	call	_InitializeSystemClock
+                                   1530 ;	se8r01-send-current.c: 517: InitializeUART();
+      000713 CDr02r3C         [ 4] 1531 	call	_InitializeUART
+                                   1532 ;	se8r01-send-current.c: 519: InitializeSPI ();
+      000716 CDr01r1C         [ 4] 1533 	call	_InitializeSPI
+                                   1534 ;	se8r01-send-current.c: 522: memset (tx_payload, 0, sizeof(tx_payload));
+      000719 96               [ 1] 1535 	ldw	x, sp
+      00071A 1C 00 07         [ 2] 1536 	addw	x, #7
+      00071D 1F 36            [ 2] 1537 	ldw	(0x36, sp), x
+      00071F 16 36            [ 2] 1538 	ldw	y, (0x36, sp)
+      000721 4B 21            [ 1] 1539 	push	#0x21
+      000723 4B 00            [ 1] 1540 	push	#0x00
+      000725 5F               [ 1] 1541 	clrw	x
+      000726 89               [ 2] 1542 	pushw	x
+      000727 90 89            [ 2] 1543 	pushw	y
+      000729 CDr00r00         [ 4] 1544 	call	_memset
+      00072C 5B 06            [ 2] 1545 	addw	sp, #6
+                                   1546 ;	se8r01-send-current.c: 525: init_io();                        // Initialize IO port
+      00072E CDr02rB5         [ 4] 1547 	call	_init_io
+                                   1548 ;	se8r01-send-current.c: 526: write_spi_reg(FLUSH_TX,0); // transmit -- send data 
+      000731 4B 00            [ 1] 1549 	push	#0x00
+      000733 4B E1            [ 1] 1550 	push	#0xe1
+      000735 CDr00r2E         [ 4] 1551 	call	_write_spi_reg
+      000738 5B 02            [ 2] 1552 	addw	sp, #2
+                                   1553 ;	se8r01-send-current.c: 527: readstatus = read_spi_reg(CONFIG);
+      00073A 4B 00            [ 1] 1554 	push	#0x00
+      00073C CDr00r6A         [ 4] 1555 	call	_read_spi_reg
+      00073F 5B 01            [ 2] 1556 	addw	sp, #1
+                                   1557 ;	se8r01-send-current.c: 528: UARTPrintF("config = \n\r");
+      000741 AEr08r04         [ 2] 1558 	ldw	x, #___str_0+0
+      000744 88               [ 1] 1559 	push	a
+      000745 89               [ 2] 1560 	pushw	x
+      000746 CDr01rD9         [ 4] 1561 	call	_UARTPrintF
+      000749 5B 02            [ 2] 1562 	addw	sp, #2
+      00074B 84               [ 1] 1563 	pop	a
+                                   1564 ;	se8r01-send-current.c: 529: print_UCHAR_hex(readstatus);
+      00074C 88               [ 1] 1565 	push	a
+      00074D CDr01rF0         [ 4] 1566 	call	_print_UCHAR_hex
+      000750 84               [ 1] 1567 	pop	a
+                                   1568 ;	se8r01-send-current.c: 530: readstatus = read_spi_reg(STATUS);
+      000751 4B 07            [ 1] 1569 	push	#0x07
+      000753 CDr00r6A         [ 4] 1570 	call	_read_spi_reg
+      000756 5B 01            [ 2] 1571 	addw	sp, #1
+                                   1572 ;	se8r01-send-current.c: 531: UARTPrintF("status = \n\r");
+      000758 AEr08r10         [ 2] 1573 	ldw	x, #___str_1+0
+      00075B 88               [ 1] 1574 	push	a
+      00075C 89               [ 2] 1575 	pushw	x
+      00075D CDr01rD9         [ 4] 1576 	call	_UARTPrintF
+      000760 5B 02            [ 2] 1577 	addw	sp, #2
+      000762 84               [ 1] 1578 	pop	a
+                                   1579 ;	se8r01-send-current.c: 532: print_UCHAR_hex(readstatus);
+      000763 88               [ 1] 1580 	push	a
+      000764 CDr01rF0         [ 4] 1581 	call	_print_UCHAR_hex
+      000767 84               [ 1] 1582 	pop	a
+                                   1583 ;	se8r01-send-current.c: 534: SE8R01_Init();
+      000768 CDr06r29         [ 4] 1584 	call	_SE8R01_Init
+                                   1585 ;	se8r01-send-current.c: 538: while (1) {
+      00076B                       1586 00108$:
+                                   1587 ;	se8r01-send-current.c: 541: ADC_CR1 |= ADC_ADON; // ADC ON
+      00076B 72 10 54 01      [ 1] 1588 	bset	0x5401, #0
+                                   1589 ;	se8r01-send-current.c: 542: ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
+      00076F AE 54 00         [ 2] 1590 	ldw	x, #0x5400
+      000772 F6               [ 1] 1591 	ld	a, (x)
+      000773 AA 04            [ 1] 1592 	or	a, #0x04
+      000775 F7               [ 1] 1593 	ld	(x), a
+                                   1594 ;	se8r01-send-current.c: 543: ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
+      000776 AE 54 02         [ 2] 1595 	ldw	x, #0x5402
+      000779 F6               [ 1] 1596 	ld	a, (x)
+      00077A AA 08            [ 1] 1597 	or	a, #0x08
+      00077C F7               [ 1] 1598 	ld	(x), a
+                                   1599 ;	se8r01-send-current.c: 544: ADC_CR1 |= ADC_ADON; // start conversion 
+      00077D 72 10 54 01      [ 1] 1600 	bset	0x5401, #0
+                                   1601 ;	se8r01-send-current.c: 545: while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
+      000781                       1602 00101$:
+      000781 AE 54 00         [ 2] 1603 	ldw	x, #0x5400
+      000784 F6               [ 1] 1604 	ld	a, (x)
+      000785 48               [ 1] 1605 	sll	a
+      000786 24 F9            [ 1] 1606 	jrnc	00101$
+                                   1607 ;	se8r01-send-current.c: 546: tx_payload[2] = (unsigned int)ADC_DRH & 0x03; //upper 2bits of 10 bit AD conversion
+      000788 16 36            [ 2] 1608 	ldw	y, (0x36, sp)
+      00078A 72 A9 00 02      [ 2] 1609 	addw	y, #0x0002
+      00078E AE 54 04         [ 2] 1610 	ldw	x, #0x5404
+      000791 F6               [ 1] 1611 	ld	a, (x)
+      000792 0F 34            [ 1] 1612 	clr	(0x34, sp)
+      000794 A4 03            [ 1] 1613 	and	a, #0x03
+      000796 95               [ 1] 1614 	ld	xh, a
+      000797 4F               [ 1] 1615 	clr	a
+      000798 9E               [ 1] 1616 	ld	a, xh
+      000799 90 F7            [ 1] 1617 	ld	(y), a
+                                   1618 ;	se8r01-send-current.c: 547: tx_payload[3] = (unsigned int)ADC_DRL;
+      00079B 16 36            [ 2] 1619 	ldw	y, (0x36, sp)
+      00079D 72 A9 00 03      [ 2] 1620 	addw	y, #0x0003
+      0007A1 AE 54 05         [ 2] 1621 	ldw	x, #0x5405
+      0007A4 F6               [ 1] 1622 	ld	a, (x)
+      0007A5 0F 32            [ 1] 1623 	clr	(0x32, sp)
+      0007A7 90 F7            [ 1] 1624 	ld	(y), a
+                                   1625 ;	se8r01-send-current.c: 552: ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
+      0007A9 72 11 54 01      [ 1] 1626 	bres	0x5401, #0
+                                   1627 ;	se8r01-send-current.c: 558: tx_payload[0] = 0xac; //first two is unique ID for this current sensor
+      0007AD 1E 36            [ 2] 1628 	ldw	x, (0x36, sp)
+      0007AF A6 AC            [ 1] 1629 	ld	a, #0xac
+      0007B1 F7               [ 1] 1630 	ld	(x), a
+                                   1631 ;	se8r01-send-current.c: 559: tx_payload[1] = 0xcc;
+      0007B2 1E 36            [ 2] 1632 	ldw	x, (0x36, sp)
+      0007B4 5C               [ 2] 1633 	incw	x
+      0007B5 A6 CC            [ 1] 1634 	ld	a, #0xcc
+      0007B7 F7               [ 1] 1635 	ld	(x), a
+                                   1636 ;	se8r01-send-current.c: 562: write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
+      0007B8 1E 36            [ 2] 1637 	ldw	x, (0x36, sp)
+      0007BA 4B 04            [ 1] 1638 	push	#0x04
+      0007BC 89               [ 2] 1639 	pushw	x
+      0007BD 4B A0            [ 1] 1640 	push	#0xa0
+      0007BF CDr00rA8         [ 4] 1641 	call	_write_spi_buf
+      0007C2 5B 04            [ 2] 1642 	addw	sp, #4
+                                   1643 ;	se8r01-send-current.c: 563: write_spi_reg(WRITE_REG+STATUS, 0xff);
+      0007C4 4B FF            [ 1] 1644 	push	#0xff
+      0007C6 4B 27            [ 1] 1645 	push	#0x27
+      0007C8 CDr00r2E         [ 4] 1646 	call	_write_spi_reg
+      0007CB 5B 02            [ 2] 1647 	addw	sp, #2
+                                   1648 ;	se8r01-send-current.c: 570: for (x1 = 0; x1 < 50; ++x1)
+      0007CD 5F               [ 1] 1649 	clrw	x
+      0007CE 1F 05            [ 2] 1650 	ldw	(0x05, sp), x
+      0007D0                       1651 00117$:
+      0007D0 1E 05            [ 2] 1652 	ldw	x, (0x05, sp)
+      0007D2 A3 00 32         [ 2] 1653 	cpw	x, #0x0032
+      0007D5 2E 94            [ 1] 1654 	jrsge	00108$
+                                   1655 ;	se8r01-send-current.c: 571: for (y1 = 0; y1 < 50; ++y1)
+      0007D7 5F               [ 1] 1656 	clrw	x
+      0007D8 1F 03            [ 2] 1657 	ldw	(0x03, sp), x
+      0007DA                       1658 00114$:
+      0007DA 1E 03            [ 2] 1659 	ldw	x, (0x03, sp)
+      0007DC A3 00 32         [ 2] 1660 	cpw	x, #0x0032
+      0007DF 2E 19            [ 1] 1661 	jrsge	00118$
+                                   1662 ;	se8r01-send-current.c: 572: for (z1 = 0; z1 < 50; ++z1)
+      0007E1 5F               [ 1] 1663 	clrw	x
+      0007E2 1F 01            [ 2] 1664 	ldw	(0x01, sp), x
+      0007E4                       1665 00111$:
+      0007E4 1E 01            [ 2] 1666 	ldw	x, (0x01, sp)
+      0007E6 A3 00 32         [ 2] 1667 	cpw	x, #0x0032
+      0007E9 2E 08            [ 1] 1668 	jrsge	00115$
+                                   1669 ;	se8r01-send-current.c: 573: __asm__("nop");
+      0007EB 9D               [ 1] 1670 	nop
+                                   1671 ;	se8r01-send-current.c: 572: for (z1 = 0; z1 < 50; ++z1)
+      0007EC 1E 01            [ 2] 1672 	ldw	x, (0x01, sp)
+      0007EE 5C               [ 2] 1673 	incw	x
+      0007EF 1F 01            [ 2] 1674 	ldw	(0x01, sp), x
+      0007F1 20 F1            [ 2] 1675 	jra	00111$
+      0007F3                       1676 00115$:
+                                   1677 ;	se8r01-send-current.c: 571: for (y1 = 0; y1 < 50; ++y1)
+      0007F3 1E 03            [ 2] 1678 	ldw	x, (0x03, sp)
+      0007F5 5C               [ 2] 1679 	incw	x
+      0007F6 1F 03            [ 2] 1680 	ldw	(0x03, sp), x
+      0007F8 20 E0            [ 2] 1681 	jra	00114$
+      0007FA                       1682 00118$:
+                                   1683 ;	se8r01-send-current.c: 570: for (x1 = 0; x1 < 50; ++x1)
+      0007FA 1E 05            [ 2] 1684 	ldw	x, (0x05, sp)
+      0007FC 5C               [ 2] 1685 	incw	x
+      0007FD 1F 05            [ 2] 1686 	ldw	(0x05, sp), x
+      0007FF 20 CF            [ 2] 1687 	jra	00117$
+      000801 5B 37            [ 2] 1688 	addw	sp, #55
+      000803 81               [ 4] 1689 	ret
+                                   1690 	.area CODE
+      000804                       1691 ___str_0:
+      000804 63 6F 6E 66 69 67 20  1692 	.ascii "config = "
              3D 20
-      000838 0A                    1722 	.db 0x0A
-      000839 0D                    1723 	.db 0x0D
-      00083A 00                    1724 	.db 0x00
-      00083B                       1725 ___str_1:
-      00083B 73 74 61 74 75 73 20  1726 	.ascii "status = "
+      00080D 0A                    1693 	.db 0x0A
+      00080E 0D                    1694 	.db 0x0D
+      00080F 00                    1695 	.db 0x00
+      000810                       1696 ___str_1:
+      000810 73 74 61 74 75 73 20  1697 	.ascii "status = "
              3D 20
-      000844 0A                    1727 	.db 0x0A
-      000845 0D                    1728 	.db 0x0D
-      000846 00                    1729 	.db 0x00
-                                   1730 	.area INITIALIZER
-      000000                       1731 __xinit__SE8R01_DR_2M:
-      000000 00 00                 1732 	.dw #0x0000
-      000002                       1733 __xinit__SE8R01_DR_1M:
-      000002 00 00                 1734 	.dw #0x0000
-      000004                       1735 __xinit__SE8R01_DR_500K:
-      000004 00 01                 1736 	.dw #0x0001
-      000006                       1737 __xinit__pload_width_now:
-      000006 00 00                 1738 	.dw #0x0000
-      000008                       1739 __xinit__newdata:
-      000008 00 00                 1740 	.dw #0x0000
-      00000A                       1741 __xinit__signal_lv:
-      00000A 00                    1742 	.db #0x00	;  0
-      00000B                       1743 __xinit__pip:
-      00000B 00 00                 1744 	.dw #0x0000
-      00000D                       1745 __xinit__status:
-      00000D 00                    1746 	.db #0x00	; 0
-      00000E                       1747 __xinit__TX_ADDRESS:
-      00000E B3                    1748 	.db #0xB3	; 179
-      00000F 43                    1749 	.db #0x43	; 67	'C'
-      000010 10                    1750 	.db #0x10	; 16
-      000011 10                    1751 	.db #0x10	; 16
-      000012                       1752 __xinit__ADDRESS2:
-      000012 B1                    1753 	.db #0xB1	; 177
-      000013                       1754 __xinit__ADDRESS3:
-      000013 B2                    1755 	.db #0xB2	; 178
-      000014                       1756 __xinit__ADDRESS4:
-      000014 B3                    1757 	.db #0xB3	; 179
-      000015                       1758 __xinit__ADDRESS5:
-      000015 B4                    1759 	.db #0xB4	; 180
-      000016                       1760 __xinit__ADDRESS1:
-      000016 B0                    1761 	.db #0xB0	; 176
-      000017 43                    1762 	.db #0x43	; 67	'C'
-      000018 10                    1763 	.db #0x10	; 16
-      000019 10                    1764 	.db #0x10	; 16
-      00001A                       1765 __xinit__ADDRESS0:
-      00001A 34                    1766 	.db #0x34	; 52	'4'
-      00001B 43                    1767 	.db #0x43	; 67	'C'
-      00001C 10                    1768 	.db #0x10	; 16
-      00001D 10                    1769 	.db #0x10	; 16
-      00001E                       1770 __xinit__rx_buf:
-      00001E 00                    1771 	.db #0x00	; 0
-      00001F 00                    1772 	.db 0x00
-      000020 00                    1773 	.db 0x00
-      000021 00                    1774 	.db 0x00
-      000022 00                    1775 	.db 0x00
-      000023 00                    1776 	.db 0x00
-      000024 00                    1777 	.db 0x00
-      000025 00                    1778 	.db 0x00
-      000026 00                    1779 	.db 0x00
-      000027 00                    1780 	.db 0x00
-      000028 00                    1781 	.db 0x00
-      000029 00                    1782 	.db 0x00
-      00002A 00                    1783 	.db 0x00
-      00002B 00                    1784 	.db 0x00
-      00002C 00                    1785 	.db 0x00
-      00002D 00                    1786 	.db 0x00
-      00002E 00                    1787 	.db 0x00
-      00002F 00                    1788 	.db 0x00
-      000030 00                    1789 	.db 0x00
-      000031 00                    1790 	.db 0x00
-      000032 00                    1791 	.db 0x00
-      000033 00                    1792 	.db 0x00
-      000034 00                    1793 	.db 0x00
-      000035 00                    1794 	.db 0x00
-      000036 00                    1795 	.db 0x00
-      000037 00                    1796 	.db 0x00
-      000038 00                    1797 	.db 0x00
-      000039 00                    1798 	.db 0x00
-      00003A 00                    1799 	.db 0x00
-      00003B 00                    1800 	.db 0x00
-      00003C 00                    1801 	.db 0x00
-      00003D 00                    1802 	.db 0x00
-      00003E                       1803 __xinit__tx_buf:
-      00003E 00                    1804 	.db #0x00	; 0
-      00003F 00                    1805 	.db 0x00
-      000040 00                    1806 	.db 0x00
-      000041 00                    1807 	.db 0x00
-      000042 00                    1808 	.db 0x00
-      000043 00                    1809 	.db 0x00
-      000044 00                    1810 	.db 0x00
-      000045 00                    1811 	.db 0x00
-      000046 00                    1812 	.db 0x00
-      000047 00                    1813 	.db 0x00
-      000048 00                    1814 	.db 0x00
-      000049 00                    1815 	.db 0x00
-      00004A 00                    1816 	.db 0x00
-      00004B 00                    1817 	.db 0x00
-      00004C 00                    1818 	.db 0x00
-      00004D 00                    1819 	.db 0x00
-      00004E 00                    1820 	.db 0x00
-      00004F 00                    1821 	.db 0x00
-      000050 00                    1822 	.db 0x00
-      000051 00                    1823 	.db 0x00
-      000052 00                    1824 	.db 0x00
-      000053 00                    1825 	.db 0x00
-      000054 00                    1826 	.db 0x00
-      000055 00                    1827 	.db 0x00
-      000056 00                    1828 	.db 0x00
-      000057 00                    1829 	.db 0x00
-      000058 00                    1830 	.db 0x00
-      000059 00                    1831 	.db 0x00
-      00005A 00                    1832 	.db 0x00
-      00005B 00                    1833 	.db 0x00
-      00005C 00                    1834 	.db 0x00
-      00005D 00                    1835 	.db 0x00
-                                   1836 	.area CABS (ABS)
+      000819 0A                    1698 	.db 0x0A
+      00081A 0D                    1699 	.db 0x0D
+      00081B 00                    1700 	.db 0x00
+                                   1701 	.area INITIALIZER
+      000000                       1702 __xinit__SE8R01_DR_2M:
+      000000 00 00                 1703 	.dw #0x0000
+      000002                       1704 __xinit__SE8R01_DR_1M:
+      000002 00 00                 1705 	.dw #0x0000
+      000004                       1706 __xinit__SE8R01_DR_500K:
+      000004 00 01                 1707 	.dw #0x0001
+      000006                       1708 __xinit__pload_width_now:
+      000006 00 00                 1709 	.dw #0x0000
+      000008                       1710 __xinit__newdata:
+      000008 00 00                 1711 	.dw #0x0000
+      00000A                       1712 __xinit__signal_lv:
+      00000A 00                    1713 	.db #0x00	;  0
+      00000B                       1714 __xinit__pip:
+      00000B 00 00                 1715 	.dw #0x0000
+      00000D                       1716 __xinit__status:
+      00000D 00                    1717 	.db #0x00	; 0
+      00000E                       1718 __xinit__TX_ADDRESS:
+      00000E B3                    1719 	.db #0xB3	; 179
+      00000F 43                    1720 	.db #0x43	; 67	'C'
+      000010 10                    1721 	.db #0x10	; 16
+      000011 10                    1722 	.db #0x10	; 16
+      000012                       1723 __xinit__ADDRESS2:
+      000012 B1                    1724 	.db #0xB1	; 177
+      000013                       1725 __xinit__ADDRESS3:
+      000013 B2                    1726 	.db #0xB2	; 178
+      000014                       1727 __xinit__ADDRESS4:
+      000014 B3                    1728 	.db #0xB3	; 179
+      000015                       1729 __xinit__ADDRESS5:
+      000015 B4                    1730 	.db #0xB4	; 180
+      000016                       1731 __xinit__ADDRESS1:
+      000016 B0                    1732 	.db #0xB0	; 176
+      000017 43                    1733 	.db #0x43	; 67	'C'
+      000018 10                    1734 	.db #0x10	; 16
+      000019 10                    1735 	.db #0x10	; 16
+      00001A                       1736 __xinit__ADDRESS0:
+      00001A 34                    1737 	.db #0x34	; 52	'4'
+      00001B 43                    1738 	.db #0x43	; 67	'C'
+      00001C 10                    1739 	.db #0x10	; 16
+      00001D 10                    1740 	.db #0x10	; 16
+      00001E                       1741 __xinit__rx_buf:
+      00001E 00                    1742 	.db #0x00	; 0
+      00001F 00                    1743 	.db 0x00
+      000020 00                    1744 	.db 0x00
+      000021 00                    1745 	.db 0x00
+      000022 00                    1746 	.db 0x00
+      000023 00                    1747 	.db 0x00
+      000024 00                    1748 	.db 0x00
+      000025 00                    1749 	.db 0x00
+      000026 00                    1750 	.db 0x00
+      000027 00                    1751 	.db 0x00
+      000028 00                    1752 	.db 0x00
+      000029 00                    1753 	.db 0x00
+      00002A 00                    1754 	.db 0x00
+      00002B 00                    1755 	.db 0x00
+      00002C 00                    1756 	.db 0x00
+      00002D 00                    1757 	.db 0x00
+      00002E 00                    1758 	.db 0x00
+      00002F 00                    1759 	.db 0x00
+      000030 00                    1760 	.db 0x00
+      000031 00                    1761 	.db 0x00
+      000032 00                    1762 	.db 0x00
+      000033 00                    1763 	.db 0x00
+      000034 00                    1764 	.db 0x00
+      000035 00                    1765 	.db 0x00
+      000036 00                    1766 	.db 0x00
+      000037 00                    1767 	.db 0x00
+      000038 00                    1768 	.db 0x00
+      000039 00                    1769 	.db 0x00
+      00003A 00                    1770 	.db 0x00
+      00003B 00                    1771 	.db 0x00
+      00003C 00                    1772 	.db 0x00
+      00003D 00                    1773 	.db 0x00
+      00003E                       1774 __xinit__tx_buf:
+      00003E 00                    1775 	.db #0x00	; 0
+      00003F 00                    1776 	.db 0x00
+      000040 00                    1777 	.db 0x00
+      000041 00                    1778 	.db 0x00
+      000042 00                    1779 	.db 0x00
+      000043 00                    1780 	.db 0x00
+      000044 00                    1781 	.db 0x00
+      000045 00                    1782 	.db 0x00
+      000046 00                    1783 	.db 0x00
+      000047 00                    1784 	.db 0x00
+      000048 00                    1785 	.db 0x00
+      000049 00                    1786 	.db 0x00
+      00004A 00                    1787 	.db 0x00
+      00004B 00                    1788 	.db 0x00
+      00004C 00                    1789 	.db 0x00
+      00004D 00                    1790 	.db 0x00
+      00004E 00                    1791 	.db 0x00
+      00004F 00                    1792 	.db 0x00
+      000050 00                    1793 	.db 0x00
+      000051 00                    1794 	.db 0x00
+      000052 00                    1795 	.db 0x00
+      000053 00                    1796 	.db 0x00
+      000054 00                    1797 	.db 0x00
+      000055 00                    1798 	.db 0x00
+      000056 00                    1799 	.db 0x00
+      000057 00                    1800 	.db 0x00
+      000058 00                    1801 	.db 0x00
+      000059 00                    1802 	.db 0x00
+      00005A 00                    1803 	.db 0x00
+      00005B 00                    1804 	.db 0x00
+      00005C 00                    1805 	.db 0x00
+      00005D 00                    1806 	.db 0x00
+                                   1807 	.area CABS (ABS)

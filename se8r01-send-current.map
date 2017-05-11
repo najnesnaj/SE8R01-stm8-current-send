@@ -44,12 +44,12 @@ CABS                                00000000    00000000 =           0. bytes (A
      00000083  l_HOME                          
      00000100  l_IRAM                          
      00000100  l_SSEG                          
-     000008BC  l_CODE                          
+     00000891  l_CODE                          
      00008000  s_HOME                          
      00008083  s_GSINIT                        
      0000809D  s_GSFINAL                       
      000080A0  s_CODE                          
-     0000895C  s_INITIALIZER                   
+     00008931  s_INITIALIZER                   
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
@@ -151,7 +151,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                000080A0    000008BC =        2236. bytes (REL,CON)
+CODE                                000080A0    00000891 =        2193. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -168,20 +168,20 @@ CODE                                000080A0    000008BC =        2236. bytes (R
      00008290  _print_UCHAR_hex                   se8r01_send_current
      000082DC  _InitializeUART                    se8r01_send_current
      00008355  _init_io                           se8r01_send_current
-     00008380  _rf_switch_bank                    se8r01_send_current
-     0000839D  _SE8R01_Calibration                se8r01_send_current
-     00008569  _SE8R01_Analog_Init                se8r01_send_current
-     000086E5  _SE8R01_Init                       se8r01_send_current
-     0000878A  _main                              se8r01_send_current
-     000088E7  __mulint                           _mulint
-     0000893D  _memset                            _memset
+     00008364  _rf_switch_bank                    se8r01_send_current
+     00008381  _SE8R01_Calibration                se8r01_send_current
+     0000854D  _SE8R01_Analog_Init                se8r01_send_current
+     000086C9  _SE8R01_Init                       se8r01_send_current
+     0000876E  _main                              se8r01_send_current
+     000088BC  __mulint                           _mulint
+     00008912  _memset                            _memset
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-INITIALIZER                         0000895C    0000005E =          94. bytes (REL,CON)
+INITIALIZER                         00008931    0000005E =          94. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

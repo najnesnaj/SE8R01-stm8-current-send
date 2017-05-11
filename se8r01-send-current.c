@@ -264,11 +264,12 @@ struct dataStruct1{
 // Spi disable,Spi clock line init high
 //**************************************************
 void init_io(void)
-{ //PD3 is interrupt
-	PD_DDR &= ~(1 << 3); // input mode
-	PD_CR1 |= (1 << 3); // input with pull up 
-	PD_CR2 |= (1 << 3); // interrupt enabled 
-	PD_ODR &= ~(1 << 3);
+{
+//PD3 is interrupt  -- not necessary 
+//	PD_DDR &= ~(1 << 3); // input mode
+//	PD_CR1 |= (1 << 3); // input with pull up 
+//	PD_CR2 |= (1 << 3); // interrupt enabled 
+//	PD_ODR &= ~(1 << 3);
 	//  digitalWrite(IRQq, 0);
 	//PC_ODR |= (1 << CE);
 	PC_ODR &= ~(1 << CE);
@@ -506,7 +507,7 @@ void SE8R01_Init()
 
 
 int main () {
-        int ampere;
+     // int ampere;
 	UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
 	UCHAR tx_addr[]     = { 0xe1, 0xf0, 0xf0, 0xf0, 0xf0 };
 	UCHAR tx_payload[33];
@@ -542,19 +543,19 @@ int main () {
 		ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
 		ADC_CR1 |= ADC_ADON; // start conversion 
 		while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
-		tx_payload[2] = (unsigned int)ADC_DRH;
+		tx_payload[2] = (unsigned int)ADC_DRH & 0x03; //upper 2bits of 10 bit AD conversion
 		tx_payload[3] = (unsigned int)ADC_DRL;
 
 //		ampere |= (unsigned int)ADC_DRL;
 		// UARTPrintF("value = \n\r");
 	//	ampere |= (unsigned int)ADC_DRH<<8;
 		ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
-                ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
+//                ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
 
 
 
 		//some testdata
-		tx_payload[0] = 0xac; //first two is unique ID for current sensor
+		tx_payload[0] = 0xac; //first two is unique ID for this current sensor
 		tx_payload[1] = 0xcc;
 	//	tx_payload[2] = ampere>>8;
 	//	tx_payload[3] = ampere & 0x0f; 
