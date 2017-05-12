@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jul 11 2014) (Linux)
-; This file was generated Thu May 11 18:37:46 2017
+; This file was generated Fri May 12 14:55:01 2017
 ;--------------------------------------------------------
 	.module se8r01_send_current
 	.optsdcc -mstm8
@@ -1483,10 +1483,10 @@ _SE8R01_Init:
 ;	 function main
 ;	-----------------------------------------
 _main:
-	sub	sp, #55
-;	se8r01-send-current.c: 511: UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
+	sub	sp, #57
+;	se8r01-send-current.c: 516: UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
 	ldw	y, sp
-	addw	y, #45
+	addw	y, #41
 	ld	a, #0xd2
 	ld	(y), a
 	ldw	x, y
@@ -1504,9 +1504,9 @@ _main:
 	ldw	x, y
 	ld	a, #0xf0
 	ld	(0x0004, x), a
-;	se8r01-send-current.c: 512: UCHAR tx_addr[]     = { 0xe1, 0xf0, 0xf0, 0xf0, 0xf0 };
+;	se8r01-send-current.c: 517: UCHAR tx_addr[]     = { 0xe1, 0xf0, 0xf0, 0xf0, 0xf0 };
 	ldw	y, sp
-	addw	y, #40
+	addw	y, #34
 	ld	a, #0xe1
 	ld	(y), a
 	ldw	x, y
@@ -1525,17 +1525,17 @@ _main:
 	addw	x, #0x0004
 	ld	a, #0xf0
 	ld	(x), a
-;	se8r01-send-current.c: 516: InitializeSystemClock();
+;	se8r01-send-current.c: 520: InitializeSystemClock();
 	call	_InitializeSystemClock
-;	se8r01-send-current.c: 517: InitializeUART();
+;	se8r01-send-current.c: 521: InitializeUART();
 	call	_InitializeUART
-;	se8r01-send-current.c: 519: InitializeSPI ();
+;	se8r01-send-current.c: 523: InitializeSPI ();
 	call	_InitializeSPI
-;	se8r01-send-current.c: 522: memset (tx_payload, 0, sizeof(tx_payload));
+;	se8r01-send-current.c: 526: memset (tx_payload, 0, sizeof(tx_payload));
 	ldw	x, sp
-	addw	x, #7
-	ldw	(0x36, sp), x
-	ldw	y, (0x36, sp)
+	incw	x
+	ldw	(0x38, sp), x
+	ldw	y, (0x38, sp)
 	push	#0x21
 	push	#0x00
 	clrw	x
@@ -1543,149 +1543,195 @@ _main:
 	pushw	y
 	call	_memset
 	addw	sp, #6
-;	se8r01-send-current.c: 525: init_io();                        // Initialize IO port
+;	se8r01-send-current.c: 529: init_io();                        // Initialize IO port
 	call	_init_io
-;	se8r01-send-current.c: 526: write_spi_reg(FLUSH_TX,0); // transmit -- send data 
+;	se8r01-send-current.c: 530: write_spi_reg(FLUSH_TX,0); // transmit -- send data 
 	push	#0x00
 	push	#0xe1
 	call	_write_spi_reg
 	addw	sp, #2
-;	se8r01-send-current.c: 527: readstatus = read_spi_reg(CONFIG);
+;	se8r01-send-current.c: 531: readstatus = read_spi_reg(CONFIG);
 	push	#0x00
 	call	_read_spi_reg
 	addw	sp, #1
-;	se8r01-send-current.c: 528: UARTPrintF("config = \n\r");
+;	se8r01-send-current.c: 532: UARTPrintF("config = \n\r");
 	ldw	x, #___str_0+0
 	push	a
 	pushw	x
 	call	_UARTPrintF
 	addw	sp, #2
 	pop	a
-;	se8r01-send-current.c: 529: print_UCHAR_hex(readstatus);
+;	se8r01-send-current.c: 533: print_UCHAR_hex(readstatus);
 	push	a
 	call	_print_UCHAR_hex
 	pop	a
-;	se8r01-send-current.c: 530: readstatus = read_spi_reg(STATUS);
+;	se8r01-send-current.c: 534: readstatus = read_spi_reg(STATUS);
 	push	#0x07
 	call	_read_spi_reg
 	addw	sp, #1
-;	se8r01-send-current.c: 531: UARTPrintF("status = \n\r");
+;	se8r01-send-current.c: 535: UARTPrintF("status = \n\r");
 	ldw	x, #___str_1+0
 	push	a
 	pushw	x
 	call	_UARTPrintF
 	addw	sp, #2
 	pop	a
-;	se8r01-send-current.c: 532: print_UCHAR_hex(readstatus);
+;	se8r01-send-current.c: 536: print_UCHAR_hex(readstatus);
 	push	a
 	call	_print_UCHAR_hex
 	pop	a
-;	se8r01-send-current.c: 534: SE8R01_Init();
+;	se8r01-send-current.c: 538: SE8R01_Init();
 	call	_SE8R01_Init
-;	se8r01-send-current.c: 538: while (1) {
+;	se8r01-send-current.c: 542: while (1) {
+00106$:
+;	se8r01-send-current.c: 544: gemiddeld=0;
+	clrw	x
+	ldw	(0x2e, sp), x
+;	se8r01-send-current.c: 545: for(samples=0;samples<4;samples++)
+	clrw	x
+	ldw	(0x27, sp), x
 00108$:
-;	se8r01-send-current.c: 541: ADC_CR1 |= ADC_ADON; // ADC ON
+;	se8r01-send-current.c: 548: ADC_CR1 |= ADC_ADON; // ADC ON
 	bset	0x5401, #0
-;	se8r01-send-current.c: 542: ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
+;	se8r01-send-current.c: 549: ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
 	ldw	x, #0x5400
 	ld	a, (x)
 	or	a, #0x04
 	ld	(x), a
-;	se8r01-send-current.c: 543: ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
+;	se8r01-send-current.c: 550: ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
 	ldw	x, #0x5402
 	ld	a, (x)
 	or	a, #0x08
 	ld	(x), a
-;	se8r01-send-current.c: 544: ADC_CR1 |= ADC_ADON; // start conversion 
+;	se8r01-send-current.c: 551: ADC_CR1 |= ADC_ADON; // start conversion 
 	bset	0x5401, #0
-;	se8r01-send-current.c: 545: while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
+;	se8r01-send-current.c: 552: while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
 00101$:
 	ldw	x, #0x5400
 	ld	a, (x)
 	sll	a
 	jrnc	00101$
-;	se8r01-send-current.c: 546: tx_payload[2] = (unsigned int)ADC_DRH & 0x03; //upper 2bits of 10 bit AD conversion
-	ldw	y, (0x36, sp)
-	addw	y, #0x0002
-	ldw	x, #0x5404
-	ld	a, (x)
-	clr	(0x34, sp)
-	and	a, #0x03
-	ld	xh, a
-	clr	a
-	ld	a, xh
-	ld	(y), a
-;	se8r01-send-current.c: 547: tx_payload[3] = (unsigned int)ADC_DRL;
-	ldw	y, (0x36, sp)
-	addw	y, #0x0003
+;	se8r01-send-current.c: 554: ampere |= (unsigned int)ADC_DRL;
 	ldw	x, #0x5405
 	ld	a, (x)
-	clr	(0x32, sp)
-	ld	(y), a
-;	se8r01-send-current.c: 552: ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
-	bres	0x5401, #0
-;	se8r01-send-current.c: 558: tx_payload[0] = 0xac; //first two is unique ID for this current sensor
-	ldw	x, (0x36, sp)
+	rlwa	x
+	clr	a
+	rrwa	x
+	ldw	y, (0x34, sp)
+	ldw	(0x36, sp), y
+	or	a, (0x37, sp)
+	ld	yl, a
+	ld	a, xh
+	or	a, (0x36, sp)
+	ld	yh, a
+;	se8r01-send-current.c: 556: ampere |= (unsigned int)ADC_DRH<<8;
+	ldw	x, #0x5404
+	ld	a, (x)
+	clrw	x
+	ld	xl, a
+	sllw	x
+	sllw	x
+	sllw	x
+	sllw	x
+	sllw	x
+	sllw	x
+	sllw	x
+	sllw	x
+	ldw	(0x32, sp), y
+	ld	a, xl
+	or	a, (0x33, sp)
+	ld	yl, a
+	ld	a, xh
+	or	a, (0x32, sp)
+	ld	yh, a
+;	se8r01-send-current.c: 557: ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
+	ldw	x, #0x5401
+	ld	a, (x)
+	and	a, #0xfe
+	ld	(x), a
+;	se8r01-send-current.c: 558: ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
+	ld	a, yh
+	and	a, #0x03
+	ld	yh, a
+	ldw	(0x34, sp), y
+;	se8r01-send-current.c: 559: gemiddeld+=ampere;
+	ldw	y, (0x2e, sp)
+	addw	y, (0x34, sp)
+	ldw	(0x2e, sp), y
+;	se8r01-send-current.c: 561: delay(2);
+	push	#0x02
+	push	#0x00
+	call	_delay
+	addw	sp, #2
+;	se8r01-send-current.c: 545: for(samples=0;samples<4;samples++)
+	ldw	x, (0x27, sp)
+	incw	x
+	ldw	(0x27, sp), x
+	ldw	x, (0x27, sp)
+	cpw	x, #0x0004
+	jrsge	00134$
+	jp	00108$
+00134$:
+;	se8r01-send-current.c: 563: ampere=gemiddeld/4; //average from 4 measurements
+	push	#0x04
+	push	#0x00
+	ldw	x, (0x30, sp)
+	pushw	x
+	call	__divsint
+	addw	sp, #4
+	ldw	(0x34, sp), x
+;	se8r01-send-current.c: 566: tx_payload[0] = 0xac; //first two is unique ID for this current sensor
+	ldw	x, (0x38, sp)
 	ld	a, #0xac
 	ld	(x), a
-;	se8r01-send-current.c: 559: tx_payload[1] = 0xcc;
-	ldw	x, (0x36, sp)
+;	se8r01-send-current.c: 567: tx_payload[1] = 0xcc;
+	ldw	x, (0x38, sp)
 	incw	x
 	ld	a, #0xcc
 	ld	(x), a
-;	se8r01-send-current.c: 562: write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
-	ldw	x, (0x36, sp)
+;	se8r01-send-current.c: 568: tx_payload[2] = ampere & 0x0f; 
+	ldw	x, (0x38, sp)
+	incw	x
+	incw	x
+	ld	a, (0x35, sp)
+	and	a, #0x0f
+	push	a
+	clr	(0x31, sp)
+	pop	a
+	ld	(x), a
+;	se8r01-send-current.c: 569: tx_payload[3] = ampere>>8;
+	ldw	y, (0x38, sp)
+	addw	y, #0x0003
+	ldw	x, (0x34, sp)
+	sraw	x
+	sraw	x
+	sraw	x
+	sraw	x
+	sraw	x
+	sraw	x
+	sraw	x
+	sraw	x
+	ld	a, xl
+	ld	(y), a
+;	se8r01-send-current.c: 570: write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
+	ldw	x, (0x38, sp)
 	push	#0x04
 	pushw	x
 	push	#0xa0
 	call	_write_spi_buf
 	addw	sp, #4
-;	se8r01-send-current.c: 563: write_spi_reg(WRITE_REG+STATUS, 0xff);
+;	se8r01-send-current.c: 571: write_spi_reg(WRITE_REG+STATUS, 0xff);
 	push	#0xff
 	push	#0x27
 	call	_write_spi_reg
 	addw	sp, #2
-;	se8r01-send-current.c: 570: for (x1 = 0; x1 < 50; ++x1)
-	clrw	x
-	ldw	(0x05, sp), x
-00117$:
-	ldw	x, (0x05, sp)
-	cpw	x, #0x0032
-	jrsge	00108$
-;	se8r01-send-current.c: 571: for (y1 = 0; y1 < 50; ++y1)
-	clrw	x
-	ldw	(0x03, sp), x
-00114$:
-	ldw	x, (0x03, sp)
-	cpw	x, #0x0032
-	jrsge	00118$
-;	se8r01-send-current.c: 572: for (z1 = 0; z1 < 50; ++z1)
-	clrw	x
-	ldw	(0x01, sp), x
-00111$:
-	ldw	x, (0x01, sp)
-	cpw	x, #0x0032
-	jrsge	00115$
-;	se8r01-send-current.c: 573: __asm__("nop");
-	nop
-;	se8r01-send-current.c: 572: for (z1 = 0; z1 < 50; ++z1)
-	ldw	x, (0x01, sp)
-	incw	x
-	ldw	(0x01, sp), x
-	jra	00111$
-00115$:
-;	se8r01-send-current.c: 571: for (y1 = 0; y1 < 50; ++y1)
-	ldw	x, (0x03, sp)
-	incw	x
-	ldw	(0x03, sp), x
-	jra	00114$
-00118$:
-;	se8r01-send-current.c: 570: for (x1 = 0; x1 < 50; ++x1)
-	ldw	x, (0x05, sp)
-	incw	x
-	ldw	(0x05, sp), x
-	jra	00117$
-	addw	sp, #55
+;	se8r01-send-current.c: 578: delay(4);
+	push	#0x04
+	push	#0x00
+	call	_delay
+	addw	sp, #2
+	jp	00106$
+	addw	sp, #57
 	ret
 	.area CODE
 ___str_0:
