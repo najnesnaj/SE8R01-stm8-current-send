@@ -1,7 +1,7 @@
                                       1 ;--------------------------------------------------------
                                       2 ; File Created by SDCC : free open source ANSI-C Compiler
                                       3 ; Version 3.4.0 #8981 (Jul  5 2014) (Linux)
-                                      4 ; This file was generated Thu May 18 17:14:49 2017
+                                      4 ; This file was generated Thu May 18 19:18:44 2017
                                       5 ;--------------------------------------------------------
                                       6 	.module se8r01_send_current
                                       7 	.optsdcc -mstm8
@@ -1483,10 +1483,10 @@
                                    1483 ;	 function main
                                    1484 ;	-----------------------------------------
       0006CE                       1485 _main:
-      0006CE 52 39            [ 2] 1486 	sub	sp, #57
+      0006CE 52 3B            [ 2] 1486 	sub	sp, #59
                                    1487 ;	se8r01-send-current.c: 520: UCHAR rx_addr_p1[]  = { 0xd2, 0xf0, 0xf0, 0xf0, 0xf0 };
       0006D0 90 96            [ 1] 1488 	ldw	y, sp
-      0006D2 72 A9 00 29      [ 2] 1489 	addw	y, #41
+      0006D2 72 A9 00 2B      [ 2] 1489 	addw	y, #43
       0006D6 A6 D2            [ 1] 1490 	ld	a, #0xd2
       0006D8 90 F7            [ 1] 1491 	ld	(y), a
       0006DA 93               [ 1] 1492 	ldw	x, y
@@ -1534,8 +1534,8 @@
                                    1534 ;	se8r01-send-current.c: 530: memset (tx_payload, 0, sizeof(tx_payload));
       000719 96               [ 1] 1535 	ldw	x, sp
       00071A 5C               [ 2] 1536 	incw	x
-      00071B 1F 38            [ 2] 1537 	ldw	(0x38, sp), x
-      00071D 16 38            [ 2] 1538 	ldw	y, (0x38, sp)
+      00071B 1F 32            [ 2] 1537 	ldw	(0x32, sp), x
+      00071D 16 32            [ 2] 1538 	ldw	y, (0x32, sp)
       00071F 4B 21            [ 1] 1539 	push	#0x21
       000721 4B 00            [ 1] 1540 	push	#0x00
       000723 5F               [ 1] 1541 	clrw	x
@@ -1555,7 +1555,7 @@
       00073A CDr00r6A         [ 4] 1555 	call	_read_spi_reg
       00073D 5B 01            [ 2] 1556 	addw	sp, #1
                                    1557 ;	se8r01-send-current.c: 536: UARTPrintF("config = \n\r");
-      00073F AEr08r2E         [ 2] 1558 	ldw	x, #___str_0+0
+      00073F AEr08r55         [ 2] 1558 	ldw	x, #___str_0+0
       000742 88               [ 1] 1559 	push	a
       000743 89               [ 2] 1560 	pushw	x
       000744 CDr01rD9         [ 4] 1561 	call	_UARTPrintF
@@ -1570,7 +1570,7 @@
       000751 CDr00r6A         [ 4] 1570 	call	_read_spi_reg
       000754 5B 01            [ 2] 1571 	addw	sp, #1
                                    1572 ;	se8r01-send-current.c: 539: UARTPrintF("status = \n\r");
-      000756 AEr08r3A         [ 2] 1573 	ldw	x, #___str_1+0
+      000756 AEr08r61         [ 2] 1573 	ldw	x, #___str_1+0
       000759 88               [ 1] 1574 	push	a
       00075A 89               [ 2] 1575 	pushw	x
       00075B CDr01rD9         [ 4] 1576 	call	_UARTPrintF
@@ -1583,261 +1583,282 @@
                                    1583 ;	se8r01-send-current.c: 542: SE8R01_Init();
       000766 CDr06r29         [ 4] 1584 	call	_SE8R01_Init
                                    1585 ;	se8r01-send-current.c: 546: while (1) {
-      000769                       1586 00108$:
+      000769                       1586 00110$:
                                    1587 ;	se8r01-send-current.c: 548: gemiddeld=0;
       000769 5F               [ 1] 1588 	clrw	x
-      00076A 1F 2E            [ 2] 1589 	ldw	(0x2e, sp), x
-                                   1590 ;	se8r01-send-current.c: 549: for(samples=0;samples<10000;samples++)
+      00076A 1F 30            [ 2] 1589 	ldw	(0x30, sp), x
+                                   1590 ;	se8r01-send-current.c: 549: ampere=0;
       00076C 5F               [ 1] 1591 	clrw	x
-      00076D 1F 27            [ 2] 1592 	ldw	(0x27, sp), x
-      00076F                       1593 00110$:
-                                   1594 ;	se8r01-send-current.c: 552: ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
-      00076F AE 54 00         [ 2] 1595 	ldw	x, #0x5400
-      000772 F6               [ 1] 1596 	ld	a, (x)
-      000773 AA 04            [ 1] 1597 	or	a, #0x04
-      000775 F7               [ 1] 1598 	ld	(x), a
-                                   1599 ;	se8r01-send-current.c: 553: ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
-      000776 AE 54 02         [ 2] 1600 	ldw	x, #0x5402
-      000779 F6               [ 1] 1601 	ld	a, (x)
-      00077A AA 08            [ 1] 1602 	or	a, #0x08
-      00077C F7               [ 1] 1603 	ld	(x), a
-                                   1604 ;	se8r01-send-current.c: 554: ADC_CR1 |= ADC_ADON; // ADC ON
-      00077D 72 10 54 01      [ 1] 1605 	bset	0x5401, #0
-                                   1606 ;	se8r01-send-current.c: 555: ADC_CR1 |= ADC_ADON; // start conversion 
-      000781 72 10 54 01      [ 1] 1607 	bset	0x5401, #0
-                                   1608 ;	se8r01-send-current.c: 556: while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
-      000785                       1609 00101$:
-      000785 AE 54 00         [ 2] 1610 	ldw	x, #0x5400
-      000788 F6               [ 1] 1611 	ld	a, (x)
-      000789 48               [ 1] 1612 	sll	a
-      00078A 24 F9            [ 1] 1613 	jrnc	00101$
-                                   1614 ;	se8r01-send-current.c: 558: ampere |= (unsigned int)ADC_DRL;
-      00078C AE 54 05         [ 2] 1615 	ldw	x, #0x5405
-      00078F F6               [ 1] 1616 	ld	a, (x)
-      000790 02               [ 1] 1617 	rlwa	x
-      000791 4F               [ 1] 1618 	clr	a
-      000792 01               [ 1] 1619 	rrwa	x
-      000793 16 34            [ 2] 1620 	ldw	y, (0x34, sp)
-      000795 17 36            [ 2] 1621 	ldw	(0x36, sp), y
-      000797 1A 37            [ 1] 1622 	or	a, (0x37, sp)
-      000799 90 97            [ 1] 1623 	ld	yl, a
-      00079B 9E               [ 1] 1624 	ld	a, xh
-      00079C 1A 36            [ 1] 1625 	or	a, (0x36, sp)
-      00079E 90 95            [ 1] 1626 	ld	yh, a
-                                   1627 ;	se8r01-send-current.c: 559: ampere |= (unsigned int)ADC_DRH<<8;
-      0007A0 AE 54 04         [ 2] 1628 	ldw	x, #0x5404
-      0007A3 F6               [ 1] 1629 	ld	a, (x)
-      0007A4 5F               [ 1] 1630 	clrw	x
-      0007A5 97               [ 1] 1631 	ld	xl, a
-      0007A6 58               [ 2] 1632 	sllw	x
-      0007A7 58               [ 2] 1633 	sllw	x
-      0007A8 58               [ 2] 1634 	sllw	x
-      0007A9 58               [ 2] 1635 	sllw	x
-      0007AA 58               [ 2] 1636 	sllw	x
-      0007AB 58               [ 2] 1637 	sllw	x
-      0007AC 58               [ 2] 1638 	sllw	x
-      0007AD 58               [ 2] 1639 	sllw	x
-      0007AE 17 32            [ 2] 1640 	ldw	(0x32, sp), y
-      0007B0 9F               [ 1] 1641 	ld	a, xl
-      0007B1 1A 33            [ 1] 1642 	or	a, (0x33, sp)
-      0007B3 90 97            [ 1] 1643 	ld	yl, a
-      0007B5 9E               [ 1] 1644 	ld	a, xh
-      0007B6 1A 32            [ 1] 1645 	or	a, (0x32, sp)
-      0007B8 90 95            [ 1] 1646 	ld	yh, a
-                                   1647 ;	se8r01-send-current.c: 561: ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
-      0007BA AE 54 01         [ 2] 1648 	ldw	x, #0x5401
-      0007BD F6               [ 1] 1649 	ld	a, (x)
-      0007BE A4 FE            [ 1] 1650 	and	a, #0xfe
-      0007C0 F7               [ 1] 1651 	ld	(x), a
-                                   1652 ;	se8r01-send-current.c: 562: ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
-      0007C1 90 9E            [ 1] 1653 	ld	a, yh
-      0007C3 A4 03            [ 1] 1654 	and	a, #0x03
-      0007C5 90 95            [ 1] 1655 	ld	yh, a
-      0007C7 17 34            [ 2] 1656 	ldw	(0x34, sp), y
-                                   1657 ;	se8r01-send-current.c: 563: if (ampere > gemiddeld) gemiddeld=ampere;
-      0007C9 1E 34            [ 2] 1658 	ldw	x, (0x34, sp)
-      0007CB 13 2E            [ 2] 1659 	cpw	x, (0x2e, sp)
-      0007CD 2D 04            [ 1] 1660 	jrsle	00111$
-      0007CF 16 34            [ 2] 1661 	ldw	y, (0x34, sp)
-      0007D1 17 2E            [ 2] 1662 	ldw	(0x2e, sp), y
-      0007D3                       1663 00111$:
-                                   1664 ;	se8r01-send-current.c: 549: for(samples=0;samples<10000;samples++)
-      0007D3 1E 27            [ 2] 1665 	ldw	x, (0x27, sp)
-      0007D5 5C               [ 2] 1666 	incw	x
-      0007D6 1F 27            [ 2] 1667 	ldw	(0x27, sp), x
-      0007D8 1E 27            [ 2] 1668 	ldw	x, (0x27, sp)
-      0007DA A3 27 10         [ 2] 1669 	cpw	x, #0x2710
-      0007DD 2F 90            [ 1] 1670 	jrslt	00110$
-                                   1671 ;	se8r01-send-current.c: 569: tx_payload[0] = 0xac; //first two is unique ID for this current sensor
-      0007DF 1E 38            [ 2] 1672 	ldw	x, (0x38, sp)
-      0007E1 A6 AC            [ 1] 1673 	ld	a, #0xac
-      0007E3 F7               [ 1] 1674 	ld	(x), a
-                                   1675 ;	se8r01-send-current.c: 570: tx_payload[1] = 0xcc;
-      0007E4 1E 38            [ 2] 1676 	ldw	x, (0x38, sp)
-      0007E6 5C               [ 2] 1677 	incw	x
-      0007E7 A6 CC            [ 1] 1678 	ld	a, #0xcc
-      0007E9 F7               [ 1] 1679 	ld	(x), a
-                                   1680 ;	se8r01-send-current.c: 571: tx_payload[2] = gemiddeld & 0x0f; 
-      0007EA 1E 38            [ 2] 1681 	ldw	x, (0x38, sp)
-      0007EC 5C               [ 2] 1682 	incw	x
-      0007ED 5C               [ 2] 1683 	incw	x
-      0007EE 7B 2F            [ 1] 1684 	ld	a, (0x2f, sp)
-      0007F0 A4 0F            [ 1] 1685 	and	a, #0x0f
-      0007F2 88               [ 1] 1686 	push	a
-      0007F3 0F 31            [ 1] 1687 	clr	(0x31, sp)
-      0007F5 84               [ 1] 1688 	pop	a
-      0007F6 F7               [ 1] 1689 	ld	(x), a
-                                   1690 ;	se8r01-send-current.c: 572: tx_payload[3] = gemiddeld>>8;
-      0007F7 16 38            [ 2] 1691 	ldw	y, (0x38, sp)
-      0007F9 72 A9 00 03      [ 2] 1692 	addw	y, #0x0003
-      0007FD 1E 2E            [ 2] 1693 	ldw	x, (0x2e, sp)
-      0007FF 57               [ 2] 1694 	sraw	x
-      000800 57               [ 2] 1695 	sraw	x
-      000801 57               [ 2] 1696 	sraw	x
-      000802 57               [ 2] 1697 	sraw	x
-      000803 57               [ 2] 1698 	sraw	x
-      000804 57               [ 2] 1699 	sraw	x
-      000805 57               [ 2] 1700 	sraw	x
-      000806 57               [ 2] 1701 	sraw	x
-      000807 9F               [ 1] 1702 	ld	a, xl
-      000808 90 F7            [ 1] 1703 	ld	(y), a
-                                   1704 ;	se8r01-send-current.c: 573: write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
-      00080A 1E 38            [ 2] 1705 	ldw	x, (0x38, sp)
-      00080C 4B 04            [ 1] 1706 	push	#0x04
-      00080E 89               [ 2] 1707 	pushw	x
-      00080F 4B A0            [ 1] 1708 	push	#0xa0
-      000811 CDr00rA8         [ 4] 1709 	call	_write_spi_buf
-      000814 5B 04            [ 2] 1710 	addw	sp, #4
-                                   1711 ;	se8r01-send-current.c: 574: write_spi_reg(WRITE_REG+STATUS, 0xff);
-      000816 4B FF            [ 1] 1712 	push	#0xff
-      000818 4B 27            [ 1] 1713 	push	#0x27
-      00081A CDr00r2E         [ 4] 1714 	call	_write_spi_reg
-      00081D 5B 02            [ 2] 1715 	addw	sp, #2
-                                   1716 ;	se8r01-send-current.c: 581: delay(4);
-      00081F 4B 04            [ 1] 1717 	push	#0x04
-      000821 4B 00            [ 1] 1718 	push	#0x00
-      000823 CDr01r8E         [ 4] 1719 	call	_delay
-      000826 5B 02            [ 2] 1720 	addw	sp, #2
-      000828 CCr07r69         [ 2] 1721 	jp	00108$
-      00082B 5B 39            [ 2] 1722 	addw	sp, #57
-      00082D 81               [ 4] 1723 	ret
-                                   1724 	.area CODE
-      00082E                       1725 ___str_0:
-      00082E 63 6F 6E 66 69 67 20  1726 	.ascii "config = "
+      00076D 1F 3A            [ 2] 1592 	ldw	(0x3a, sp), x
+                                   1593 ;	se8r01-send-current.c: 550: for(samples=0;samples<100000;samples++)
+      00076F 5F               [ 1] 1594 	clrw	x
+      000770 1F 29            [ 2] 1595 	ldw	(0x29, sp), x
+      000772 1F 27            [ 2] 1596 	ldw	(0x27, sp), x
+      000774                       1597 00112$:
+                                   1598 ;	se8r01-send-current.c: 553: ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
+      000774 AE 54 00         [ 2] 1599 	ldw	x, #0x5400
+      000777 F6               [ 1] 1600 	ld	a, (x)
+      000778 AA 04            [ 1] 1601 	or	a, #0x04
+      00077A F7               [ 1] 1602 	ld	(x), a
+                                   1603 ;	se8r01-send-current.c: 554: ADC_CR2 |= ADC_ALIGN; // Right Aligned Data
+      00077B AE 54 02         [ 2] 1604 	ldw	x, #0x5402
+      00077E F6               [ 1] 1605 	ld	a, (x)
+      00077F AA 08            [ 1] 1606 	or	a, #0x08
+      000781 F7               [ 1] 1607 	ld	(x), a
+                                   1608 ;	se8r01-send-current.c: 555: ADC_CR1 |= ADC_ADON; // ADC ON
+      000782 72 10 54 01      [ 1] 1609 	bset	0x5401, #0
+                                   1610 ;	se8r01-send-current.c: 556: ADC_CR1 |= ADC_ADON; // start conversion 
+      000786 72 10 54 01      [ 1] 1611 	bset	0x5401, #0
+                                   1612 ;	se8r01-send-current.c: 557: while(((ADC_CSR)&(1<<7))== 0); // Wait till EOC
+      00078A                       1613 00101$:
+      00078A AE 54 00         [ 2] 1614 	ldw	x, #0x5400
+      00078D F6               [ 1] 1615 	ld	a, (x)
+      00078E 48               [ 1] 1616 	sll	a
+      00078F 24 F9            [ 1] 1617 	jrnc	00101$
+                                   1618 ;	se8r01-send-current.c: 559: ampere |= (unsigned int)ADC_DRL;
+      000791 AE 54 05         [ 2] 1619 	ldw	x, #0x5405
+      000794 F6               [ 1] 1620 	ld	a, (x)
+      000795 02               [ 1] 1621 	rlwa	x
+      000796 4F               [ 1] 1622 	clr	a
+      000797 01               [ 1] 1623 	rrwa	x
+      000798 16 3A            [ 2] 1624 	ldw	y, (0x3a, sp)
+      00079A 17 38            [ 2] 1625 	ldw	(0x38, sp), y
+      00079C 1A 39            [ 1] 1626 	or	a, (0x39, sp)
+      00079E 90 97            [ 1] 1627 	ld	yl, a
+      0007A0 9E               [ 1] 1628 	ld	a, xh
+      0007A1 1A 38            [ 1] 1629 	or	a, (0x38, sp)
+      0007A3 90 95            [ 1] 1630 	ld	yh, a
+                                   1631 ;	se8r01-send-current.c: 560: ampere |= (unsigned int)ADC_DRH<<8;
+      0007A5 AE 54 04         [ 2] 1632 	ldw	x, #0x5404
+      0007A8 F6               [ 1] 1633 	ld	a, (x)
+      0007A9 5F               [ 1] 1634 	clrw	x
+      0007AA 97               [ 1] 1635 	ld	xl, a
+      0007AB 58               [ 2] 1636 	sllw	x
+      0007AC 58               [ 2] 1637 	sllw	x
+      0007AD 58               [ 2] 1638 	sllw	x
+      0007AE 58               [ 2] 1639 	sllw	x
+      0007AF 58               [ 2] 1640 	sllw	x
+      0007B0 58               [ 2] 1641 	sllw	x
+      0007B1 58               [ 2] 1642 	sllw	x
+      0007B2 58               [ 2] 1643 	sllw	x
+      0007B3 17 36            [ 2] 1644 	ldw	(0x36, sp), y
+      0007B5 9F               [ 1] 1645 	ld	a, xl
+      0007B6 1A 37            [ 1] 1646 	or	a, (0x37, sp)
+      0007B8 90 97            [ 1] 1647 	ld	yl, a
+      0007BA 9E               [ 1] 1648 	ld	a, xh
+      0007BB 1A 36            [ 1] 1649 	or	a, (0x36, sp)
+      0007BD 90 95            [ 1] 1650 	ld	yh, a
+                                   1651 ;	se8r01-send-current.c: 562: ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
+      0007BF AE 54 01         [ 2] 1652 	ldw	x, #0x5401
+      0007C2 F6               [ 1] 1653 	ld	a, (x)
+      0007C3 A4 FE            [ 1] 1654 	and	a, #0xfe
+      0007C5 F7               [ 1] 1655 	ld	(x), a
+                                   1656 ;	se8r01-send-current.c: 563: ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
+      0007C6 90 9E            [ 1] 1657 	ld	a, yh
+      0007C8 A4 03            [ 1] 1658 	and	a, #0x03
+      0007CA 90 95            [ 1] 1659 	ld	yh, a
+      0007CC 17 3A            [ 2] 1660 	ldw	(0x3a, sp), y
+                                   1661 ;	se8r01-send-current.c: 564: if (ampere > gemiddeld) gemiddeld=ampere;
+      0007CE 1E 3A            [ 2] 1662 	ldw	x, (0x3a, sp)
+      0007D0 13 30            [ 2] 1663 	cpw	x, (0x30, sp)
+      0007D2 2D 04            [ 1] 1664 	jrsle	00113$
+      0007D4 16 3A            [ 2] 1665 	ldw	y, (0x3a, sp)
+      0007D6 17 30            [ 2] 1666 	ldw	(0x30, sp), y
+      0007D8                       1667 00113$:
+                                   1668 ;	se8r01-send-current.c: 550: for(samples=0;samples<100000;samples++)
+      0007D8 1E 29            [ 2] 1669 	ldw	x, (0x29, sp)
+      0007DA 1C 00 01         [ 2] 1670 	addw	x, #0x0001
+      0007DD 1F 29            [ 2] 1671 	ldw	(0x29, sp), x
+      0007DF 7B 28            [ 1] 1672 	ld	a, (0x28, sp)
+      0007E1 A9 00            [ 1] 1673 	adc	a, #0x00
+      0007E3 6B 28            [ 1] 1674 	ld	(0x28, sp), a
+      0007E5 7B 27            [ 1] 1675 	ld	a, (0x27, sp)
+      0007E7 A9 00            [ 1] 1676 	adc	a, #0x00
+      0007E9 6B 27            [ 1] 1677 	ld	(0x27, sp), a
+      0007EB 1E 29            [ 2] 1678 	ldw	x, (0x29, sp)
+      0007ED A3 86 A0         [ 2] 1679 	cpw	x, #0x86a0
+      0007F0 7B 28            [ 1] 1680 	ld	a, (0x28, sp)
+      0007F2 A2 01            [ 1] 1681 	sbc	a, #0x01
+      0007F4 7B 27            [ 1] 1682 	ld	a, (0x27, sp)
+      0007F6 A2 00            [ 1] 1683 	sbc	a, #0x00
+      0007F8 2E 03            [ 1] 1684 	jrsge	00147$
+      0007FA CCr07r74         [ 2] 1685 	jp	00112$
+      0007FD                       1686 00147$:
+                                   1687 ;	se8r01-send-current.c: 568: if (gemiddeld < 0x001f) gemiddeld=0; //remove unwanted mini measurements
+      0007FD 1E 30            [ 2] 1688 	ldw	x, (0x30, sp)
+      0007FF A3 00 1F         [ 2] 1689 	cpw	x, #0x001f
+      000802 2E 03            [ 1] 1690 	jrsge	00108$
+      000804 5F               [ 1] 1691 	clrw	x
+      000805 1F 30            [ 2] 1692 	ldw	(0x30, sp), x
+      000807                       1693 00108$:
+                                   1694 ;	se8r01-send-current.c: 570: tx_payload[0] = 0xac; //first two is unique ID for this current sensor
+      000807 1E 32            [ 2] 1695 	ldw	x, (0x32, sp)
+      000809 A6 AC            [ 1] 1696 	ld	a, #0xac
+      00080B F7               [ 1] 1697 	ld	(x), a
+                                   1698 ;	se8r01-send-current.c: 571: tx_payload[1] = 0xcc;
+      00080C 1E 32            [ 2] 1699 	ldw	x, (0x32, sp)
+      00080E 5C               [ 2] 1700 	incw	x
+      00080F A6 CC            [ 1] 1701 	ld	a, #0xcc
+      000811 F7               [ 1] 1702 	ld	(x), a
+                                   1703 ;	se8r01-send-current.c: 572: tx_payload[2] = gemiddeld>>8;
+      000812 16 32            [ 2] 1704 	ldw	y, (0x32, sp)
+      000814 72 A9 00 02      [ 2] 1705 	addw	y, #0x0002
+      000818 1E 30            [ 2] 1706 	ldw	x, (0x30, sp)
+      00081A 57               [ 2] 1707 	sraw	x
+      00081B 57               [ 2] 1708 	sraw	x
+      00081C 57               [ 2] 1709 	sraw	x
+      00081D 57               [ 2] 1710 	sraw	x
+      00081E 57               [ 2] 1711 	sraw	x
+      00081F 57               [ 2] 1712 	sraw	x
+      000820 57               [ 2] 1713 	sraw	x
+      000821 57               [ 2] 1714 	sraw	x
+      000822 9F               [ 1] 1715 	ld	a, xl
+      000823 90 F7            [ 1] 1716 	ld	(y), a
+                                   1717 ;	se8r01-send-current.c: 573: tx_payload[3] = gemiddeld & 0x00ff; 
+      000825 1E 32            [ 2] 1718 	ldw	x, (0x32, sp)
+      000827 1C 00 03         [ 2] 1719 	addw	x, #0x0003
+      00082A 7B 31            [ 1] 1720 	ld	a, (0x31, sp)
+      00082C 88               [ 1] 1721 	push	a
+      00082D 0F 35            [ 1] 1722 	clr	(0x35, sp)
+      00082F 84               [ 1] 1723 	pop	a
+      000830 F7               [ 1] 1724 	ld	(x), a
+                                   1725 ;	se8r01-send-current.c: 574: write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
+      000831 1E 32            [ 2] 1726 	ldw	x, (0x32, sp)
+      000833 4B 04            [ 1] 1727 	push	#0x04
+      000835 89               [ 2] 1728 	pushw	x
+      000836 4B A0            [ 1] 1729 	push	#0xa0
+      000838 CDr00rA8         [ 4] 1730 	call	_write_spi_buf
+      00083B 5B 04            [ 2] 1731 	addw	sp, #4
+                                   1732 ;	se8r01-send-current.c: 575: write_spi_reg(WRITE_REG+STATUS, 0xff);
+      00083D 4B FF            [ 1] 1733 	push	#0xff
+      00083F 4B 27            [ 1] 1734 	push	#0x27
+      000841 CDr00r2E         [ 4] 1735 	call	_write_spi_reg
+      000844 5B 02            [ 2] 1736 	addw	sp, #2
+                                   1737 ;	se8r01-send-current.c: 582: delay(4);
+      000846 4B 04            [ 1] 1738 	push	#0x04
+      000848 4B 00            [ 1] 1739 	push	#0x00
+      00084A CDr01r8E         [ 4] 1740 	call	_delay
+      00084D 5B 02            [ 2] 1741 	addw	sp, #2
+      00084F CCr07r69         [ 2] 1742 	jp	00110$
+      000852 5B 3B            [ 2] 1743 	addw	sp, #59
+      000854 81               [ 4] 1744 	ret
+                                   1745 	.area CODE
+      000855                       1746 ___str_0:
+      000855 63 6F 6E 66 69 67 20  1747 	.ascii "config = "
              3D 20
-      000837 0A                    1727 	.db 0x0A
-      000838 0D                    1728 	.db 0x0D
-      000839 00                    1729 	.db 0x00
-      00083A                       1730 ___str_1:
-      00083A 73 74 61 74 75 73 20  1731 	.ascii "status = "
+      00085E 0A                    1748 	.db 0x0A
+      00085F 0D                    1749 	.db 0x0D
+      000860 00                    1750 	.db 0x00
+      000861                       1751 ___str_1:
+      000861 73 74 61 74 75 73 20  1752 	.ascii "status = "
              3D 20
-      000843 0A                    1732 	.db 0x0A
-      000844 0D                    1733 	.db 0x0D
-      000845 00                    1734 	.db 0x00
-                                   1735 	.area INITIALIZER
-      000000                       1736 __xinit__SE8R01_DR_2M:
-      000000 00 00                 1737 	.dw #0x0000
-      000002                       1738 __xinit__SE8R01_DR_1M:
-      000002 00 00                 1739 	.dw #0x0000
-      000004                       1740 __xinit__SE8R01_DR_500K:
-      000004 00 01                 1741 	.dw #0x0001
-      000006                       1742 __xinit__pload_width_now:
-      000006 00 00                 1743 	.dw #0x0000
-      000008                       1744 __xinit__newdata:
-      000008 00 00                 1745 	.dw #0x0000
-      00000A                       1746 __xinit__signal_lv:
-      00000A 00                    1747 	.db #0x00	;  0
-      00000B                       1748 __xinit__pip:
-      00000B 00 00                 1749 	.dw #0x0000
-      00000D                       1750 __xinit__status:
-      00000D 00                    1751 	.db #0x00	; 0
-      00000E                       1752 __xinit__TX_ADDRESS:
-      00000E B3                    1753 	.db #0xB3	; 179
-      00000F 43                    1754 	.db #0x43	; 67	'C'
-      000010 10                    1755 	.db #0x10	; 16
-      000011 10                    1756 	.db #0x10	; 16
-      000012                       1757 __xinit__ADDRESS2:
-      000012 B1                    1758 	.db #0xB1	; 177
-      000013                       1759 __xinit__ADDRESS3:
-      000013 B2                    1760 	.db #0xB2	; 178
-      000014                       1761 __xinit__ADDRESS4:
-      000014 B3                    1762 	.db #0xB3	; 179
-      000015                       1763 __xinit__ADDRESS5:
-      000015 B4                    1764 	.db #0xB4	; 180
-      000016                       1765 __xinit__ADDRESS1:
-      000016 B0                    1766 	.db #0xB0	; 176
-      000017 43                    1767 	.db #0x43	; 67	'C'
-      000018 10                    1768 	.db #0x10	; 16
-      000019 10                    1769 	.db #0x10	; 16
-      00001A                       1770 __xinit__ADDRESS0:
-      00001A 34                    1771 	.db #0x34	; 52	'4'
-      00001B 43                    1772 	.db #0x43	; 67	'C'
-      00001C 10                    1773 	.db #0x10	; 16
-      00001D 10                    1774 	.db #0x10	; 16
-      00001E                       1775 __xinit__rx_buf:
-      00001E 00                    1776 	.db #0x00	; 0
-      00001F 00                    1777 	.db 0x00
-      000020 00                    1778 	.db 0x00
-      000021 00                    1779 	.db 0x00
-      000022 00                    1780 	.db 0x00
-      000023 00                    1781 	.db 0x00
-      000024 00                    1782 	.db 0x00
-      000025 00                    1783 	.db 0x00
-      000026 00                    1784 	.db 0x00
-      000027 00                    1785 	.db 0x00
-      000028 00                    1786 	.db 0x00
-      000029 00                    1787 	.db 0x00
-      00002A 00                    1788 	.db 0x00
-      00002B 00                    1789 	.db 0x00
-      00002C 00                    1790 	.db 0x00
-      00002D 00                    1791 	.db 0x00
-      00002E 00                    1792 	.db 0x00
-      00002F 00                    1793 	.db 0x00
-      000030 00                    1794 	.db 0x00
-      000031 00                    1795 	.db 0x00
-      000032 00                    1796 	.db 0x00
-      000033 00                    1797 	.db 0x00
-      000034 00                    1798 	.db 0x00
-      000035 00                    1799 	.db 0x00
-      000036 00                    1800 	.db 0x00
-      000037 00                    1801 	.db 0x00
-      000038 00                    1802 	.db 0x00
-      000039 00                    1803 	.db 0x00
-      00003A 00                    1804 	.db 0x00
-      00003B 00                    1805 	.db 0x00
-      00003C 00                    1806 	.db 0x00
-      00003D 00                    1807 	.db 0x00
-      00003E                       1808 __xinit__tx_buf:
-      00003E 00                    1809 	.db #0x00	; 0
-      00003F 00                    1810 	.db 0x00
-      000040 00                    1811 	.db 0x00
-      000041 00                    1812 	.db 0x00
-      000042 00                    1813 	.db 0x00
-      000043 00                    1814 	.db 0x00
-      000044 00                    1815 	.db 0x00
-      000045 00                    1816 	.db 0x00
-      000046 00                    1817 	.db 0x00
-      000047 00                    1818 	.db 0x00
-      000048 00                    1819 	.db 0x00
-      000049 00                    1820 	.db 0x00
-      00004A 00                    1821 	.db 0x00
-      00004B 00                    1822 	.db 0x00
-      00004C 00                    1823 	.db 0x00
-      00004D 00                    1824 	.db 0x00
-      00004E 00                    1825 	.db 0x00
-      00004F 00                    1826 	.db 0x00
-      000050 00                    1827 	.db 0x00
-      000051 00                    1828 	.db 0x00
-      000052 00                    1829 	.db 0x00
-      000053 00                    1830 	.db 0x00
-      000054 00                    1831 	.db 0x00
-      000055 00                    1832 	.db 0x00
-      000056 00                    1833 	.db 0x00
-      000057 00                    1834 	.db 0x00
-      000058 00                    1835 	.db 0x00
-      000059 00                    1836 	.db 0x00
-      00005A 00                    1837 	.db 0x00
-      00005B 00                    1838 	.db 0x00
-      00005C 00                    1839 	.db 0x00
-      00005D 00                    1840 	.db 0x00
-                                   1841 	.area CABS (ABS)
+      00086A 0A                    1753 	.db 0x0A
+      00086B 0D                    1754 	.db 0x0D
+      00086C 00                    1755 	.db 0x00
+                                   1756 	.area INITIALIZER
+      000000                       1757 __xinit__SE8R01_DR_2M:
+      000000 00 00                 1758 	.dw #0x0000
+      000002                       1759 __xinit__SE8R01_DR_1M:
+      000002 00 00                 1760 	.dw #0x0000
+      000004                       1761 __xinit__SE8R01_DR_500K:
+      000004 00 01                 1762 	.dw #0x0001
+      000006                       1763 __xinit__pload_width_now:
+      000006 00 00                 1764 	.dw #0x0000
+      000008                       1765 __xinit__newdata:
+      000008 00 00                 1766 	.dw #0x0000
+      00000A                       1767 __xinit__signal_lv:
+      00000A 00                    1768 	.db #0x00	;  0
+      00000B                       1769 __xinit__pip:
+      00000B 00 00                 1770 	.dw #0x0000
+      00000D                       1771 __xinit__status:
+      00000D 00                    1772 	.db #0x00	; 0
+      00000E                       1773 __xinit__TX_ADDRESS:
+      00000E B3                    1774 	.db #0xB3	; 179
+      00000F 43                    1775 	.db #0x43	; 67	'C'
+      000010 10                    1776 	.db #0x10	; 16
+      000011 10                    1777 	.db #0x10	; 16
+      000012                       1778 __xinit__ADDRESS2:
+      000012 B1                    1779 	.db #0xB1	; 177
+      000013                       1780 __xinit__ADDRESS3:
+      000013 B2                    1781 	.db #0xB2	; 178
+      000014                       1782 __xinit__ADDRESS4:
+      000014 B3                    1783 	.db #0xB3	; 179
+      000015                       1784 __xinit__ADDRESS5:
+      000015 B4                    1785 	.db #0xB4	; 180
+      000016                       1786 __xinit__ADDRESS1:
+      000016 B0                    1787 	.db #0xB0	; 176
+      000017 43                    1788 	.db #0x43	; 67	'C'
+      000018 10                    1789 	.db #0x10	; 16
+      000019 10                    1790 	.db #0x10	; 16
+      00001A                       1791 __xinit__ADDRESS0:
+      00001A 34                    1792 	.db #0x34	; 52	'4'
+      00001B 43                    1793 	.db #0x43	; 67	'C'
+      00001C 10                    1794 	.db #0x10	; 16
+      00001D 10                    1795 	.db #0x10	; 16
+      00001E                       1796 __xinit__rx_buf:
+      00001E 00                    1797 	.db #0x00	; 0
+      00001F 00                    1798 	.db 0x00
+      000020 00                    1799 	.db 0x00
+      000021 00                    1800 	.db 0x00
+      000022 00                    1801 	.db 0x00
+      000023 00                    1802 	.db 0x00
+      000024 00                    1803 	.db 0x00
+      000025 00                    1804 	.db 0x00
+      000026 00                    1805 	.db 0x00
+      000027 00                    1806 	.db 0x00
+      000028 00                    1807 	.db 0x00
+      000029 00                    1808 	.db 0x00
+      00002A 00                    1809 	.db 0x00
+      00002B 00                    1810 	.db 0x00
+      00002C 00                    1811 	.db 0x00
+      00002D 00                    1812 	.db 0x00
+      00002E 00                    1813 	.db 0x00
+      00002F 00                    1814 	.db 0x00
+      000030 00                    1815 	.db 0x00
+      000031 00                    1816 	.db 0x00
+      000032 00                    1817 	.db 0x00
+      000033 00                    1818 	.db 0x00
+      000034 00                    1819 	.db 0x00
+      000035 00                    1820 	.db 0x00
+      000036 00                    1821 	.db 0x00
+      000037 00                    1822 	.db 0x00
+      000038 00                    1823 	.db 0x00
+      000039 00                    1824 	.db 0x00
+      00003A 00                    1825 	.db 0x00
+      00003B 00                    1826 	.db 0x00
+      00003C 00                    1827 	.db 0x00
+      00003D 00                    1828 	.db 0x00
+      00003E                       1829 __xinit__tx_buf:
+      00003E 00                    1830 	.db #0x00	; 0
+      00003F 00                    1831 	.db 0x00
+      000040 00                    1832 	.db 0x00
+      000041 00                    1833 	.db 0x00
+      000042 00                    1834 	.db 0x00
+      000043 00                    1835 	.db 0x00
+      000044 00                    1836 	.db 0x00
+      000045 00                    1837 	.db 0x00
+      000046 00                    1838 	.db 0x00
+      000047 00                    1839 	.db 0x00
+      000048 00                    1840 	.db 0x00
+      000049 00                    1841 	.db 0x00
+      00004A 00                    1842 	.db 0x00
+      00004B 00                    1843 	.db 0x00
+      00004C 00                    1844 	.db 0x00
+      00004D 00                    1845 	.db 0x00
+      00004E 00                    1846 	.db 0x00
+      00004F 00                    1847 	.db 0x00
+      000050 00                    1848 	.db 0x00
+      000051 00                    1849 	.db 0x00
+      000052 00                    1850 	.db 0x00
+      000053 00                    1851 	.db 0x00
+      000054 00                    1852 	.db 0x00
+      000055 00                    1853 	.db 0x00
+      000056 00                    1854 	.db 0x00
+      000057 00                    1855 	.db 0x00
+      000058 00                    1856 	.db 0x00
+      000059 00                    1857 	.db 0x00
+      00005A 00                    1858 	.db 0x00
+      00005B 00                    1859 	.db 0x00
+      00005C 00                    1860 	.db 0x00
+      00005D 00                    1861 	.db 0x00
+                                   1862 	.area CABS (ABS)
