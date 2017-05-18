@@ -546,7 +546,7 @@ int main () {
 	while (1) {
 //read analog value on port PD3  -- AIN4
 gemiddeld=0;
-                for(samples=0;samples<4;samples++)
+                for(samples=0;samples<10000;samples++)
 {
 
 		ADC_CSR |= ((0x0F)&4); // select channel = 4 = PD3
@@ -560,17 +560,16 @@ gemiddeld=0;
 
 		ADC_CR1 &= ~(1<<0); // ADC Stop Conversion
                 ampere &= 0x03ff; // 0 bits resolution so above 0x0400 is nothing
-gemiddeld+=ampere;
+if (ampere > gemiddeld) gemiddeld=ampere;
 
-delay(2);
 }
-ampere=gemiddeld/4; //average from 4 measurements
+//ampere=gemiddeld/4; //average from 4 measurements
 
 		//some testdata
 		tx_payload[0] = 0xac; //first two is unique ID for this current sensor
 		tx_payload[1] = 0xcc;
-		tx_payload[2] = ampere & 0x0f; 
-		tx_payload[3] = ampere>>8;
+		tx_payload[2] = gemiddeld & 0x0f; 
+		tx_payload[3] = gemiddeld>>8;
 		write_spi_buf(iRF_CMD_WR_TX_PLOAD, tx_payload, 4);
 		write_spi_reg(WRITE_REG+STATUS, 0xff);
 		// readstatus = read_spi_reg(STATUS);
